@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FDEE892C-0F03-477C-A959-DFE667D2E1C4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>clapplugin</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.clap</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.clap</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetExt>.clap</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;CLAPPLUGIN_EXPORTS;_GLFW_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\schwa\git-repos\glfw\include;C:\Users\schwa\git-repos\imgui\backends;C:\Users\schwa\git-repos\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;CLAPPLUGIN_EXPORTS;_GLFW_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\schwa\git-repos\glfw\include;C:\Users\schwa\git-repos\imgui;C:\Users\schwa\git-repos\imgui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CLAPPLUGIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CLAPPLUGIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\clap_imgui.cpp" />
+    <ClCompile Include="..\..\src\clap_imgui_win.cpp" />
+    <ClCompile Include="..\..\src\glfw\src\context.c" />
+    <ClCompile Include="..\..\src\glfw\src\egl_context.c" />
+    <ClCompile Include="..\..\src\glfw\src\init.c" />
+    <ClCompile Include="..\..\src\glfw\src\input.c" />
+    <ClCompile Include="..\..\src\glfw\src\monitor.c" />
+    <ClCompile Include="..\..\src\glfw\src\null_init.c" />
+    <ClCompile Include="..\..\src\glfw\src\null_joystick.c" />
+    <ClCompile Include="..\..\src\glfw\src\null_monitor.c" />
+    <ClCompile Include="..\..\src\glfw\src\null_window.c" />
+    <ClCompile Include="..\..\src\glfw\src\osmesa_context.c" />
+    <ClCompile Include="..\..\src\glfw\src\platform.c" />
+    <ClCompile Include="..\..\src\glfw\src\vulkan.c" />
+    <ClCompile Include="..\..\src\glfw\src\wgl_context.c" />
+    <ClCompile Include="..\..\src\glfw\src\win32_init.c" />
+    <ClCompile Include="..\..\src\glfw\src\win32_joystick.c" />
+    <ClCompile Include="..\..\src\glfw\src\win32_module.c" />
+    <ClCompile Include="..\..\src\glfw\src\win32_monitor.c" />
+    <ClCompile Include="..\..\src\glfw\src\win32_thread.c" />
+    <ClCompile Include="..\..\src\glfw\src\win32_time.c" />
+    <ClCompile Include="..\..\src\glfw\src\win32_window.c" />
+    <ClCompile Include="..\..\src\glfw\src\window.c" />
+    <ClCompile Include="..\..\src\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\..\src\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\..\src\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\plugin.cpp" />
+    <ClCompile Include="..\..\src\plugin_impl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\clap\include\clap\audio-buffer.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\chmap.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\clap.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\color.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\entry.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\events.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\audio-ports-config.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\audio-ports.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\event-filter.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\event-registry.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\gui-cocoa.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\gui-free-standing.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\gui-win32.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\gui-x11.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\gui.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\latency.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\log.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\note-name.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\note-ports.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\params.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\posix-fd-support.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\render.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\state.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\thread-check.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\thread-pool.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\ext\timer-support.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\fixedpoint.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\hash.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\host.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\id.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\plugin-factory.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\plugin-invalidation.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\plugin.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\private\align.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\private\macros.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\private\std.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\process.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\stream.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\string-sizes.h" />
+    <ClInclude Include="..\..\src\clap\include\clap\version.h" />
+    <ClInclude Include="..\..\src\glfw\src\internal.h" />
+    <ClInclude Include="..\..\src\glfw\src\mappings.h" />
+    <ClInclude Include="..\..\src\glfw\src\null_joystick.h" />
+    <ClInclude Include="..\..\src\glfw\src\null_platform.h" />
+    <ClInclude Include="..\..\src\glfw\src\platform.h" />
+    <ClInclude Include="..\..\src\glfw\src\win32_joystick.h" />
+    <ClInclude Include="..\..\src\glfw\src\win32_platform.h" />
+    <ClInclude Include="..\..\src\glfw\src\win32_thread.h" />
+    <ClInclude Include="..\..\src\glfw\src\win32_time.h" />
+    <ClInclude Include="..\..\src\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="..\..\src\imgui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\..\src\imgui\imconfig.h" />
+    <ClInclude Include="..\..\src\imgui\imgui.h" />
+    <ClInclude Include="..\..\src\imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\src\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\..\src\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\..\src\imgui\imstb_truetype.h" />
+    <ClInclude Include="..\..\src\main.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
