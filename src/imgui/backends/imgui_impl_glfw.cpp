@@ -418,7 +418,7 @@ static void ImGui_ImplGlfw_UpdateMousePosAndButtons()
         GLFWwindow* mouse_window = (bd->MouseWindow == window || focused) ? window : NULL;
 
         // Update mouse buttons
-        if (focused)
+        if (mouse_window)
             for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
                 io.MouseDown[i] |= glfwGetMouseButton(window, i) != 0;
 
@@ -794,10 +794,16 @@ static void ImGui_ImplGlfw_SetWindowPos(ImGuiViewport* viewport, ImVec2 pos)
     ImGui_ImplGlfw_ViewportData* vd = (ImGui_ImplGlfw_ViewportData*)viewport->PlatformUserData;
     vd->IgnoreWindowPosEventFrame = ImGui::GetFrameCount();
 
-    ImGuiIO& io = ImGui::GetIO();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+#ifdef _WIN32
+    HWND hwnd = glfwGetWin32Window(vd->Window), par;
+    if (hwnd && (GetWindowLong(hwnd, GWL_STYLE) & WS_CHILDWINDOW) != 0 && (par = GetParent(hwnd)))
     {
+      RECT par_rect;
+      GetWindowRect(par, &par_rect);
+      pos.x -= par_rect.left;
+      pos.y -= par_rect.top;
     }
+#endif
 
     glfwSetWindowPos(vd->Window, (int)pos.x, (int)pos.y);
 }
