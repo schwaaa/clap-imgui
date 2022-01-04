@@ -3,6 +3,7 @@
 #include <tchar.h>
 #include <stdio.h>
 
+#include "imgui_internal.h" // so we can get the viewport associated with an ImGui window
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
@@ -14,22 +15,23 @@
 
 
 GLFWwindow *backend_wnd;
-int backend_refcnt;
+DWORD want_teardown;
+
 struct ui_ctx_rec
 {
   Plugin *plugin;
   HWND parent;
   char name[64];
-  ImGuiViewport *viewport;
+  int did_parenting;
   ui_ctx_rec *next;
 };
 ui_ctx_rec *rec_list;
 
-void imgui__do_render_pass(ui_ctx_rec *new_rec)
+void imgui__do_render_pass()
 {
-  if (!backend_wnd || !rec_list) return;
+  if (!backend_wnd) return;
 
-  //glfwPollEvents();
+ // glfwPollEvents();
 
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -51,43 +53,63 @@ void imgui__do_render_pass(ui_ctx_rec *new_rec)
     rec=rec->next;
   }
 
-  //ImGui::ShowDemoWindow();
-
   ImGui::Render();
   ImGui::UpdatePlatformWindows();
   ImGui::RenderPlatformWindowsDefault();
 
-  if (new_rec)
+  rec=rec_list;
+  while (rec)
   {
-    if (ImGui::GetPlatformIO().Viewports.Size) // assert
+    if (!rec->did_parenting)
     {
-      new_rec->viewport=ImGui::GetPlatformIO().Viewports.back();
-      GLFWwindow *glfw_win=(GLFWwindow*)new_rec->viewport->PlatformHandle;
-      HWND new_hwnd=(HWND)glfwGetWin32Window(glfw_win);
-      if (glfw_win && new_hwnd) // assert
+      extern ImGuiContext *GImGui;
+      for (int i=0; i < GImGui->Windows.Size; ++i)
       {
-        SetParent(new_hwnd, new_rec->parent);
-        long style=GetWindowLong(new_hwnd, GWL_STYLE);
-        style &= ~WS_POPUP;
-        style |= WS_CHILDWINDOW;
-        SetWindowLong(new_hwnd, GWL_STYLE, style);
+        ImGuiWindow *w=GImGui->Windows[i];
+        if (w->Name && !strcmp(w->Name, rec->name) &&
+          w->Viewport && w->Viewport->PlatformWindowCreated)
+        {
+          GLFWwindow *glfw_win=(GLFWwindow*)w->Viewport->PlatformHandle;
+          HWND new_hwnd=(HWND)glfwGetWin32Window(glfw_win);
+          if (new_hwnd) // assert
+          {
+            SetParent(new_hwnd, rec->parent);
+            long style=GetWindowLong(new_hwnd, GWL_STYLE);
+            style &= ~WS_POPUP;
+            style |= WS_CHILDWINDOW;
+            SetWindowLong(new_hwnd, GWL_STYLE, style);
+            SetWindowPos(new_hwnd, NULL, 0, 0, 0, 0, SWP_NOZORDER|SWP_NOSIZE|SWP_NOACTIVATE);
+            rec->did_parenting=1;
+          }
+          break;
+        }
       }
     }
+    rec=rec->next;
   }
-
-  //int w, h;
-  //glfwGetFramebufferSize(backend_wnd, &w, &h);
-  //glViewport(0, 0, w, h);
-  //glClearColor(0.0, 0.0, 0.0, 1.0);
-  //glClear(GL_COLOR_BUFFER_BIT);
-  //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-  //glfwSwapBuffers(backend_wnd);
 }
 
-void imgui__on_timer(HWND hwnd, UINT message, UINT_PTR caller, DWORD time)
+void imgui__teardown()
 {
-  imgui__do_render_pass(NULL);
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
+
+  glfwDestroyWindow(backend_wnd); // will destroy this hwnd and kill the timer
+  backend_wnd=NULL;
+  glfwTerminate();
+}
+
+void imgui__render_timer(HWND hwnd, UINT message, UINT_PTR caller, DWORD time)
+{
+  if (want_teardown > 0)
+  {
+    if (timeGetTime() > want_teardown) imgui__teardown();
+  }
+  else
+  {
+    imgui__do_render_pass();
+  }
 }
 
 static void glfw_error_callback(int error, const char* description)
@@ -100,17 +122,20 @@ bool Plugin::imgui__attach(void *parent)
   if (!parent) return false;
   if (m_ui_ctx) return true;
 
-  if (!backend_refcnt)
+  want_teardown=0;
+  if (!backend_wnd)
   {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit()) return false;
 
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     // invisible top level window
-    backend_wnd=glfwCreateWindow(1000, 1000, "ImGui Backend", NULL, NULL);
+    backend_wnd=glfwCreateWindow(1, 1, "ImGui Backend", NULL, NULL);
     if (!backend_wnd) return false;
 
     glfwMakeContextCurrent(backend_wnd);
@@ -128,21 +153,18 @@ bool Plugin::imgui__attach(void *parent)
     ImGui_ImplOpenGL3_Init(NULL);
 
     HWND backend_hwnd=(HWND)glfwGetWin32Window(backend_wnd);
-    SetTimer(backend_hwnd, 1, 30, (TIMERPROC)imgui__on_timer);
+    SetTimer(backend_hwnd, 1, 30, (TIMERPROC)imgui__render_timer);
   }
-  ++backend_refcnt;
 
-  ui_ctx_rec *rec=(ui_ctx_rec*)malloc(sizeof(ui_ctx_rec));
-  memset(rec, 0, sizeof(ui_ctx_rec));
-  rec->plugin=this;
-  rec->parent=(HWND)parent;
-  sprintf(rec->name, "ImGui %p", this);
-  m_ui_ctx=rec;
+  ui_ctx_rec *new_rec=(ui_ctx_rec*)malloc(sizeof(ui_ctx_rec));
+  memset(new_rec, 0, sizeof(ui_ctx_rec));
+  new_rec->plugin=this;
+  new_rec->parent=(HWND)parent;
+  sprintf(new_rec->name, "ImGui %p", this);
+  m_ui_ctx=new_rec;
 
-  if (rec_list) rec->next=rec_list;
-  rec_list=rec;
-
-  imgui__do_render_pass(rec);
+  if (rec_list) new_rec->next=rec_list;
+  rec_list=new_rec;
 
   return true;
 }
@@ -151,37 +173,23 @@ void Plugin::imgui__destroy()
 {
   if (!m_ui_ctx) return;
 
-  ui_ctx_rec *rec=(ui_ctx_rec*)m_ui_ctx;
+  ui_ctx_rec *old_rec=(ui_ctx_rec*)m_ui_ctx;
   m_ui_ctx=NULL;
 
-  ui_ctx_rec *prev_rec=NULL, *cur_rec=rec_list;
-  while (cur_rec)
+  ui_ctx_rec *prev_rec=NULL, *rec=rec_list;
+  while (rec)
   {
-    if (cur_rec == rec)
+    if (rec == old_rec)
     {
-      if (!prev_rec) rec_list=rec->next;
-      else prev_rec->next=rec->next;
+      if (!prev_rec) rec_list=old_rec->next;
+      else prev_rec->next=old_rec->next;
       break;
     }
+    prev_rec=rec;
+    rec=rec->next;
   }
-  free(rec);
+  free(old_rec);
 
-  if (--backend_refcnt > 0)
-  {
-    imgui__do_render_pass(NULL); // clear out the old viewport
-  }
-  else
-  {
-    HWND backend_hwnd=(HWND)glfwGetWin32Window(backend_wnd);
-    KillTimer(backend_hwnd, 1);
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    glfwDestroyWindow(backend_wnd);
-    backend_wnd=NULL;
-    glfwTerminate();
-  }
+  if (!rec_list) want_teardown=timeGetTime()+1000;
 }
 
