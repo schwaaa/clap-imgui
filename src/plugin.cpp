@@ -4,6 +4,8 @@
 
 Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
 {
+  m_w=0;
+  m_h=0;
   m_ui_ctx=NULL;
 
   m_clap_host=*host;
@@ -34,7 +36,7 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
 
 Plugin::~Plugin()
 {
-  imgui__destroy();
+  gui__destroy();
 }
 
 bool plugin::init(const clap_plugin *plugin)
@@ -79,41 +81,41 @@ void plugin::on_main_thread(const clap_plugin *plugin)
 
 bool gui::create(const clap_plugin *plugin)
 {
-  return ((Plugin*)plugin->plugin_data)->imgui__create();
+  return ((Plugin*)plugin->plugin_data)->gui__create();
 }
 void gui::destroy(const clap_plugin *plugin)
 {
-  ((Plugin*)plugin->plugin_data)->imgui__destroy();
+  ((Plugin*)plugin->plugin_data)->gui__destroy();
 }
 void gui::set_scale(const clap_plugin *plugin, double scale)
 {
-  ((Plugin*)plugin->plugin_data)->imgui__set_scale(scale);
+  ((Plugin*)plugin->plugin_data)->gui__set_scale(scale);
 }
 bool gui::get_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
 {
-  return ((Plugin*)plugin->plugin_data)->imgui__get_size(width, height);
+  return ((Plugin*)plugin->plugin_data)->gui__get_size(width, height);
 }
 bool gui::can_resize(const clap_plugin *plugin)
 {
-  return ((Plugin*)plugin->plugin_data)->imgui__can_resize();
+  return ((Plugin*)plugin->plugin_data)->gui__can_resize();
 }
 void gui::round_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
 {
-  ((Plugin*)plugin->plugin_data)->imgui__round_size(width, height);
+  ((Plugin*)plugin->plugin_data)->gui__round_size(width, height);
 }
 bool gui::set_size(const clap_plugin *plugin, uint32_t width, uint32_t height)
 {
-  return ((Plugin*)plugin->plugin_data)->imgui__set_size(width, height);
+  return ((Plugin*)plugin->plugin_data)->gui__set_size(width, height);
 }
 void gui::show(const clap_plugin *plugin)
 {
-  ((Plugin*)plugin->plugin_data)->imgui__show();
+  ((Plugin*)plugin->plugin_data)->gui__show();
 }
 void gui::hide(const clap_plugin *plugin)
 {
-  ((Plugin*)plugin->plugin_data)->imgui__hide();
+  ((Plugin*)plugin->plugin_data)->gui__hide();
 }
 bool gui::attach(const clap_plugin *plugin, void *window)
 {
-  return ((Plugin*)plugin->plugin_data)->imgui__attach(window);
+  return ((Plugin*)plugin->plugin_data)->gui__attach(window);
 }

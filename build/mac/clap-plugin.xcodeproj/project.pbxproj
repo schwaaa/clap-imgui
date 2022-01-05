@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		52966017278342DC00AFD941 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52966016278342DC00AFD941 /* GameController.framework */; };
-		5296602027835FBC00AFD941 /* clap_imgui_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5296601F27835FBC00AFD941 /* clap_imgui_mac.mm */; };
-		529660222783786000AFD941 /* clap_imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 529660212783786000AFD941 /* clap_imgui.cpp */; };
+		5296602027835FBC00AFD941 /* imgui_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5296601F27835FBC00AFD941 /* imgui_mac.mm */; };
+		529660222783786000AFD941 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 529660212783786000AFD941 /* gui.cpp */; };
 		529660262783A55900AFD941 /* imgui_impl_opengl3.h in Headers */ = {isa = PBXBuildFile; fileRef = 529660232783A55900AFD941 /* imgui_impl_opengl3.h */; };
 		529660272783A55900AFD941 /* imgui_impl_opengl3_loader.h in Headers */ = {isa = PBXBuildFile; fileRef = 529660242783A55900AFD941 /* imgui_impl_opengl3_loader.h */; };
 		529660282783A55900AFD941 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 529660252783A55900AFD941 /* imgui_impl_opengl3.cpp */; };
@@ -123,8 +123,8 @@
 
 /* Begin PBXFileReference section */
 		52966016278342DC00AFD941 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
-		5296601F27835FBC00AFD941 /* clap_imgui_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = clap_imgui_mac.mm; path = ../../src/clap_imgui_mac.mm; sourceTree = "<group>"; };
-		529660212783786000AFD941 /* clap_imgui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = clap_imgui.cpp; path = ../../src/clap_imgui.cpp; sourceTree = "<group>"; };
+		5296601F27835FBC00AFD941 /* imgui_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = imgui_mac.mm; path = ../../src/imgui_mac.mm; sourceTree = "<group>"; };
+		529660212783786000AFD941 /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui.cpp; path = ../../src/gui.cpp; sourceTree = "<group>"; };
 		529660232783A55900AFD941 /* imgui_impl_opengl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imgui_impl_opengl3.h; path = ../../src/imgui/backends/imgui_impl_opengl3.h; sourceTree = "<group>"; };
 		529660242783A55900AFD941 /* imgui_impl_opengl3_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imgui_impl_opengl3_loader.h; path = ../../src/imgui/backends/imgui_impl_opengl3_loader.h; sourceTree = "<group>"; };
 		529660252783A55900AFD941 /* imgui_impl_opengl3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_opengl3.cpp; path = ../../src/imgui/backends/imgui_impl_opengl3.cpp; sourceTree = "<group>"; };
@@ -248,8 +248,8 @@
 		52D19E3927832F5700993976 /* clap-plugin */ = {
 			isa = PBXGroup;
 			children = (
-				529660212783786000AFD941 /* clap_imgui.cpp */,
-				5296601F27835FBC00AFD941 /* clap_imgui_mac.mm */,
+				529660212783786000AFD941 /* gui.cpp */,
+				5296601F27835FBC00AFD941 /* imgui_mac.mm */,
 				52EABE8427832A1300E39241 /* main.cpp */,
 				52EABE8227832A1300E39241 /* main.h */,
 				52EABE8127832A1300E39241 /* plugin_impl.cpp */,
@@ -569,10 +569,10 @@
 				52D19E2527832E8200993976 /* platform.c in Sources */,
 				52D19E3127832E8200993976 /* monitor.c in Sources */,
 				52EABE8627832A1300E39241 /* plugin_impl.cpp in Sources */,
-				5296602027835FBC00AFD941 /* clap_imgui_mac.mm in Sources */,
+				5296602027835FBC00AFD941 /* imgui_mac.mm in Sources */,
 				52D19E2A27832E8200993976 /* osmesa_context.c in Sources */,
 				52D19DFA27832E1500993976 /* imgui_impl_glfw.cpp in Sources */,
-				529660222783786000AFD941 /* clap_imgui.cpp in Sources */,
+				529660222783786000AFD941 /* gui.cpp in Sources */,
 				52D19E2327832E8200993976 /* cocoa_init.m in Sources */,
 				52D19E3627832E8200993976 /* context.c in Sources */,
 			);

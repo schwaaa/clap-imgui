@@ -194,6 +194,14 @@ struct Example : public Plugin
       ImGui::ProgressBar(val, ImVec2(-FLT_MIN, 0), "");
     }
   }
+
+  bool plugin_impl__get_preferred_size(uint32_t* width, uint32_t* height)
+  {
+    *width=400;
+    *height=400;
+    return true;
+  }
+
 };
 
 clap_plugin_descriptor *plugin_impl__get_descriptor()
@@ -205,3 +213,4 @@ Plugin *plugin_impl__create(const clap_host *host)
 {
   return new Example(host);
 }
+

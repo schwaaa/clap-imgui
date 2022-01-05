@@ -117,7 +117,7 @@ static void glfw_error_callback(int error, const char* description)
   fprintf(stderr, "GLFW error %d: %s\n", error, description);
 }
 
-bool Plugin::imgui__attach(void *parent)
+bool Plugin::gui__attach(void *parent)
 {
   if (!parent) return false;
   if (m_ui_ctx) return true;
@@ -169,7 +169,7 @@ bool Plugin::imgui__attach(void *parent)
   return true;
 }
 
-void Plugin::imgui__destroy()
+void Plugin::gui__destroy()
 {
   if (!m_ui_ctx) return;
 

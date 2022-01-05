@@ -20,6 +20,7 @@ struct Plugin
   clap_plugin m_clap_plugin;
   clap_plugin_gui m_clap_plugin_gui;
   clap_plugin_gui_os m_clap_plugin_gui_os;
+  int m_w, m_h;
 
   void *m_ui_ctx;
 
@@ -35,17 +36,18 @@ struct Plugin
   virtual const void* plugin_impl__get_extension(const char* id)=0;
   virtual void plugin_impl__on_main_thread()=0;
   virtual void plugin_impl__draw()=0;
+  virtual bool plugin_impl__get_preferred_size(uint32_t *width, uint32_t *height)=0;
 
-  bool imgui__create();
-  void imgui__destroy();
-  void imgui__set_scale(double scale);
-  bool imgui__get_size(uint32_t *width, uint32_t *height);
-  bool imgui__can_resize();
-  void imgui__round_size(uint32_t *width, uint32_t *height);
-  bool imgui__set_size(uint32_t width, uint32_t height);
-  void imgui__show();
-  void imgui__hide();
-  bool imgui__attach(void *window);
+  bool gui__create();
+  void gui__destroy();
+  void gui__set_scale(double scale);
+  bool gui__get_size(uint32_t *width, uint32_t *height);
+  bool gui__can_resize();
+  void gui__round_size(uint32_t *width, uint32_t *height);
+  bool gui__set_size(uint32_t width, uint32_t height);
+  void gui__show();
+  void gui__hide();
+  bool gui__attach(void *window);
 };
 
 namespace plugin

@@ -145,8 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\clap_imgui.cpp" />
-    <ClCompile Include="..\..\src\clap_imgui_win.cpp" />
+    <ClCompile Include="..\..\src\imgui_win.cpp" />
     <ClCompile Include="..\..\src\glfw\src\context.c" />
     <ClCompile Include="..\..\src\glfw\src\egl_context.c" />
     <ClCompile Include="..\..\src\glfw\src\init.c" />
@@ -168,9 +167,9 @@
     <ClCompile Include="..\..\src\glfw\src\win32_time.c" />
     <ClCompile Include="..\..\src\glfw\src\win32_window.c" />
     <ClCompile Include="..\..\src\glfw\src\window.c" />
+    <ClCompile Include="..\..\src\gui.cpp" />
     <ClCompile Include="..\..\src\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\..\src\imgui\backends\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\..\src\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_draw.cpp" />
