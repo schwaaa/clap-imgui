@@ -1,3 +1,7 @@
+// passthrough functions.
+// add generic passthroughs for extensions here.
+// plugin implementations should not need to touch this file.
+
 #include <string.h>
 #include "main.h"
 

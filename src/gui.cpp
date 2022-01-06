@@ -1,3 +1,6 @@
+// generic ui functions.
+// plugin implementations that use imgui should not need to touch this file.
+
 #include <stdio.h>
 #include <string.h>
 
@@ -16,6 +19,7 @@ bool Plugin::gui__get_size(uint32_t *width, uint32_t *height)
 
 bool Plugin::gui__set_size(uint32_t width, uint32_t height)
 {
+  // todo implement
   m_w=width;
   m_h=height;
   return true;

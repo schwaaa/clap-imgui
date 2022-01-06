@@ -1,3 +1,7 @@
+// plugin implementation.
+// note this example does very little error checking,
+// uses unsafe sprintf/strcpy, etc.
+
 #include <string.h>
 #include <math.h>
 #include <stdio.h>

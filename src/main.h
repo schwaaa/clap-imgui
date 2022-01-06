@@ -1,3 +1,6 @@
+// add generic support for extensions here.
+// plugin implementations should not need to touch this file.
+
 #pragma once
 
 #define _ALLOW_KEYWORD_MACROS
