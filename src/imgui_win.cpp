@@ -3,7 +3,7 @@
 #include <tchar.h>
 #include <stdio.h>
 
-#include "imgui_internal.h" // so we can get the viewport associated with an ImGui window
+#include "imgui/imgui_internal.h" // so we can get the viewport associated with an ImGui window
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 

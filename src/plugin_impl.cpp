@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "main.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 
 
 clap_plugin_descriptor example_descriptor =
