@@ -186,11 +186,6 @@ struct Example : public Plugin
     return CLAP_PROCESS_CONTINUE;
   }
 
-  static void _copy_params(double *dest, double *src)
-  {
-    memcpy(dest, src, NUM_PARAMS*sizeof(double));
-  }
-
   clap_process_status plugin_impl__process(const clap_process *process)
   {
     if (!process) return CLAP_PROCESS_ERROR;
@@ -204,71 +199,20 @@ struct Example : public Plugin
       if (m_peak_out[c] < 1.0e-6) m_peak_out[c]=0.0;
     }
 
-    double start_params[NUM_PARAMS];
-    double end_params[NUM_PARAMS];
-    _copy_params(start_params, m_last_param_values);
-    _copy_params(end_params, m_param_values);
+    // handling incoming parameter changes and slicing the process call
+    // on the time axis would happen here.
 
-    int start_frame=0, end_frame=0;
-    int status_mask=1<<CLAP_PROCESS_CONTINUE;
+    clap_process_status s=_plugin_impl__process(process,
+      0, process->frames_count, m_last_param_values, m_param_values);
 
-    if (process->in_events)
+    for (int i=0; i < NUM_PARAMS; ++i)
     {
-      for (int i=0; i < process->in_events->size(process->in_events); ++i)
-      {
-        const clap_event_header *evt=process->in_events->get(process->in_events, i);
-        if (!evt || evt->space_id != CLAP_CORE_EVENT_SPACE_ID) continue;
-        if (evt->type != CLAP_EVENT_PARAM_VALUE) continue; // assert
-
-        const clap_event_param_value *pevt=(const clap_event_param_value*)evt;
-        if (pevt->param_id < 0 || pevt->param_id >= NUM_PARAMS) continue; // assert
-
-        if (evt->time < process->frames_count)
-        {
-          if (evt->time > end_frame)
-          {
-            if (end_frame > 0)
-            {
-              clap_process_status s=_plugin_impl__process(process,
-                start_frame, end_frame, start_params, end_params);
-              status_mask |= (1<<s);
-            }
-
-            _copy_params(start_params, end_params);
-            start_frame=end_frame;
-            end_frame=evt->time;
-          }
-
-          end_params[pevt->param_id] = _params__convert_value(pevt->param_id, pevt->value);
-        }
-      }
+      m_last_param_values[i]=m_param_values[i];
     }
 
-    // parameter changes from the ui will be smoothed over the entire block,
-    // which may not be ideal for some plugin implementations.
-    // also this example does not support interaction between ui parameter modulation
-    // and automated parameter value changes.
-    if (process->frames_count > end_frame)
-    {
-      clap_process_status s=_plugin_impl__process(process,
-        end_frame, process->frames_count, start_params, end_params);
-      status_mask |= (1<<s);
-    }
-
-    _copy_params(m_param_values, end_params);
-    _copy_params(m_last_param_values, end_params);
-
-    int status=CLAP_PROCESS_ERROR; // return lowest status seen
-    while (status_mask)
-    {
-      if (status_mask&1) return status;
-      status_mask >>= 1;
-      ++status;
-    }
-    return CLAP_PROCESS_ERROR; // assert
+    return s;
   }
 
- 
    const void* plugin_impl__get_extension(const char* id)
    {
     return NULL;
