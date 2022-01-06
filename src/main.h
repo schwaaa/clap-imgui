@@ -10,6 +10,7 @@
 #include "clap/include/clap/ext/gui.h"
 #include "clap/include/clap/ext/gui-win32.h"
 #include "clap/include/clap/ext/gui-cocoa.h"
+#include "clap/include/clap/ext/params.h"
 
 
 struct clap_plugin_gui_os
@@ -23,6 +24,7 @@ struct Plugin
   clap_plugin m_clap_plugin;
   clap_plugin_gui m_clap_plugin_gui;
   clap_plugin_gui_os m_clap_plugin_gui_os;
+  clap_plugin_params m_clap_plugin_params;
   int m_w, m_h;
 
   void *m_ui_ctx;
@@ -51,6 +53,13 @@ struct Plugin
   void gui__show();
   void gui__hide();
   bool gui__attach(void *window);
+
+  virtual uint32_t params__count()=0;
+  virtual bool params__get_info(int32_t param_index, clap_param_info_t *param_info)=0;
+  virtual bool params__get_value(clap_id param_id, double *value)=0;
+  virtual bool params__value_to_text(clap_id param_id, double value, char *display, uint32_t size)=0;
+  virtual bool params__text_to_value(clap_id param_id, const char *display, double *value)=0;
+  virtual void params__flush(const clap_input_events *in, const clap_output_events *out)=0;
 };
 
 namespace plugin
@@ -78,6 +87,16 @@ namespace gui
   void show(const clap_plugin *plugin);
   void hide(const clap_plugin *plugin);
   bool attach(const clap_plugin *plugin, void *window);
+};
+
+namespace params
+{
+  uint32_t count(const clap_plugin *plugin);
+  bool get_info(const clap_plugin *plugin, int32_t param_index, clap_param_info_t *param_info);
+  bool get_value(const clap_plugin *plugin, clap_id param_id, double *value);
+  bool value_to_text(const clap_plugin *plugin, clap_id param_id, double value, char *display, uint32_t size);
+  bool text_to_value(const clap_plugin *plugin, clap_id param_id, const char *display, double *value);
+  void flush(const clap_plugin *plugin, const clap_input_events *in, const clap_output_events *out);
 };
 
 clap_plugin_descriptor *plugin_impl__get_descriptor();

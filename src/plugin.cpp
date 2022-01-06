@@ -36,6 +36,13 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
   m_clap_plugin_gui.hide=gui::hide;
 
   m_clap_plugin_gui_os.attach=gui::attach;
+
+  m_clap_plugin_params.count=params::count;
+  m_clap_plugin_params.get_info=params::get_info;
+  m_clap_plugin_params.get_value=params::get_value;
+  m_clap_plugin_params.value_to_text=params::value_to_text;
+  m_clap_plugin_params.text_to_value=params::text_to_value;
+  m_clap_plugin_params.flush=params::flush;
 }
 
 Plugin::~Plugin()
@@ -76,6 +83,7 @@ const void* plugin::get_extension(const clap_plugin *plugin, const char* id)
   if (!strcmp(id, CLAP_EXT_GUI)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui;
   if (!strcmp(id, CLAP_EXT_GUI_COCOA)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_os;
   if (!strcmp(id, CLAP_EXT_GUI_WIN32)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_os;
+  if (!strcmp(id, CLAP_EXT_PARAMS)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_params;
   return ((Plugin*)plugin->plugin_data)->plugin_impl__get_extension(id);
 }
 void plugin::on_main_thread(const clap_plugin *plugin)
@@ -122,4 +130,29 @@ void gui::hide(const clap_plugin *plugin)
 bool gui::attach(const clap_plugin *plugin, void *window)
 {
   return ((Plugin*)plugin->plugin_data)->gui__attach(window);
+}
+
+uint32_t params::count(const clap_plugin *plugin)
+{
+  return ((Plugin*)plugin->plugin_data)->params__count();
+}
+bool params::get_info(const clap_plugin *plugin, int32_t param_index, clap_param_info_t *param_info)
+{
+  return ((Plugin*)plugin->plugin_data)->params__get_info(param_index, param_info);
+}
+bool params::get_value(const clap_plugin *plugin, clap_id param_id, double *value)
+{
+  return ((Plugin*)plugin->plugin_data)->params__get_value(param_id, value);
+}
+bool params::value_to_text(const clap_plugin *plugin, clap_id param_id, double value, char *display, uint32_t size)
+{
+  return ((Plugin*)plugin->plugin_data)->params__value_to_text(param_id, value, display, size);
+}
+bool params::text_to_value(const clap_plugin *plugin, clap_id param_id, const char *display, double *value)
+{
+  return ((Plugin*)plugin->plugin_data)->params__text_to_value(param_id, display, value);
+}
+void params::flush(const clap_plugin *plugin, const clap_input_events *in, const clap_output_events *out)
+{
+  return ((Plugin*)plugin->plugin_data)->params__flush(in, out);
 }
