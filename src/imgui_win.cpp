@@ -1,3 +1,6 @@
+// connection between clap_plugin_gui_win32 and imgui.
+// plugin implementations should not need to touch this file.
+
 #include <windows.h>
 #include <windowsx.h>
 #include <tchar.h>

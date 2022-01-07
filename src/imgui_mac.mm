@@ -1,3 +1,6 @@
+// connection between clap_plugin_gui_cocoa and imgui.
+// plugin implementations should not need to touch this file.
+
 #include <Cocoa/Cocoa.h>
 #include <sys/time.h>
 
