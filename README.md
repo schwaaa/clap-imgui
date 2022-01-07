@@ -1,8 +1,8 @@
-# clap-plugin
+# clap-imgui
 
 Minimal example of prototyping CLAP audio plugins using Dear ImGui as the user interface.
 
-This is intended as an example of presenting a UI for a [CLAP](https://github.com/free-audio/clap) plugin. This is not intended to be a full featured framework; the only CLAP extensions supported are the GUI and Params extensions. The example doesn't support events, parameter automation, etc.
+This is intended as an example of presenting a UI for a [CLAP](https://github.com/free-audio/clap) plugin. It is not intended to be a full featured framework; the only CLAP extensions supported are the GUI and Params extensions. The example doesn't support events, parameter automation, etc.
 
 The UI is presented via [ImGui](https://github.com/ocornut/imgui), which is designed as a tool for programmers to quickly protoype controls. ImGui lets the programmer put controls and information on the screen with minimal programming effort:
 
