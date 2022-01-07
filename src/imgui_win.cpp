@@ -94,11 +94,13 @@ void imgui__do_render_pass()
 
 void imgui__teardown()
 {
+  if (!backend_wnd) return;
+
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
 
-  glfwDestroyWindow(backend_wnd); // will destroy this hwnd and kill the timer
+  glfwDestroyWindow(backend_wnd); // will destroy backend hwnd and kill the timer
   backend_wnd=NULL;
   glfwTerminate();
 }
@@ -195,3 +197,7 @@ void Plugin::gui__destroy()
   if (!rec_list) want_teardown=timeGetTime()+1000;
 }
 
+void gui__on_plugin_destroy()
+{
+  if (!rec_list && backend_wnd) imgui__teardown();
+}

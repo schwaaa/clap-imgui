@@ -48,6 +48,7 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
 Plugin::~Plugin()
 {
   gui__destroy();
+  gui__on_plugin_destroy();
 }
 
 bool plugin::init(const clap_plugin *plugin)

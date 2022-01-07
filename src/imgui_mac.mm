@@ -98,6 +98,8 @@ void imgui__do_render_pass()
 
 void imgui__teardown()
 {
+  if (!backend_wnd) return;
+
   [timer->timer invalidate];
   [timer release];
 
@@ -105,7 +107,7 @@ void imgui__teardown()
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
 
-  glfwDestroyWindow(backend_wnd); // will destroy this nsview
+  glfwDestroyWindow(backend_wnd);
   backend_wnd=NULL;
   glfwTerminate();
 }
@@ -210,4 +212,9 @@ void Plugin::gui__destroy()
   free(old_rec);
 
   if (!rec_list) want_teardown = get_tick_count()+1000;
+}
+
+void gui__on_plugin_destroy()
+{
+  if (!rec_list && backend_wnd) imgui__teardown();
 }

@@ -102,4 +102,5 @@ namespace params
 clap_plugin_descriptor *plugin_impl__get_descriptor();
 Plugin *plugin_impl__create(const clap_host *host);
 void plugin__initialize(Plugin* plugin);
+void gui__on_plugin_destroy();
 
