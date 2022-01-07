@@ -159,7 +159,6 @@ bool Plugin::gui__attach(void *parent)
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGui::StyleColorsDark();
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
     ImGui::GetIO().ConfigViewportsNoAutoMerge=true;
     ImGui::GetIO().ConfigViewportsNoTaskBarIcon=true;
