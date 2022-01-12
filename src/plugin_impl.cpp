@@ -310,7 +310,7 @@ struct Example : public Plugin
     {
       return in_value > -150.0 ? pow(10.0, in_value/20.0) : 0.0;
     }
-    else if (param_id == PARAM_PAN)
+    if (param_id == PARAM_PAN)
     {
       return 0.01*in_value;
     }
