@@ -164,7 +164,7 @@ bool Plugin::gui__attach(void *parent)
   memset(new_rec, 0, sizeof(ui_ctx_rec));
   new_rec->plugin=this;
   new_rec->parent=(HWND)parent;
-  sprintf(new_rec->name, "ImGui %p", this);
+  sprintf(new_rec->name, "CLAP ImGui %p", new_rec);
   m_ui_ctx=new_rec;
 
   if (rec_list) new_rec->next=rec_list;
