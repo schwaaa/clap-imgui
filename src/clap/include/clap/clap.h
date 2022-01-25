@@ -2,7 +2,7 @@
  * CLAP - CLever Audio Plugin
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
- * Copyright (c) 2014...2021 Alexandre BIQUE <bique.alexandre@gmail.com>
+ * Copyright (c) 2014...2022 Alexandre BIQUE <bique.alexandre@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,6 +60,8 @@
 #include "ext/draft/file-reference.h"
 #include "ext/draft/midi-mappings.h"
 #include "ext/draft/surround.h"
+#include "ext/draft/cv.h"
+#include "ext/draft/ambisonic.h"
 
 #include "converters/vst2-converter.h"
 #include "converters/vst3-converter.h"

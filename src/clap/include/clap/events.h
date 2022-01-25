@@ -19,7 +19,7 @@ typedef struct clap_event_header {
    alignas(4) uint32_t time;     // time at which the event happens
    alignas(2) uint16_t space_id; // event space, see clap_host_event_registry
    alignas(2) uint16_t type;     // event type
-   alignas(2) uint16_t flags;    // see clap_event_flags
+   alignas(4) uint32_t flags;    // see clap_event_flags
 } clap_event_header_t;
 
 // The clap core event space
@@ -61,18 +61,18 @@ enum {
    // When using polyphonic modulations, the host has to start voices for its modulators.
    // This message helps the host to track the plugin's voice management.
    //
-   // Those four events use the note attribute.
+   // Those four events use clap_event_note.
    CLAP_EVENT_NOTE_ON,
    CLAP_EVENT_NOTE_OFF,
    CLAP_EVENT_NOTE_CHOKE,
    CLAP_EVENT_NOTE_END,
 
    // Represents a note expression.
-   // Uses the note_expression attribute.
+   // Uses clap_event_note_expression.
    CLAP_EVENT_NOTE_EXPRESSION,
 
-   // PARAM_VALUE sets the parameter's value; uses param_value attribute
-   // PARAM_MOD sets the parameter's modulation amount; uses param_mod attribute
+   // PARAM_VALUE sets the parameter's value; uses clap_event_param_value.
+   // PARAM_MOD sets the parameter's modulation amount; uses clap_event_param_mod.
    //
    // The value heard is: param_value + param_mod.
    //
@@ -82,10 +82,10 @@ enum {
    CLAP_EVENT_PARAM_VALUE,
    CLAP_EVENT_PARAM_MOD,
 
-   CLAP_EVENT_TRANSPORT,  // update the transport info; transport attribute
-   CLAP_EVENT_MIDI,       // raw midi event; midi attribute
-   CLAP_EVENT_MIDI_SYSEX, // raw midi sysex event; midi_sysex attribute
-   CLAP_EVENT_MIDI2,      // raw midi 2 event; midi2 attribute
+   CLAP_EVENT_TRANSPORT,  // update the transport info; clap_event_transport
+   CLAP_EVENT_MIDI,       // raw midi event; clap_event_midi
+   CLAP_EVENT_MIDI_SYSEX, // raw midi sysex event; clap_event_midi_sysex
+   CLAP_EVENT_MIDI2,      // raw midi 2 event; clap_event_midi2
 };
 typedef int32_t clap_event_type;
 
@@ -142,8 +142,8 @@ typedef struct clap_event_param_value {
    alignas(4) clap_event_header_t header;
 
    // target parameter
-   void *cookie;                // @ref clap_param_info.cookie
    alignas(4) clap_id param_id; // @ref clap_param_info.id
+   void *cookie;                // @ref clap_param_info.cookie
 
    // target a specific port, key and channel, -1 for global
    alignas(2) int16_t port_index;
@@ -191,13 +191,13 @@ typedef struct clap_event_transport {
    alignas(8) double tempo_inc; // tempo increment for each samples and until the next
                                 // time info event
 
-   alignas(8) clap_beattime bar_start; // start pos of the current bar
-   alignas(4) int32_t bar_number;      // bar at song pos 0 has the number 0
-
    alignas(8) clap_beattime loop_start_beats;
    alignas(8) clap_beattime loop_end_beats;
    alignas(8) clap_sectime loop_start_seconds;
    alignas(8) clap_sectime loop_end_seconds;
+
+   alignas(8) clap_beattime bar_start; // start pos of the current bar
+   alignas(4) int32_t bar_number;      // bar at song pos 0 has the number 0
 
    alignas(2) int16_t tsig_num;   // time signature numerator
    alignas(2) int16_t tsig_denom; // time signature denominator
@@ -218,6 +218,8 @@ typedef struct clap_event_midi_sysex {
    alignas(4) uint32_t size;
 } clap_event_midi_sysex_t;
 
+// While it is possible to use a series of midi2 event to send a sysex,
+// prefer clap_event_midi_sysex if possible for efficiency.
 typedef struct clap_event_midi2 {
    alignas(4) clap_event_header_t header;
 
@@ -225,7 +227,7 @@ typedef struct clap_event_midi2 {
    alignas(4) uint32_t data[4];
 } clap_event_midi2_t;
 
-// Input event list
+// Input event list, events must be sorted by time.
 typedef struct clap_input_events {
    void *ctx; // reserved pointer for the list
 
@@ -235,7 +237,7 @@ typedef struct clap_input_events {
    const clap_event_header_t *(*get)(const struct clap_input_events *list, uint32_t index);
 } clap_input_events_t;
 
-// Output event list
+// Output event list, events must be sorted by time.
 typedef struct clap_output_events {
    void *ctx; // reserved pointer for the list
 

@@ -20,19 +20,28 @@ extern "C" {
 #pragma pack(push, CLAP_ALIGN)
 
 enum clap_note_dialect {
+   // Uses clap_event_note and clap_event_note_expression.
+   // Default if the port info are not provided or inspected.
    CLAP_NOTE_DIALECT_CLAP = 1 << 0,
+
+   // Uses clap_event_midi, no polyphonic expression
    CLAP_NOTE_DIALECT_MIDI = 1 << 1,
-   CLAP_NOTE_DIALECT_MIDI2 = 1 << 2,
+
+   // Uses clap_event_midi, with polyphonic expression
+   CLAP_NOTE_DIALECT_MIDI_MPE = 1 << 2,
+
+   // Uses clap_event_midi2
+   CLAP_NOTE_DIALECT_MIDI2 = 1 << 3,
 };
 
 typedef struct clap_note_port_info {
-   alignas(4) clap_id id;                       // stable identifier
-   alignas(4) uint32_t clap_supported_dialects; // bitfield, see clap_note_dialect
-   alignas(4) uint32_t clap_preferred_dialect;  // one value of clap_note_dialect
-   alignas(1) char name[CLAP_NAME_SIZE];        // displayable name, i18n?
+   alignas(4) clap_id id;                  // stable identifier
+   alignas(4) uint32_t supported_dialects; // bitfield, see clap_note_dialect
+   alignas(4) uint32_t preferred_dialect;  // one value of clap_note_dialect
+   alignas(1) char name[CLAP_NAME_SIZE];   // displayable name, i18n?
 } clap_note_port_info_t;
 
-// The audio ports scan has to be done while the plugin is deactivated.
+// The note ports scan has to be done while the plugin is deactivated.
 typedef struct clap_plugin_note_ports {
    // number of ports, for either input or output
    // [main-thread]
@@ -58,7 +67,11 @@ enum {
 };
 
 typedef struct clap_host_note_ports {
-   // Rescan the full list of audio ports according to the flags.
+   // Query which dialects the host supports
+   // [main-thread]
+   uint32_t (*supported_dialects)(const clap_host_t *host);
+
+   // Rescan the full list of note ports according to the flags.
    // [main-thread]
    void (*rescan)(const clap_host_t *host, uint32_t flags);
 } clap_host_note_ports_t;

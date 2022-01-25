@@ -100,9 +100,9 @@ void gui::destroy(const clap_plugin *plugin)
 {
   ((Plugin*)plugin->plugin_data)->gui__destroy();
 }
-void gui::set_scale(const clap_plugin *plugin, double scale)
+bool gui::set_scale(const clap_plugin *plugin, double scale)
 {
-  ((Plugin*)plugin->plugin_data)->gui__set_scale(scale);
+  return ((Plugin*)plugin->plugin_data)->gui__set_scale(scale);
 }
 bool gui::get_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
 {
@@ -137,7 +137,7 @@ uint32_t params::count(const clap_plugin *plugin)
 {
   return ((Plugin*)plugin->plugin_data)->params__count();
 }
-bool params::get_info(const clap_plugin *plugin, int32_t param_index, clap_param_info_t *param_info)
+bool params::get_info(const clap_plugin *plugin, uint32_t param_index, clap_param_info_t *param_info)
 {
   return ((Plugin*)plugin->plugin_data)->params__get_info(param_index, param_info);
 }

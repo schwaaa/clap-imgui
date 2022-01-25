@@ -45,7 +45,7 @@ struct Plugin
 
   bool gui__create();
   void gui__destroy();
-  void gui__set_scale(double scale);
+  bool gui__set_scale(double scale);
   bool gui__get_size(uint32_t *width, uint32_t *height);
   bool gui__can_resize();
   void gui__round_size(uint32_t *width, uint32_t *height);
@@ -55,7 +55,7 @@ struct Plugin
   bool gui__attach(void *window);
 
   virtual uint32_t params__count()=0;
-  virtual bool params__get_info(int32_t param_index, clap_param_info_t *param_info)=0;
+  virtual bool params__get_info(uint32_t param_index, clap_param_info_t *param_info)=0;
   virtual bool params__get_value(clap_id param_id, double *value)=0;
   virtual bool params__value_to_text(clap_id param_id, double value, char *display, uint32_t size)=0;
   virtual bool params__text_to_value(clap_id param_id, const char *display, double *value)=0;
@@ -79,7 +79,7 @@ namespace gui
 {
   bool create(const clap_plugin *plugin);
   void destroy(const clap_plugin *plugin);
-  void set_scale(const clap_plugin *plugin, double scale);
+  bool set_scale(const clap_plugin *plugin, double scale);
   bool get_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height);
   bool can_resize(const clap_plugin *plugin);
   void round_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height);
@@ -92,7 +92,7 @@ namespace gui
 namespace params
 {
   uint32_t count(const clap_plugin *plugin);
-  bool get_info(const clap_plugin *plugin, int32_t param_index, clap_param_info_t *param_info);
+  bool get_info(const clap_plugin *plugin, uint32_t param_index, clap_param_info_t *param_info);
   bool get_value(const clap_plugin *plugin, clap_id param_id, double *value);
   bool value_to_text(const clap_plugin *plugin, clap_id param_id, double value, char *display, uint32_t size);
   bool text_to_value(const clap_plugin *plugin, clap_id param_id, const char *display, double *value);

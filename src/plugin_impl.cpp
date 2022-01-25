@@ -10,6 +10,12 @@
 #include "imgui/imgui.h"
 
 
+const char *_features[] = 
+{
+  "",
+  NULL
+};
+
 clap_plugin_descriptor _descriptor =
 {
   CLAP_VERSION,
@@ -21,7 +27,7 @@ clap_plugin_descriptor _descriptor =
   "https://reaper.fm",
   "0.0.1",
   "example",
-  ""
+  _features
 };
 
 enum { PARAM_VOLUME, PARAM_PAN, NUM_PARAMS };
@@ -276,7 +282,7 @@ struct Example : public Plugin
     return NUM_PARAMS;
   }
 
-  bool params__get_info(int32_t param_index, clap_param_info_t *param_info)
+  bool params__get_info(uint32_t param_index, clap_param_info_t *param_info)
   {
     if (param_index < 0 || param_index >= NUM_PARAMS) return false;
     *param_info=_param_info[param_index];
