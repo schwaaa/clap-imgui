@@ -8,6 +8,7 @@
 
 
 bool Plugin::gui__create() { return true; }
+
 bool Plugin::gui__set_scale(double scale) { return false; }
 
 bool Plugin::gui__get_size(uint32_t *width, uint32_t *height)

@@ -5,17 +5,10 @@
 
 #define _ALLOW_KEYWORD_MACROS
 #define alignas(x)
-#include "clap/include/clap/entry.h"
-#include "clap/include/clap/plugin-factory.h"
-#include "clap/include/clap/ext/gui.h"
-#include "clap/include/clap/ext/gui-win32.h"
-#include "clap/include/clap/ext/gui-cocoa.h"
-#include "clap/include/clap/ext/gui-x11.h"
-#include "clap/include/clap/ext/params.h"
+#include "clap/include/clap/clap.h"
 
 struct Plugin
 {
-  clap_host m_clap_host;
   clap_plugin m_clap_plugin;
   clap_plugin_params m_clap_plugin_params;
   int m_w, m_h;
@@ -41,7 +34,6 @@ struct Plugin
   virtual bool plugin_impl__get_preferred_size(uint32_t *width, uint32_t *height)=0;
 
   bool gui__create();
-  void gui__destroy();
   bool gui__set_scale(double scale);
   bool gui__get_size(uint32_t *width, uint32_t *height);
   bool gui__can_resize();
@@ -49,10 +41,6 @@ struct Plugin
   bool gui__set_size(uint32_t width, uint32_t height);
   void gui__show();
   void gui__hide();
-
-  bool gui__attach_win(void *parent);
-  bool gui__attach_mac(void *parent);
-  bool gui__attach_lin(const char *display_name, unsigned long parent);
 
   virtual uint32_t params__count()=0;
   virtual bool params__get_info(uint32_t param_index, clap_param_info_t *param_info)=0;
@@ -105,5 +93,6 @@ namespace params
 clap_plugin_descriptor *plugin_impl__get_descriptor();
 Plugin *plugin_impl__create(const clap_host *host);
 void plugin__initialize(Plugin* plugin);
-void gui__on_plugin_destroy();
+void gui__destroy(Plugin *plugin, bool is_plugin_destroy);
+
 

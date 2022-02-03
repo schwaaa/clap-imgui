@@ -5,6 +5,8 @@
 #include <string.h>
 #include "main.h"
 
+const clap_host *g_clap_host;
+extern clap_plugin_timer_support gui__timer_support;
 
 Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
 {
@@ -12,7 +14,7 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
   m_h=0;
   m_ui_ctx=NULL;
 
-  m_clap_host=*host;
+  g_clap_host=host;
 
   m_clap_plugin.desc=descriptor;
   m_clap_plugin.plugin_data=this;
@@ -49,8 +51,7 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
 
 Plugin::~Plugin()
 {
-  gui__destroy();
-  gui__on_plugin_destroy();
+  gui__destroy(this, true);
 }
 
 bool plugin::init(const clap_plugin *plugin)
@@ -88,6 +89,9 @@ const void* plugin::get_extension(const clap_plugin *plugin, const char* id)
   if (!strcmp(id, CLAP_EXT_GUI_COCOA)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_mac;
   if (!strcmp(id, CLAP_EXT_GUI_X11)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_lin;
   if (!strcmp(id, CLAP_EXT_PARAMS)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_params;
+
+  if (!strcmp(id, CLAP_EXT_TIMER_SUPPORT)) return &gui__timer_support;
+
   return ((Plugin*)plugin->plugin_data)->plugin_impl__get_extension(id);
 }
 void plugin::on_main_thread(const clap_plugin *plugin)
@@ -101,7 +105,7 @@ bool gui::create(const clap_plugin *plugin)
 }
 void gui::destroy(const clap_plugin *plugin)
 {
-  ((Plugin*)plugin->plugin_data)->gui__destroy();
+  gui__destroy((Plugin*)plugin->plugin_data, false);
 }
 bool gui::set_scale(const clap_plugin *plugin, double scale)
 {
@@ -130,19 +134,6 @@ void gui::show(const clap_plugin *plugin)
 void gui::hide(const clap_plugin *plugin)
 {
   ((Plugin*)plugin->plugin_data)->gui__hide();
-}
-
-bool gui::attach_win(const clap_plugin *plugin, void *parent)
-{
-  return ((Plugin*)plugin->plugin_data)->gui__attach_win(parent);
-}
-bool gui::attach_mac(const clap_plugin *plugin, void *parent)
-{
-  return ((Plugin*)plugin->plugin_data)->gui__attach_mac(parent);
-}
-bool gui::attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent)
-{
-  return ((Plugin*)plugin->plugin_data)->gui__attach_lin(display_name, parent);
 }
 
 uint32_t params::count(const clap_plugin *plugin)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45EADB7D27AC890200EAB375 /* imgui_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EADB7C27AC890200EAB375 /* imgui_base.cpp */; };
 		52966017278342DC00AFD941 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52966016278342DC00AFD941 /* GameController.framework */; };
 		5296602027835FBC00AFD941 /* imgui_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5296601F27835FBC00AFD941 /* imgui_mac.mm */; };
 		529660222783786000AFD941 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 529660212783786000AFD941 /* gui.cpp */; };
@@ -122,6 +123,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		45EADB7C27AC890200EAB375 /* imgui_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_base.cpp; path = ../../src/imgui_base.cpp; sourceTree = "<group>"; };
 		52966016278342DC00AFD941 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		5296601F27835FBC00AFD941 /* imgui_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = imgui_mac.mm; path = ../../src/imgui_mac.mm; sourceTree = "<group>"; };
 		529660212783786000AFD941 /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui.cpp; path = ../../src/gui.cpp; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				529660212783786000AFD941 /* gui.cpp */,
+				45EADB7C27AC890200EAB375 /* imgui_base.cpp */,
 				5296601F27835FBC00AFD941 /* imgui_mac.mm */,
 				52EABE8427832A1300E39241 /* main.cpp */,
 				52EABE8227832A1300E39241 /* main.h */,
@@ -554,6 +557,7 @@
 				52EABE8927832A1300E39241 /* main.cpp in Sources */,
 				52D19DEB27832DFD00993976 /* imgui_draw.cpp in Sources */,
 				52D19EB42783408200993976 /* null_joystick.c in Sources */,
+				45EADB7D27AC890200EAB375 /* imgui_base.cpp in Sources */,
 				52D19E2027832E8200993976 /* posix_module.c in Sources */,
 				52D19E3427832E8200993976 /* null_init.c in Sources */,
 				52D19E1C27832E8200993976 /* nsgl_context.m in Sources */,
@@ -698,9 +702,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXCLUDED_SOURCE_FILE_NAMES = "";
 				EXECUTABLE_EXTENSION = clap;
 				EXECUTABLE_PREFIX = "";
-				GCC_PREPROCESSOR_DEFINITIONS = _GLFW_COCOA;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CLAPPLUGIN_EXPORTS,
+					_GLFW_COCOA,
+					GLFW_EXPOSE_NATIVE_COCOA,
+				);
 				INSTALL_PATH = "~/Library/Audio/Plug-Ins/CLAP";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -717,9 +726,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXCLUDED_SOURCE_FILE_NAMES = "";
 				EXECUTABLE_EXTENSION = clap;
 				EXECUTABLE_PREFIX = "";
-				GCC_PREPROCESSOR_DEFINITIONS = _GLFW_COCOA;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CLAPPLUGIN_EXPORTS,
+					_GLFW_COCOA,
+					GLFW_EXPOSE_NATIVE_COCOA,
+				);
 				INSTALL_PATH = "~/Library/Audio/Plug-Ins/CLAP";
 				OTHER_LDFLAGS = (
 					"-framework",
