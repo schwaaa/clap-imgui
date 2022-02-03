@@ -35,7 +35,9 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
   m_clap_plugin_gui.show=gui::show;
   m_clap_plugin_gui.hide=gui::hide;
 
-  m_clap_plugin_gui_os.attach=gui::attach;
+  m_clap_plugin_gui_win.attach=gui::attach_win;
+  m_clap_plugin_gui_mac.attach=gui::attach_mac;
+  m_clap_plugin_gui_lin.attach=gui::attach_lin;
 
   m_clap_plugin_params.count=params::count;
   m_clap_plugin_params.get_info=params::get_info;
@@ -82,8 +84,9 @@ clap_process_status plugin::process(const clap_plugin *plugin, const clap_proces
 const void* plugin::get_extension(const clap_plugin *plugin, const char* id)
 {
   if (!strcmp(id, CLAP_EXT_GUI)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui;
-  if (!strcmp(id, CLAP_EXT_GUI_COCOA)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_os;
-  if (!strcmp(id, CLAP_EXT_GUI_WIN32)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_os;
+  if (!strcmp(id, CLAP_EXT_GUI_WIN32)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_win;
+  if (!strcmp(id, CLAP_EXT_GUI_COCOA)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_mac;
+  if (!strcmp(id, CLAP_EXT_GUI_X11)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_lin;
   if (!strcmp(id, CLAP_EXT_PARAMS)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_params;
   return ((Plugin*)plugin->plugin_data)->plugin_impl__get_extension(id);
 }
@@ -128,9 +131,18 @@ void gui::hide(const clap_plugin *plugin)
 {
   ((Plugin*)plugin->plugin_data)->gui__hide();
 }
-bool gui::attach(const clap_plugin *plugin, void *window)
+
+bool gui::attach_win(const clap_plugin *plugin, void *parent)
 {
-  return ((Plugin*)plugin->plugin_data)->gui__attach(window);
+  return ((Plugin*)plugin->plugin_data)->gui__attach_win(parent);
+}
+bool gui::attach_mac(const clap_plugin *plugin, void *parent)
+{
+  return ((Plugin*)plugin->plugin_data)->gui__attach_mac(parent);
+}
+bool gui::attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent)
+{
+  return ((Plugin*)plugin->plugin_data)->gui__attach_lin(display_name, parent);
 }
 
 uint32_t params::count(const clap_plugin *plugin)

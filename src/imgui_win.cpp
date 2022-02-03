@@ -122,7 +122,7 @@ static void glfw_error_callback(int error, const char* description)
   fprintf(stderr, "GLFW error %d: %s\n", error, description);
 }
 
-bool Plugin::gui__attach(void *parent)
+bool Plugin::gui__attach_win(void *parent)
 {
   if (!parent) return false;
   if (m_ui_ctx) return true;
@@ -201,3 +201,7 @@ void gui__on_plugin_destroy()
 {
   if (!rec_list && backend_wnd) imgui__teardown();
 }
+
+bool Plugin::gui__attach_mac(void *parent) { return false; }
+bool Plugin::gui__attach_lin(const char *display_name, unsigned long parent) { return false; }
+

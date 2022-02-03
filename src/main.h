@@ -10,23 +10,20 @@
 #include "clap/include/clap/ext/gui.h"
 #include "clap/include/clap/ext/gui-win32.h"
 #include "clap/include/clap/ext/gui-cocoa.h"
+#include "clap/include/clap/ext/gui-x11.h"
 #include "clap/include/clap/ext/params.h"
-
-
-struct clap_plugin_gui_os
-{
-  bool (*attach)(const clap_plugin *plugin, void *window);
-};
 
 struct Plugin
 {
   clap_host m_clap_host;
   clap_plugin m_clap_plugin;
-  clap_plugin_gui m_clap_plugin_gui;
-  clap_plugin_gui_os m_clap_plugin_gui_os;
   clap_plugin_params m_clap_plugin_params;
   int m_w, m_h;
 
+  clap_plugin_gui m_clap_plugin_gui;
+  clap_plugin_gui_win32 m_clap_plugin_gui_win;
+  clap_plugin_gui_cocoa m_clap_plugin_gui_mac;
+  clap_plugin_gui_x11 m_clap_plugin_gui_lin;
   void *m_ui_ctx;
 
   Plugin(const clap_plugin_descriptor *descriptor, const clap_host *host);
@@ -52,7 +49,10 @@ struct Plugin
   bool gui__set_size(uint32_t width, uint32_t height);
   void gui__show();
   void gui__hide();
-  bool gui__attach(void *window);
+
+  bool gui__attach_win(void *parent);
+  bool gui__attach_mac(void *parent);
+  bool gui__attach_lin(const char *display_name, unsigned long parent);
 
   virtual uint32_t params__count()=0;
   virtual bool params__get_info(uint32_t param_index, clap_param_info_t *param_info)=0;
@@ -86,7 +86,10 @@ namespace gui
   bool set_size(const clap_plugin *plugin, uint32_t width, uint32_t height);
   void show(const clap_plugin *plugin);
   void hide(const clap_plugin *plugin);
-  bool attach(const clap_plugin *plugin, void *window);
+
+  bool attach_win(const clap_plugin *plugin, void *parent);
+  bool attach_mac(const clap_plugin *plugin, void *parent);
+  bool attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent);
 };
 
 namespace params
