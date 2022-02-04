@@ -19,7 +19,7 @@ bool gui::attach_mac(const clap_plugin *plugin, void *parent)
 bool gui::attach_win(const clap_plugin *plugin, void *parent) { return false; }
 bool gui::attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent) { return false; }
 
-void imgui__get_native_window_position(void *native_display, void *native_window,
+void get_native_window_position(void *native_display, void *native_window,
   int *x, int *y, int *w, int *h)
 {
   NSView *vw = (NSView*)native_window;
@@ -32,7 +32,7 @@ void imgui__get_native_window_position(void *native_display, void *native_window
   *h = wr.size.height;
 }
 
-bool imgui__set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
+bool set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
 {
   NSWindow *win=(NSWindow*)glfwGetCocoaWindow(glfw_win);
   if (win)
@@ -42,6 +42,39 @@ bool imgui__set_native_parent(void *native_display, void *native_window, GLFWwin
     return true;
   }
   return false;
+}
+
+@interface gui_timer : NSObject
+{
+@public
+  NSTimer *timer;
+}
+-(void)on_timer:(id)sender;
+@end
+
+@implementation gui_timer
+-(void)on_timer:(id)sender
+{
+  extern void imgui__on_timer();
+  imgui__on_timer();
+}
+@end
+
+gui_timer *timer;
+
+bool create_timer(unsigned int ms)
+{
+  timer = [gui_timer new];
+  timer->timer = [NSTimer scheduledTimerWithTimeInterval:(double)ms*0.001
+    target:timer selector:@selector(on_timer:) userInfo:nil repeats:YES];
+  return true;
+}
+
+void destroy_timer()
+{
+  [timer->timer invalidate];
+  [timer release];
+  timer = NULL;
 }
 
 unsigned int get_tick_count()

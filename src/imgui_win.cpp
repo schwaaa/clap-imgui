@@ -22,7 +22,7 @@ bool gui::attach_win(const clap_plugin *plugin, void *parent)
 bool gui::attach_mac(const clap_plugin *plugin, void *parent) { return false; }
 bool gui::attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent) { return false; }
 
-void imgui__get_native_window_position(void *native_display, void *native_window,
+void get_native_window_position(void *native_display, void *native_window,
   int *x, int *y, int *w, int *h)
 {
   RECT wr;
@@ -33,7 +33,7 @@ void imgui__get_native_window_position(void *native_display, void *native_window
   *h = wr.bottom-wr.top;
 }
 
-bool imgui__set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
+bool set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
 {
   HWND hwnd=(HWND)glfwGetWin32Window(glfw_win);
   if (hwnd)
@@ -47,6 +47,26 @@ bool imgui__set_native_parent(void *native_display, void *native_window, GLFWwin
     return true;
   }
   return false;
+}
+
+unsigned int timer_id;
+
+void timer_proc(HWND hwnd, UINT message, UINT_PTR caller, DWORD time)
+{
+  extern void imgui__on_timer();
+  imgui__on_timer();
+}
+
+bool create_timer(unsigned int ms)
+{
+  timer_id = SetTimer(NULL, 1, ms, timer_proc);
+  return true;
+}
+
+void destroy_timer()
+{
+  KillTimer(NULL, timer_id);
+  timer_id=0;
 }
 
 unsigned int get_tick_count()

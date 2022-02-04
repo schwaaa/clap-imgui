@@ -9,17 +9,17 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
-void imgui__get_native_window_position(void *native_display, void *native_window,
+void get_native_window_position(void *native_display, void *native_window,
   int *x, int *y, int *w, int *h);
-bool imgui__set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win);
+bool set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win);
+
+bool create_timer(unsigned int ms);
+void destroy_timer();
 unsigned int get_tick_count();
 
 extern const clap_host *g_clap_host;
 
-#define HOST_TIMER_MS 30
-unsigned int host_timer_id;
-clap_host_timer_support *host_timer_support;
-
+#define TIMER_MS 30
 GLFWwindow *backend_wnd;
 unsigned int want_teardown;
 
@@ -48,11 +48,12 @@ void imgui__do_render_pass()
   while (rec)
   {
     int x, y, w, h;
-    imgui__get_native_window_position(rec->native_display, rec->native_window, &x, &y, &w, &h);
+    get_native_window_position(rec->native_display, rec->native_window, &x, &y, &w, &h);
     ImGui::SetNextWindowPos(ImVec2(x, y));
     ImGui::SetNextWindowSize(ImVec2(w, h));
     ImGui::Begin(rec->name, NULL,
-      ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking);
+      ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
+      ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking);
 
     rec->plugin->plugin_impl__draw();
 
@@ -78,7 +79,7 @@ void imgui__do_render_pass()
           w->Viewport && w->Viewport->PlatformWindowCreated)
         {
           GLFWwindow *glfw_win=(GLFWwindow*)w->Viewport->PlatformHandle;
-          if (imgui__set_native_parent(rec->native_display, rec->native_window, glfw_win))
+          if (set_native_parent(rec->native_display, rec->native_window, glfw_win))
           {
             rec->did_parenting=1;
           }
@@ -94,9 +95,7 @@ void imgui__teardown()
 {
   if (!backend_wnd) return;
 
-  if (host_timer_support) host_timer_support->unregister_timer(g_clap_host, host_timer_id);
-  host_timer_support=NULL;
-  host_timer_id=0;
+  destroy_timer();
 
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
@@ -107,7 +106,7 @@ void imgui__teardown()
   glfwTerminate();
 }
 
-void imgui__on_timer(const clap_plugin *plugin, unsigned int timer_id)
+void imgui__on_timer()
 {
   if (want_teardown > 0)
   {
@@ -135,9 +134,7 @@ bool imgui__attach(Plugin *plugin, void *native_display, void *native_window)
     // for simplicity and portability, require clap_host_timer_support.
     // this could be implemented instead on win and mac via a platform-dependent main thread system timer,
     // but linux would have to spawn a thread.
-    host_timer_support =
-      (clap_host_timer_support*)g_clap_host->get_extension(g_clap_host, CLAP_EXT_TIMER_SUPPORT);
-    if (!host_timer_support) return false;
+    if (!create_timer(TIMER_MS)) return false;
 
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit()) return false;
@@ -164,8 +161,6 @@ bool imgui__attach(Plugin *plugin, void *native_display, void *native_window)
 
     ImGui_ImplGlfw_InitForOpenGL(backend_wnd, true);
     ImGui_ImplOpenGL3_Init(NULL);
-
-    host_timer_support->register_timer(g_clap_host, HOST_TIMER_MS, &host_timer_id);
   }
 
   ui_ctx_rec *new_rec=(ui_ctx_rec*)malloc(sizeof(ui_ctx_rec));
@@ -211,7 +206,12 @@ void gui__destroy(Plugin *plugin, bool is_plugin_destroy)
   }
 }
 
+void on_timer(const clap_plugin *plugin, unsigned int timer_id)
+{
+  imgui__on_timer();
+}
+
 clap_plugin_timer_support gui__timer_support =
 {
-  imgui__on_timer
+  on_timer
 };
