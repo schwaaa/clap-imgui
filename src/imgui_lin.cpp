@@ -32,8 +32,9 @@ void get_native_window_position(void *native_display, void *native_window,
 
   XWindowAttributes xwa;
   XGetWindowAttributes(xdisp, xwin, &xwa);
-  // Window xroot = XDefaultRootWindow(xdisp), xchild;
-  // if (xroot) XTranslateCoordinates(xdisp, xwin, xroot, 0, 0, &xwa.x, &xwa.y, &xchild);
+
+  Window xroot = DefaultRootWindow(xdisp), xchild = 0;
+  if (xroot) XTranslateCoordinates(xdisp, xwin, xroot, 0, 0, &xwa.x, &xwa.y, &xchild);
 
   *x = xwa.x;
   *y = xwa.y;

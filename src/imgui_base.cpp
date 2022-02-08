@@ -10,7 +10,7 @@
 #include "imgui/backends/imgui_impl_opengl3.h"
 
 void get_native_window_position(void *native_display, void *native_window,
-  int *x, int *y, int *w, int *h);
+  int *x, int *y, int *w, int *h); // always in screen coordinates
 bool set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win);
 
 bool create_timer(unsigned int ms);
@@ -51,6 +51,7 @@ void imgui__do_render_pass()
     get_native_window_position(rec->native_display, rec->native_window, &x, &y, &w, &h);
     ImGui::SetNextWindowPos(ImVec2(x, y));
     ImGui::SetNextWindowSize(ImVec2(w, h));
+
     ImGui::Begin(rec->name, NULL,
       ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
       ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking);
