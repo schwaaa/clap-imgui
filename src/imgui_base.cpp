@@ -38,7 +38,7 @@ void imgui__do_render_pass()
 {
   if (!backend_wnd) return;
 
-  // glfwPollEvents();
+  glfwPollEvents();
 
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
