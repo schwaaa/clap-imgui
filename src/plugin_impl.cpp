@@ -219,10 +219,10 @@ struct Example : public Plugin
     return s;
   }
 
-   const void* plugin_impl__get_extension(const char* id)
-   {
-    return NULL;
-   }
+  const void* plugin_impl__get_extension(const char* id)
+  {
+   return NULL;
+  }
 
   void plugin_impl__on_main_thread()
   {
