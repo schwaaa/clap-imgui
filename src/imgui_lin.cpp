@@ -12,7 +12,7 @@
 
 bool imgui__attach(Plugin *plugin, void *native_display, void *native_window);
 
-bool gui::attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent)
+bool gui__attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent)
 {
   if (!display_name || !parent) return false;
   Display *display = XOpenDisplay(display_name);
@@ -21,8 +21,8 @@ bool gui::attach_lin(const clap_plugin *plugin, const char *display_name, unsign
   return imgui__attach((Plugin*)plugin->plugin_data, display, (void*)parent);
 }
 
-bool gui::attach_mac(const clap_plugin *plugin, void *parent) { return false; }
-bool gui::attach_win(const clap_plugin *plugin, void *parent) { return false; }
+bool gui__attach_mac(const clap_plugin *plugin, void *parent) { return false; }
+bool gui__attach_win(const clap_plugin *plugin, void *parent) { return false; }
   
 void get_native_window_position(void *native_display, void *native_window,
   int *x, int *y, int *w, int *h)

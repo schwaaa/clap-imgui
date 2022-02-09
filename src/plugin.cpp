@@ -8,6 +8,122 @@
 const clap_host *g_clap_host;
 extern clap_plugin_timer_support gui__timer_support;
 
+namespace plugin
+{
+  bool init(const clap_plugin *plugin)
+  {
+    return ((Plugin*)plugin->plugin_data)->plugin_impl__init();
+  }
+  void destroy(const clap_plugin *plugin)
+  {
+    delete (Plugin*)plugin->plugin_data;
+  }
+  bool activate(const clap_plugin *plugin, double sample_rate, uint32_t min_frames_count, uint32_t max_frames_count)
+  {
+    return ((Plugin*)plugin->plugin_data)->plugin_impl__activate(sample_rate, min_frames_count, max_frames_count);
+  }
+  void deactivate(const clap_plugin *plugin)
+  {
+    ((Plugin*)plugin->plugin_data)->plugin_impl__deactivate();
+  }
+  bool start_processing(const clap_plugin *plugin)
+  {
+    return ((Plugin*)plugin->plugin_data)->plugin_impl__start_processing();
+  }
+  void stop_processing(const clap_plugin *plugin)
+  {
+    ((Plugin*)plugin->plugin_data)->plugin_impl__stop_processing();
+  }
+  clap_process_status process(const clap_plugin *plugin, const clap_process *process)
+  {
+    return ((Plugin*)plugin->plugin_data)->plugin_impl__process(process);
+  }
+  const void* get_extension(const clap_plugin *plugin, const char* id)
+  {
+    if (!strcmp(id, CLAP_EXT_GUI)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui;
+    if (!strcmp(id, CLAP_EXT_GUI_WIN32)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_win;
+    if (!strcmp(id, CLAP_EXT_GUI_COCOA)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_mac;
+    if (!strcmp(id, CLAP_EXT_GUI_X11)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_lin;
+    if (!strcmp(id, CLAP_EXT_PARAMS)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_params;
+
+    if (!strcmp(id, CLAP_EXT_TIMER_SUPPORT)) return &gui__timer_support;
+
+    return ((Plugin*)plugin->plugin_data)->plugin_impl__get_extension(id);
+  }
+  void on_main_thread(const clap_plugin *plugin)
+  {
+    ((Plugin*)plugin->plugin_data)->plugin_impl__on_main_thread();
+  }
+};
+
+namespace gui
+{
+  bool create(const clap_plugin *plugin)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__create();
+  }
+  void destroy(const clap_plugin *plugin)
+  {
+    gui__destroy((Plugin*)plugin->plugin_data, false);
+  }
+  bool set_scale(const clap_plugin *plugin, double scale)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__set_scale(scale);
+  }
+  bool get_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__get_size(width, height);
+  }
+  bool can_resize(const clap_plugin *plugin)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__can_resize();
+  }
+  void round_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
+  {
+    ((Plugin*)plugin->plugin_data)->gui__round_size(width, height);
+  }
+  bool set_size(const clap_plugin *plugin, uint32_t width, uint32_t height)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__set_size(width, height);
+  }
+  void show(const clap_plugin *plugin)
+  {
+    ((Plugin*)plugin->plugin_data)->gui__show();
+  }
+  void hide(const clap_plugin *plugin)
+  {
+    ((Plugin*)plugin->plugin_data)->gui__hide();
+  }
+};
+
+namespace params
+{
+  uint32_t count(const clap_plugin *plugin)
+  {
+    return ((Plugin*)plugin->plugin_data)->params__count();
+  }
+  bool get_info(const clap_plugin *plugin, uint32_t param_index, clap_param_info_t *param_info)
+  {
+    return ((Plugin*)plugin->plugin_data)->params__get_info(param_index, param_info);
+  }
+  bool get_value(const clap_plugin *plugin, clap_id param_id, double *value)
+  {
+    return ((Plugin*)plugin->plugin_data)->params__get_value(param_id, value);
+  }
+  bool value_to_text(const clap_plugin *plugin, clap_id param_id, double value, char *display, uint32_t size)
+  {
+    return ((Plugin*)plugin->plugin_data)->params__value_to_text(param_id, value, display, size);
+  }
+  bool text_to_value(const clap_plugin *plugin, clap_id param_id, const char *display, double *value)
+  {
+    return ((Plugin*)plugin->plugin_data)->params__text_to_value(param_id, display, value);
+  }
+  void flush(const clap_plugin *plugin, const clap_input_events *in, const clap_output_events *out)
+  {
+    return ((Plugin*)plugin->plugin_data)->params__flush(in, out);
+  }
+};
+
 Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
 {
   m_w=0;
@@ -37,9 +153,9 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
   m_clap_plugin_gui.show=gui::show;
   m_clap_plugin_gui.hide=gui::hide;
 
-  m_clap_plugin_gui_win.attach=gui::attach_win;
-  m_clap_plugin_gui_mac.attach=gui::attach_mac;
-  m_clap_plugin_gui_lin.attach=gui::attach_lin;
+  m_clap_plugin_gui_win.attach=gui__attach_win;
+  m_clap_plugin_gui_mac.attach=gui__attach_mac;
+  m_clap_plugin_gui_lin.attach=gui__attach_lin;
 
   m_clap_plugin_params.count=params::count;
   m_clap_plugin_params.get_info=params::get_info;
@@ -52,111 +168,4 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
 Plugin::~Plugin()
 {
   gui__destroy(this, true);
-}
-
-bool plugin::init(const clap_plugin *plugin)
-{
-  return ((Plugin*)plugin->plugin_data)->plugin_impl__init();
-}
-void plugin::destroy(const clap_plugin *plugin)
-{
-  delete (Plugin*)plugin->plugin_data;
-}
-bool plugin::activate(const clap_plugin *plugin, double sample_rate, uint32_t min_frames_count, uint32_t max_frames_count)
-{
-  return ((Plugin*)plugin->plugin_data)->plugin_impl__activate(sample_rate, min_frames_count, max_frames_count);
-}
-void plugin::deactivate(const clap_plugin *plugin)
-{
-  ((Plugin*)plugin->plugin_data)->plugin_impl__deactivate();
-}
-bool plugin::start_processing(const clap_plugin *plugin)
-{
-  return ((Plugin*)plugin->plugin_data)->plugin_impl__start_processing();
-}
-void plugin::stop_processing(const clap_plugin *plugin)
-{
-  ((Plugin*)plugin->plugin_data)->plugin_impl__stop_processing();
-}
-clap_process_status plugin::process(const clap_plugin *plugin, const clap_process *process)
-{
-  return ((Plugin*)plugin->plugin_data)->plugin_impl__process(process);
-}
-const void* plugin::get_extension(const clap_plugin *plugin, const char* id)
-{
-  if (!strcmp(id, CLAP_EXT_GUI)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui;
-  if (!strcmp(id, CLAP_EXT_GUI_WIN32)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_win;
-  if (!strcmp(id, CLAP_EXT_GUI_COCOA)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_mac;
-  if (!strcmp(id, CLAP_EXT_GUI_X11)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_lin;
-  if (!strcmp(id, CLAP_EXT_PARAMS)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_params;
-
-  if (!strcmp(id, CLAP_EXT_TIMER_SUPPORT)) return &gui__timer_support;
-
-  return ((Plugin*)plugin->plugin_data)->plugin_impl__get_extension(id);
-}
-void plugin::on_main_thread(const clap_plugin *plugin)
-{
-  ((Plugin*)plugin->plugin_data)->plugin_impl__on_main_thread();
-}
-
-bool gui::create(const clap_plugin *plugin)
-{
-  return ((Plugin*)plugin->plugin_data)->gui__create();
-}
-void gui::destroy(const clap_plugin *plugin)
-{
-  gui__destroy((Plugin*)plugin->plugin_data, false);
-}
-bool gui::set_scale(const clap_plugin *plugin, double scale)
-{
-  return ((Plugin*)plugin->plugin_data)->gui__set_scale(scale);
-}
-bool gui::get_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
-{
-  return ((Plugin*)plugin->plugin_data)->gui__get_size(width, height);
-}
-bool gui::can_resize(const clap_plugin *plugin)
-{
-  return ((Plugin*)plugin->plugin_data)->gui__can_resize();
-}
-void gui::round_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
-{
-  ((Plugin*)plugin->plugin_data)->gui__round_size(width, height);
-}
-bool gui::set_size(const clap_plugin *plugin, uint32_t width, uint32_t height)
-{
-  return ((Plugin*)plugin->plugin_data)->gui__set_size(width, height);
-}
-void gui::show(const clap_plugin *plugin)
-{
-  ((Plugin*)plugin->plugin_data)->gui__show();
-}
-void gui::hide(const clap_plugin *plugin)
-{
-  ((Plugin*)plugin->plugin_data)->gui__hide();
-}
-
-uint32_t params::count(const clap_plugin *plugin)
-{
-  return ((Plugin*)plugin->plugin_data)->params__count();
-}
-bool params::get_info(const clap_plugin *plugin, uint32_t param_index, clap_param_info_t *param_info)
-{
-  return ((Plugin*)plugin->plugin_data)->params__get_info(param_index, param_info);
-}
-bool params::get_value(const clap_plugin *plugin, clap_id param_id, double *value)
-{
-  return ((Plugin*)plugin->plugin_data)->params__get_value(param_id, value);
-}
-bool params::value_to_text(const clap_plugin *plugin, clap_id param_id, double value, char *display, uint32_t size)
-{
-  return ((Plugin*)plugin->plugin_data)->params__value_to_text(param_id, value, display, size);
-}
-bool params::text_to_value(const clap_plugin *plugin, clap_id param_id, const char *display, double *value)
-{
-  return ((Plugin*)plugin->plugin_data)->params__text_to_value(param_id, display, value);
-}
-void params::flush(const clap_plugin *plugin, const clap_input_events *in, const clap_output_events *out)
-{
-  return ((Plugin*)plugin->plugin_data)->params__flush(in, out);
 }

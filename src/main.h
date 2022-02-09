@@ -50,49 +50,15 @@ struct Plugin
   virtual void params__flush(const clap_input_events *in, const clap_output_events *out)=0;
 };
 
-namespace plugin
-{
-  bool init(const clap_plugin *plugin);
-  void destroy(const clap_plugin *plugin);
-  bool activate(const clap_plugin *plugin, double sample_rate, uint32_t min_frames_count, uint32_t max_frames_count);
-  void deactivate(const clap_plugin *plugin);
-  bool start_processing(const clap_plugin *plugin);
-  void stop_processing(const clap_plugin *plugin);
-  clap_process_status process(const clap_plugin *plugin, const clap_process *process);
-  const void* get_extension(const clap_plugin *plugin, const char *id);
-  void on_main_thread(const clap_plugin *plugin);
-};
-
-namespace gui
-{
-  bool create(const clap_plugin *plugin);
-  void destroy(const clap_plugin *plugin);
-  bool set_scale(const clap_plugin *plugin, double scale);
-  bool get_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height);
-  bool can_resize(const clap_plugin *plugin);
-  void round_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height);
-  bool set_size(const clap_plugin *plugin, uint32_t width, uint32_t height);
-  void show(const clap_plugin *plugin);
-  void hide(const clap_plugin *plugin);
-
-  bool attach_win(const clap_plugin *plugin, void *parent);
-  bool attach_mac(const clap_plugin *plugin, void *parent);
-  bool attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent);
-};
-
-namespace params
-{
-  uint32_t count(const clap_plugin *plugin);
-  bool get_info(const clap_plugin *plugin, uint32_t param_index, clap_param_info_t *param_info);
-  bool get_value(const clap_plugin *plugin, clap_id param_id, double *value);
-  bool value_to_text(const clap_plugin *plugin, clap_id param_id, double value, char *display, uint32_t size);
-  bool text_to_value(const clap_plugin *plugin, clap_id param_id, const char *display, double *value);
-  void flush(const clap_plugin *plugin, const clap_input_events *in, const clap_output_events *out);
-};
-
 clap_plugin_descriptor *plugin_impl__get_descriptor_0();
 Plugin *plugin_impl__create_0(const clap_host *host);
 
+clap_plugin_descriptor *plugin_impl__get_descriptor_1();
+Plugin *plugin_impl__create_1(const clap_host *host);
+
+bool gui__attach_win(const clap_plugin *plugin, void *parent);
+bool gui__attach_mac(const clap_plugin *plugin, void *parent);
+bool gui__attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent);
 void gui__destroy(Plugin *plugin, bool is_plugin_destroy);
 
 
