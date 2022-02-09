@@ -8,13 +8,14 @@ BASE := ../..
 SRC := $(BASE)/src
 SRCS := $(SRC)/main.cpp $(SRC)/plugin.cpp $(SRC)/plugin_impl.cpp \
 	$(SRC)/gui.cpp $(SRC)/imgui_base.cpp $(SRC)/imgui_lin.cpp
+INC := -I$(BASE)/src/imgui -I$(BASE)/src/glfw/include
 OBJ := obj
 
 OBJS := $(patsubst $(SRC)/%.cpp,$(OBJ)/%.o,$(SRCS))
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	mkdir -p $(@D)
-	$(CXX) -c $(FLAGS) $< -o $@
+	$(CXX) -c $(INC) $(FLAGS) $< -o $@
 
 IMGUI_SRC := $(BASE)/src/imgui
 IMGUI_SRCS := $(IMGUI_SRC)/imgui.cpp $(IMGUI_SRC)/imgui_draw.cpp \
@@ -23,11 +24,12 @@ IMGUI_SRCS := $(IMGUI_SRC)/imgui.cpp $(IMGUI_SRC)/imgui_draw.cpp \
 	$(IMGUI_SRC)/backends/imgui_impl_opengl3.cpp
 IMGUI_OBJ := obj/imgui
 
+INC += $(IMGUI_INC)
 OBJS += $(patsubst $(IMGUI_SRC)/%.cpp,$(IMGUI_OBJ)/%.o,$(IMGUI_SRCS))
 
 $(IMGUI_OBJ)/%.o: $(IMGUI_SRC)/%.cpp
 	mkdir -p $(@D)
-	$(CXX) -c $(FLAGS) $< -o $@
+	$(CXX) -c $(INC) $(FLAGS) $< -o $@
 
 GLFW_SRC := $(BASE)/src/glfw/src
 GLFW_SRCS := $(GLFW_SRC)/context.c $(GLFW_SRC)/init.c \
