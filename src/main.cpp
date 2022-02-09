@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <cstdlib>
+#include <string.h>
 
 #if defined _WIN32
   #include <windows.h>
@@ -17,12 +18,15 @@ namespace factory
   }
   const clap_plugin_descriptor *get_plugin_descriptor(const clap_plugin_factory *factory, uint32_t index)
   {
-    return plugin_impl__get_descriptor();
+    if (index == 0) return plugin_impl__get_descriptor_0();
+    return NULL;
   }
   const clap_plugin *create_plugin(const clap_plugin_factory *factory, const clap_host *host, const char *plugin_id)
   {
-    Plugin *plugin=plugin_impl__create(host);
-    return &plugin->m_clap_plugin;
+    Plugin *plugin=NULL;
+    if (!strcmp(plugin_impl__get_descriptor_0()->id, plugin_id)) plugin=plugin_impl__create_0(host);
+    if (plugin) return &plugin->m_clap_plugin;
+    return NULL;
   }
 };
 

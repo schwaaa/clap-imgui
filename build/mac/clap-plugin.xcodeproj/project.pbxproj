@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		45EADB7D27AC890200EAB375 /* imgui_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EADB7C27AC890200EAB375 /* imgui_base.cpp */; };
+		52683C3127B4A02F004EE6A8 /* plugin_impl_0.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52683C3027B4A02F004EE6A8 /* plugin_impl_0.cpp */; };
 		52966017278342DC00AFD941 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52966016278342DC00AFD941 /* GameController.framework */; };
 		5296602027835FBC00AFD941 /* imgui_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5296601F27835FBC00AFD941 /* imgui_mac.mm */; };
 		529660222783786000AFD941 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 529660212783786000AFD941 /* gui.cpp */; };
@@ -104,7 +105,6 @@
 		52D19EB52783408200993976 /* cocoa_joystick.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D19EB12783408200993976 /* cocoa_joystick.m */; };
 		52D19EB62783408200993976 /* cocoa_joystick.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D19EB22783408200993976 /* cocoa_joystick.h */; };
 		52D19EB72783408200993976 /* null_joystick.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D19EB32783408200993976 /* null_joystick.h */; };
-		52EABE8627832A1300E39241 /* plugin_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52EABE8127832A1300E39241 /* plugin_impl.cpp */; };
 		52EABE8727832A1300E39241 /* main.h in Headers */ = {isa = PBXBuildFile; fileRef = 52EABE8227832A1300E39241 /* main.h */; };
 		52EABE8827832A1300E39241 /* plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52EABE8327832A1300E39241 /* plugin.cpp */; };
 		52EABE8927832A1300E39241 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52EABE8427832A1300E39241 /* main.cpp */; };
@@ -124,6 +124,7 @@
 
 /* Begin PBXFileReference section */
 		45EADB7C27AC890200EAB375 /* imgui_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_base.cpp; path = ../../src/imgui_base.cpp; sourceTree = "<group>"; };
+		52683C3027B4A02F004EE6A8 /* plugin_impl_0.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin_impl_0.cpp; path = ../../src/plugin_impl_0.cpp; sourceTree = "<group>"; };
 		52966016278342DC00AFD941 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		5296601F27835FBC00AFD941 /* imgui_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = imgui_mac.mm; path = ../../src/imgui_mac.mm; sourceTree = "<group>"; };
 		529660212783786000AFD941 /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui.cpp; path = ../../src/gui.cpp; sourceTree = "<group>"; };
@@ -221,7 +222,6 @@
 		52D19EB22783408200993976 /* cocoa_joystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cocoa_joystick.h; path = ../../../glfw/src/cocoa_joystick.h; sourceTree = "<group>"; };
 		52D19EB32783408200993976 /* null_joystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = null_joystick.h; path = ../../../glfw/src/null_joystick.h; sourceTree = "<group>"; };
 		52E4F7C7278328FF00E33366 /* clap-example.clap */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "clap-example.clap"; sourceTree = BUILT_PRODUCTS_DIR; };
-		52EABE8127832A1300E39241 /* plugin_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin_impl.cpp; path = ../../src/plugin_impl.cpp; sourceTree = "<group>"; };
 		52EABE8227832A1300E39241 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../../src/main.h; sourceTree = "<group>"; };
 		52EABE8327832A1300E39241 /* plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.cpp; path = ../../src/plugin.cpp; sourceTree = "<group>"; };
 		52EABE8427832A1300E39241 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
@@ -250,12 +250,12 @@
 		52D19E3927832F5700993976 /* clap-plugin */ = {
 			isa = PBXGroup;
 			children = (
+				52683C3027B4A02F004EE6A8 /* plugin_impl_0.cpp */,
 				529660212783786000AFD941 /* gui.cpp */,
 				45EADB7C27AC890200EAB375 /* imgui_base.cpp */,
 				5296601F27835FBC00AFD941 /* imgui_mac.mm */,
 				52EABE8427832A1300E39241 /* main.cpp */,
 				52EABE8227832A1300E39241 /* main.h */,
-				52EABE8127832A1300E39241 /* plugin_impl.cpp */,
 				52EABE8327832A1300E39241 /* plugin.cpp */,
 			);
 			name = "clap-plugin";
@@ -547,6 +547,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				529660282783A55900AFD941 /* imgui_impl_opengl3.cpp in Sources */,
+				52683C3127B4A02F004EE6A8 /* plugin_impl_0.cpp in Sources */,
 				52D19E3827832E8200993976 /* cocoa_monitor.m in Sources */,
 				52D19E1D27832E8200993976 /* null_window.c in Sources */,
 				52EABE8827832A1300E39241 /* plugin.cpp in Sources */,
@@ -572,7 +573,6 @@
 				52D19DE827832DFD00993976 /* imgui.cpp in Sources */,
 				52D19E2527832E8200993976 /* platform.c in Sources */,
 				52D19E3127832E8200993976 /* monitor.c in Sources */,
-				52EABE8627832A1300E39241 /* plugin_impl.cpp in Sources */,
 				5296602027835FBC00AFD941 /* imgui_mac.mm in Sources */,
 				52D19E2A27832E8200993976 /* osmesa_context.c in Sources */,
 				52D19DFA27832E1500993976 /* imgui_impl_glfw.cpp in Sources */,

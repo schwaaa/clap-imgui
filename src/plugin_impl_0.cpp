@@ -10,23 +10,23 @@
 #include "imgui/imgui.h"
 
 
-const char *_features[] = 
+static const char *_features[] =
 {
   "",
   NULL
 };
 
-clap_plugin_descriptor _descriptor =
+static clap_plugin_descriptor _descriptor =
 {
   CLAP_VERSION,
-  "com.cockos.clap-example",
-  "clap-example",
+  "com.cockos.clap-example-0",
+  "CLAP Volume/Pan",
   "cockos",
   "https://reaper.fm",
   "https://reaper.fm",
   "https://reaper.fm",
   "0.0.1",
-  "example",
+  "volume and pan",
   _features
 };
 
@@ -45,14 +45,14 @@ static const clap_param_info _param_info[NUM_PARAMS] =
   }
 };
 
-struct Example : public Plugin
+struct Example_0 : public Plugin
 {
   int m_srate;
   double m_param_values[NUM_PARAMS];
   double m_last_param_values[NUM_PARAMS];
   double m_peak_in[2], m_peak_out[2];
 
-  Example(const clap_host* host) : Plugin(&_descriptor, host)
+  Example_0(const clap_host* host) : Plugin(&_descriptor, host)
   {
     m_srate=48000;
     for (int i=0; i < NUM_PARAMS; ++i)
@@ -63,7 +63,7 @@ struct Example : public Plugin
     m_peak_in[0]=m_peak_in[1]=m_peak_out[0]=m_peak_out[1]=0.0;
   }
 
-  ~Example()
+  ~Example_0()
   {
   }
 
@@ -76,9 +76,9 @@ struct Example : public Plugin
   {
     m_srate=(int)sample_rate;
     m_peak_in[0]=m_peak_in[1]=m_peak_out[0]=m_peak_out[1]=0.0;
-    return true;   
+    return true;
   }
- 
+
   void plugin_impl__deactivate()
   {
   }
@@ -87,7 +87,7 @@ struct Example : public Plugin
   {
     return true;
   }
- 
+
   void plugin_impl__stop_processing()
   {
   }
@@ -96,7 +96,7 @@ struct Example : public Plugin
   clap_process_status _plugin_impl__process(const clap_process *process,
     int num_channels, int start_frame, int end_frame,
     double *start_param_values, double *end_param_values,
-    T **in, T **out)
+   T **in, T **out)
   {
     if (!in || !out) return CLAP_PROCESS_ERROR;
 
@@ -201,7 +201,7 @@ struct Example : public Plugin
 
   void plugin_impl__draw()
   {
-    ImGui::Text("Clap Example Plugin");
+    ImGui::Text("Volume/Pan");
 
     for (int c=0; c < 2; ++c)
     {
@@ -350,13 +350,13 @@ struct Example : public Plugin
 
 };
 
-clap_plugin_descriptor *plugin_impl__get_descriptor()
+clap_plugin_descriptor *plugin_impl__get_descriptor_0()
 {
   return &_descriptor;
 }
 
-Plugin *plugin_impl__create(const clap_host *host)
+Plugin *plugin_impl__create_0(const clap_host *host)
 {
-  return new Example(host);
+  return new Example_0(host);
 }
 

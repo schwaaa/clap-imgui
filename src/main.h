@@ -90,9 +90,9 @@ namespace params
   void flush(const clap_plugin *plugin, const clap_input_events *in, const clap_output_events *out);
 };
 
-clap_plugin_descriptor *plugin_impl__get_descriptor();
-Plugin *plugin_impl__create(const clap_host *host);
-void plugin__initialize(Plugin* plugin);
+clap_plugin_descriptor *plugin_impl__get_descriptor_0();
+Plugin *plugin_impl__create_0(const clap_host *host);
+
 void gui__destroy(Plugin *plugin, bool is_plugin_destroy);
 
 
