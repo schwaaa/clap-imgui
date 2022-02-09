@@ -93,99 +93,50 @@ struct Example : public Plugin
   }
 
   template <class T>
-  void _plugin_impl__process_channel(const clap_process *process,
-    int start_frame, int end_frame,
+  clap_process_status _plugin_impl__process(const clap_process *process,
+    int num_channels, int start_frame, int end_frame,
     double *start_param_values, double *end_param_values,
-    int bus, int channel, T *in, T *out)
+    T **in, T **out)
   {
-    // many plugin implementations may not be templatizable per-channel this way.
+    if (!in || !out) return CLAP_PROCESS_ERROR;
 
-    double adj=start_param_values[PARAM_VOLUME];
-    if ((channel&1) && start_param_values[PARAM_PAN] < 0.0)
+    for (int c=0; c < num_channels; ++c)
     {
-      adj *= 1.0+start_param_values[PARAM_PAN];
-    }
-    else if (!(channel&1) && start_param_values[PARAM_PAN] > 0.0)
-    {
-      adj *= 1.0-start_param_values[PARAM_PAN];
-    }
+      T *cin=in[c], *cout=out[c];
+      if (!cin || !cout) return CLAP_PROCESS_ERROR;
 
-    double end_adj=end_param_values[PARAM_VOLUME];
-    if ((channel&1) && end_param_values[PARAM_PAN] < 0.0)
-    {
-      end_adj *= 1.0+end_param_values[PARAM_PAN];
-    }
-    else if (!(channel&1) && end_param_values[PARAM_PAN] > 0.0)
-    {
-      end_adj *= 1.0-end_param_values[PARAM_PAN];
-    }
+      double adj=start_param_values[PARAM_VOLUME];
+      if ((c&1) && start_param_values[PARAM_PAN] < 0.0)
+      {
+        adj *= 1.0+start_param_values[PARAM_PAN];
+      }
+      else if (!(c&1) && start_param_values[PARAM_PAN] > 0.0)
+      {
+        adj *= 1.0-start_param_values[PARAM_PAN];
+      }
 
-    double d_adj=0.0;
-    if (end_frame > start_frame)
-    {
-      d_adj = (end_adj-adj)/(double)(end_frame-start_frame);
-    }
+      double end_adj=end_param_values[PARAM_VOLUME];
+      if ((c&1) && end_param_values[PARAM_PAN] < 0.0)
+      {
+        end_adj *= 1.0+end_param_values[PARAM_PAN];
+      }
+      else if (!(c&1) && end_param_values[PARAM_PAN] > 0.0)
+      {
+        end_adj *= 1.0-end_param_values[PARAM_PAN];
+      }
 
-    double peak_in=0.0, peak_out=0.0;
-    if (in)
-    {
+      double d_adj=0.0;
+      if (end_frame > start_frame)
+      {
+        d_adj = (end_adj-adj)/(double)(end_frame-start_frame);
+      }
+
       for (int i=start_frame; i < end_frame; ++i)
       {
-        out[i]=in[i]*adj;
-        if (in[i] > peak_in) peak_in=in[i];
-        if (out[i] > peak_out) peak_out=out[i];
+        cout[i]=cin[i]*adj;
+        if (cin[i] > m_peak_in[c]) m_peak_in[c]=cin[i];
+        if (cout[i] > m_peak_out[c]) m_peak_out[c]=cout[i];
         adj += d_adj;
-      }
-    }
-    else
-    {
-      memset(out, 0, process->frames_count*sizeof(T));
-    }
-
-    if (bus == 0 && channel < 2)
-    {
-      if (peak_in > m_peak_in[channel]) m_peak_in[channel]=peak_in;
-      if (peak_out > m_peak_out[channel]) m_peak_out[channel]=peak_out;
-    }
-  }
-
-  clap_process_status _plugin_impl__process(const clap_process *process,
-    int start_frame, int end_frame,
-    double *start_param_values, double *end_param_values)
-  {
-    for (int b=0; b < process->audio_outputs_count; ++b)
-    {
-      const clap_audio_buffer *outbuf=process->audio_outputs+b;
-      for (int c=0; c < outbuf->channel_count; ++c)
-      {
-        float *out32=NULL,*in32=NULL;
-        double *out64=NULL, *in64=NULL;
-
-        if (outbuf->data32) out32=outbuf->data32[c];
-        else if (outbuf->data64) out64=outbuf->data64[c];
-
-        if (b < process->audio_inputs_count)
-        {
-          const clap_audio_buffer *inbuf=process->audio_inputs+b;
-          if (c < inbuf->channel_count)
-          {
-            if (inbuf->data32) in32=inbuf->data32[c];
-            else if (inbuf->data64) in64=inbuf->data64[c];
-          }
-        }
-
-        if (out32)
-        {
-          _plugin_impl__process_channel(process,
-            start_frame, end_frame, start_param_values, end_param_values,
-            b, c, in32, out32);
-        }
-        else if (out64)
-        {
-          _plugin_impl__process_channel(process,
-            start_frame, end_frame, start_param_values, end_param_values,
-            b, c, in64, out64);
-        }
       }
     }
 
@@ -194,8 +145,6 @@ struct Example : public Plugin
 
   clap_process_status plugin_impl__process(const clap_process *process)
   {
-    if (!process) return CLAP_PROCESS_ERROR;
-
     const double decay=pow(0.5, (double)process->frames_count/(double)m_srate/0.125);
     for (int c=0; c < 2; ++c)
     {
@@ -205,17 +154,39 @@ struct Example : public Plugin
       if (m_peak_out[c] < 1.0e-6) m_peak_out[c]=0.0;
     }
 
-    // handling incoming parameter changes and slicing the process call
-    // on the time axis would happen here.
+    double cur_param_values[NUM_PARAMS];
+    for (int i=0; i < NUM_PARAMS; ++i)
+    {
+      cur_param_values[i]=m_param_values[i];
+    }
 
-    clap_process_status s=_plugin_impl__process(process,
-      0, process->frames_count, m_last_param_values, m_param_values);
+    clap_process_status s = -1;
+    if (process && process->audio_inputs_count == 1 && process->audio_inputs[0].channel_count == 2 &&
+      process->audio_outputs_count == 1 && process->audio_outputs[0].channel_count == 2)
+    {
+      // handling incoming parameter changes and slicing the process call
+      // on the time axis would happen here.
+
+      if (process->audio_inputs[0].data32 && process->audio_outputs[0].data32)
+      {
+        s = _plugin_impl__process(process, 2, 0, process->frames_count,
+          m_last_param_values, cur_param_values,
+          process->audio_inputs[0].data32, process->audio_outputs[0].data32);
+      }
+      else if (process->audio_inputs[0].data64 && process->audio_outputs[0].data64)
+      {
+        s = _plugin_impl__process(process, 2, 0, process->frames_count,
+          m_last_param_values, cur_param_values,
+          process->audio_inputs[0].data64, process->audio_outputs[0].data64);
+      }
+    }
 
     for (int i=0; i < NUM_PARAMS; ++i)
     {
       m_last_param_values[i]=m_param_values[i];
     }
 
+    if (s < 0) s = CLAP_PROCESS_ERROR;
     return s;
   }
 
