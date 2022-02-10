@@ -6,7 +6,8 @@ FLAGS := -DCLAPPLUGIN_EXPORTS -D_GLFW_X11 -DGLFW_EXPOSE_NATIVE_X11 -fPIC -shared
 BASE := ../..
 
 SRC := $(BASE)/src
-SRCS := $(SRC)/main.cpp $(SRC)/plugin.cpp $(SRC)/plugin_impl_0.cpp \
+SRCS := $(SRC)/main.cpp $(SRC)/plugin.cpp \
+        $(SRC)/plugin_impl_0.cpp $(SRC)/plugin_impl_1.cpp \
 	$(SRC)/gui.cpp $(SRC)/imgui_base.cpp $(SRC)/imgui_lin.cpp
 INC := -I$(BASE)/src/imgui -I$(BASE)/src/glfw/include
 OBJ := obj

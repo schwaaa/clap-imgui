@@ -14,17 +14,19 @@ namespace factory
 {
   uint32_t get_plugin_count(const clap_plugin_factory *factory)
   {
-    return 1;
+    return 2;
   }
   const clap_plugin_descriptor *get_plugin_descriptor(const clap_plugin_factory *factory, uint32_t index)
   {
     if (index == 0) return plugin_impl__get_descriptor_0();
+    if (index == 1) return plugin_impl__get_descriptor_1();
     return NULL;
   }
   const clap_plugin *create_plugin(const clap_plugin_factory *factory, const clap_host *host, const char *plugin_id)
   {
     Plugin *plugin=NULL;
     if (!strcmp(plugin_impl__get_descriptor_0()->id, plugin_id)) plugin=plugin_impl__create_0(host);
+    else if (!strcmp(plugin_impl__get_descriptor_1()->id, plugin_id)) plugin=plugin_impl__create_1(host);
     if (plugin) return &plugin->m_clap_plugin;
     return NULL;
   }

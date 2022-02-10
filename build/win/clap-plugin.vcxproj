@@ -193,6 +193,7 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\plugin.cpp" />
     <ClCompile Include="..\..\src\plugin_impl_0.cpp" />
+    <ClCompile Include="..\..\src\plugin_impl_1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\clap\include\clap\audio-buffer.h" />
