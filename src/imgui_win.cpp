@@ -33,20 +33,16 @@ void get_native_window_position(void *native_display, void *native_window,
   *h = wr.bottom-wr.top;
 }
 
-bool set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
+void set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
 {
-  HWND hwnd=(HWND)glfwGetWin32Window(glfw_win);
-  if (hwnd)
-  {
-    SetParent(hwnd, (HWND)native_window);
-    long style=GetWindowLong(hwnd, GWL_STYLE);
-    style &= ~WS_POPUP;
-    style |= WS_CHILDWINDOW;
-    SetWindowLong(hwnd, GWL_STYLE, style);
-    SetWindowPos(hwnd, NULL, 0, 0, 0, 0, SWP_NOZORDER|SWP_NOSIZE|SWP_NOACTIVATE);
-    return true;
-  }
-  return false;
+  HWND hpar = (HWND)native_window;
+  HWND hwnd = (HWND)glfwGetWin32Window(glfw_win);
+  SetParent(hwnd, hpar);
+  long style=GetWindowLong(hwnd, GWL_STYLE);
+  style &= ~WS_POPUP;
+  style |= WS_CHILDWINDOW;
+  SetWindowLong(hwnd, GWL_STYLE, style);
+  SetWindowPos(hwnd, NULL, 0, 0, 0, 0, SWP_NOZORDER|SWP_NOSIZE|SWP_NOACTIVATE);
 }
 
 unsigned int timer_id;

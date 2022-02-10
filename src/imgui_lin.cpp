@@ -42,15 +42,12 @@ void get_native_window_position(void *native_display, void *native_window,
   *h = xwa.height;
 }
 
-bool set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
+void set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
 {
-  unsigned long win = glfwGetX11Window(glfw_win);
-  if (win)
-  {
-    XReparentWindow((Display*)native_display, win, (Window)native_window, 0, 0); 
-    return true;
-  }
-  return false;
+  Display *xdisp = (Display*)native_display;
+  Window xpar = (Window)native_window;
+  Window xwin = (Window)glfwGetX11Window(glfw_win);
+  XReparentWindow(xdisp, xwin, xpar, 0, 0);
 }
 
 extern clap_host *g_clap_host;

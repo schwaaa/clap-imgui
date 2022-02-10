@@ -32,16 +32,11 @@ void get_native_window_position(void *native_display, void *native_window,
   *h = wr.size.height;
 }
 
-bool set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
+void set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win)
 {
-  NSWindow *win=(NSWindow*)glfwGetCocoaWindow(glfw_win);
-  if (win)
-  {
-    NSView *vw = (NSView*)native_window;
-    [[vw window] addChildWindow:win ordered:NSWindowAbove];
-    return true;
-  }
-  return false;
+  NSWindow *par = [(NSView*)native_window window];
+  NSWindow *win = (NSWindow*)glfwGetCocoaWindow(glfw_win);
+  [par addChildWindow:win ordered:NSWindowAbove];
 }
 
 @interface gui_timer : NSObject

@@ -11,7 +11,7 @@
 
 void get_native_window_position(void *native_display, void *native_window,
   int *x, int *y, int *w, int *h); // always in screen coordinates
-bool set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win);
+void set_native_parent(void *native_display, void *native_window, GLFWwindow *glfw_win);
 
 bool create_timer(unsigned int ms);
 void destroy_timer();
@@ -80,10 +80,8 @@ void imgui__do_render_pass()
           w->Viewport && w->Viewport->PlatformWindowCreated)
         {
           GLFWwindow *glfw_win=(GLFWwindow*)w->Viewport->PlatformHandle;
-          if (set_native_parent(rec->native_display, rec->native_window, glfw_win))
-          {
-            rec->did_parenting=1;
-          }
+          set_native_parent(rec->native_display, rec->native_window, glfw_win);
+          rec->did_parenting=1;
           break;
         }
       }
