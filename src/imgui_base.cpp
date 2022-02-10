@@ -102,7 +102,7 @@ void imgui__teardown()
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
 
-  glfwDestroyWindow(backend_wnd); // will destroy backend hwnd and kill the timer
+  glfwDestroyWindow(backend_wnd);
   backend_wnd=NULL;
   glfwTerminate();
 }
@@ -132,9 +132,6 @@ bool imgui__attach(Plugin *plugin, void *native_display, void *native_window)
   want_teardown=0;
   if (!backend_wnd)
   {
-    // for simplicity and portability, require clap_host_timer_support.
-    // this could be implemented instead on win and mac via a platform-dependent main thread system timer,
-    // but linux would have to spawn a thread.
     if (!create_timer(TIMER_MS)) return false;
 
     glfwSetErrorCallback(glfw_error_callback);
