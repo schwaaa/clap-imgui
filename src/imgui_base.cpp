@@ -186,6 +186,12 @@ void gui__destroy(Plugin *plugin, bool is_plugin_destroy)
       prev_rec=rec;
       rec=rec->next;
     }
+
+    ImGuiWindow *w = ImGui::FindWindowByName(rec->name);
+    if (w && w->Viewport && w->Viewport->PlatformWindowCreated)
+    {
+      ImGui::RemoveDestroyViewport(w->Viewport);
+    }
     free(old_rec);
   }
 
