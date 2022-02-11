@@ -34,9 +34,14 @@ struct ui_ctx_rec
 };
 ui_ctx_rec *rec_list;
 
+int render_pass_reentry;
 void imgui__do_render_pass()
 {
   if (!backend_wnd) return;
+  if (!rec_list) return;
+
+  if (render_pass_reentry) return;
+  ++render_pass_reentry; // glfwPollEvents can reenter us by pumping timer messages
 
   glfwPollEvents();
 
@@ -82,6 +87,8 @@ void imgui__do_render_pass()
     }
     rec=rec->next;
   }
+
+  --render_pass_reentry;
 }
 
 void imgui__teardown()
