@@ -72,18 +72,12 @@ void imgui__do_render_pass()
   {
     if (!rec->did_parenting)
     {
-      extern ImGuiContext *GImGui;
-      for (int i=0; i < GImGui->Windows.Size; ++i)
+      ImGuiWindow *w = ImGui::FindWindowByName(rec->name);
+      if (w && w->Viewport && w->Viewport->PlatformWindowCreated)
       {
-        ImGuiWindow *w=GImGui->Windows[i];
-        if (w->Name && !strcmp(w->Name, rec->name) &&
-          w->Viewport && w->Viewport->PlatformWindowCreated)
-        {
-          GLFWwindow *glfw_win=(GLFWwindow*)w->Viewport->PlatformHandle;
-          set_native_parent(rec->native_display, rec->native_window, glfw_win);
-          rec->did_parenting=1;
-          break;
-        }
+        GLFWwindow *glfw_win=(GLFWwindow*)w->Viewport->PlatformHandle;
+        set_native_parent(rec->native_display, rec->native_window, glfw_win);
+        rec->did_parenting=1;
       }
     }
     rec=rec->next;
