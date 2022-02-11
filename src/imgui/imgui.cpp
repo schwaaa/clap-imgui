@@ -5237,8 +5237,7 @@ static void FindHoveredWindow()
             continue;
         if (window->Flags & ImGuiWindowFlags_NoMouseInputs)
             continue;
-        IM_ASSERT(window->Viewport);
-        if (window->Viewport != g.MouseViewport)
+        if (!window->Viewport || window->Viewport != g.MouseViewport)
             continue;
 
         // Using the clipped AABB, a child window will typically be clipped by its parent (not always)
