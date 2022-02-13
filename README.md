@@ -46,4 +46,4 @@ ImGui, like many UI implementations, uses a polling update mechanism. This examp
 ---
 ### Builds
 
-You can download a macOS binary by clicking [Actions](https://github.com/schwaaa/clap-imgui/actions) in the top bar, then clicking the latest (topmost) mac-build workflow run. The **clap-example.clap** binary will be under Artifacts at the bottom of the workflow run page.
+You can download a macOS or Windows binary by clicking [Actions](https://github.com/schwaaa/clap-imgui/actions) in the top bar, then clicking the latest (topmost) mac-build or win-build workflow run. The **clap-example.clap** binary will be under Artifacts at the bottom of the workflow run page.
