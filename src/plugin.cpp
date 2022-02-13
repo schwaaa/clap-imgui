@@ -148,6 +148,7 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
   m_clap_plugin_gui.destroy=gui::destroy;
   m_clap_plugin_gui.set_scale=gui::set_scale;
   m_clap_plugin_gui.get_size=gui::get_size;
+  m_clap_plugin_gui.can_resize=gui::can_resize;
   m_clap_plugin_gui.round_size=gui::round_size;
   m_clap_plugin_gui.set_size=gui::set_size;
   m_clap_plugin_gui.show=gui::show;
