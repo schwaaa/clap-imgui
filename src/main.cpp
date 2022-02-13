@@ -43,7 +43,10 @@ namespace entry
 {
   bool init(const char *plugin_path) { return true; }
   void deinit() { }
-  const void *get_factory(const char *factory_id) { return &plugin_factory; }
+  const void *get_factory(const char *factory_id)
+  {
+    return factory_id && !strcmp(factory_id, CLAP_PLUGIN_FACTORY_ID) ? &plugin_factory : NULL;
+  }
 };
 
 
