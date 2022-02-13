@@ -43,3 +43,7 @@ The rest of the repo consists of [CLAP](https://github.com/free-audio/clap), [Im
 
 ImGui, like many UI implementations, uses a polling update mechanism. This example uses SetTimer on Windows and NSTimer on MacOS, but in the interest of minimizing platform-specific code (and not having to deal with X11 threads), uses the CLAP timer extension on linux. If the host application does not support the CLAP timer extension, the linux version of this plugin will not show a UI.
 
+---
+### Builds
+
+You can download a macos binary by clicking [Actions](https://github.com/schwaaa/clap-imgui/actions) in the top bar, then clicking the latest (topmost) xcodebuild workflow run. The **clap-example.clap** binary will be under Artifacts at the bottom of the workflow run page.
