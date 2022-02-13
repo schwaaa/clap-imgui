@@ -47,7 +47,7 @@ void set_native_parent(void *native_display, void *native_window, GLFWwindow *gl
 
 unsigned int timer_id;
 
-void timer_proc(HWND hwnd, UINT message, UINT_PTR caller, DWORD time)
+void CALLBACK timer_proc(HWND hwnd, UINT a, UINT_PTR b, DWORD c)
 {
   extern void imgui__on_timer();
   imgui__on_timer();
