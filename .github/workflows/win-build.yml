@@ -11,8 +11,8 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
     - name: build
       working-directory: build/win
-      run: MSBuild /m /p:PlatformToolset=v142 /p:Configuration=Release
+      run: MSBuild /m /p:PlatformToolset=v142 /p:Platform=x64 /p:Configuration=Release 
     - uses: actions/upload-artifact@v2
       with:
         name: clap-example.clap
-        path: D:\a\clap-imgui\clap-imgui\build\win\Release\clap-plugin.clap
+        path: D:\a\clap-imgui\clap-imgui\build\win\x64\Release\clap-plugin.clap
