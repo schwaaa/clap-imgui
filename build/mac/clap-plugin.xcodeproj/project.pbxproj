@@ -7,93 +7,44 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		45DA24EC27B98A5B004186EB /* glfw3.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA24EA27B98A5B004186EB /* glfw3.h */; };
-		45DA24ED27B98A5B004186EB /* glfw3native.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA24EB27B98A5B004186EB /* glfw3native.h */; };
-		45DA24EF27B98A72004186EB /* nsgl_context.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24EE27B98A72004186EB /* nsgl_context.m */; };
-		45DA24FA27B98A99004186EB /* cocoa_platform.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA24F227B98A99004186EB /* cocoa_platform.h */; };
-		45DA24FB27B98A99004186EB /* cocoa_time.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA24F327B98A99004186EB /* cocoa_time.h */; };
-		45DA24FC27B98A99004186EB /* cocoa_joystick.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F427B98A99004186EB /* cocoa_joystick.m */; };
-		45DA24FD27B98A99004186EB /* cocoa_window.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F527B98A99004186EB /* cocoa_window.m */; };
-		45DA24FE27B98A99004186EB /* cocoa_init.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F627B98A99004186EB /* cocoa_init.m */; };
-		45DA24FF27B98A99004186EB /* cocoa_monitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F727B98A99004186EB /* cocoa_monitor.m */; };
-		45DA250027B98A99004186EB /* cocoa_time.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F827B98A99004186EB /* cocoa_time.c */; };
-		45DA250127B98A99004186EB /* cocoa_joystick.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA24F927B98A99004186EB /* cocoa_joystick.h */; };
-		45DA250527B98ABE004186EB /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250227B98ABE004186EB /* init.c */; };
-		45DA250627B98ABE004186EB /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250327B98ABE004186EB /* input.c */; };
-		45DA250727B98ABE004186EB /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA250427B98ABE004186EB /* internal.h */; };
-		45DA250B27B98ACE004186EB /* monitor.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250827B98ACE004186EB /* monitor.c */; };
-		45DA250C27B98ACE004186EB /* mappings.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA250927B98ACE004186EB /* mappings.h */; };
-		45DA250D27B98ACE004186EB /* nsgl_context.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250A27B98ACE004186EB /* nsgl_context.m */; };
-		45DA251427B98AD5004186EB /* null_platform.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA250E27B98AD5004186EB /* null_platform.h */; };
-		45DA251527B98AD5004186EB /* null_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250F27B98AD5004186EB /* null_init.c */; };
-		45DA251627B98AD5004186EB /* null_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA251027B98AD5004186EB /* null_joystick.c */; };
-		45DA251727B98AD5004186EB /* null_joystick.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA251127B98AD5004186EB /* null_joystick.h */; };
-		45DA251827B98AD5004186EB /* null_monitor.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA251227B98AD5004186EB /* null_monitor.c */; };
-		45DA251927B98AD5004186EB /* null_window.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA251327B98AD5004186EB /* null_window.c */; };
-		45DA252327B98AE3004186EB /* posix_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA251B27B98AE3004186EB /* posix_thread.h */; };
-		45DA252527B98AE3004186EB /* platform.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA251D27B98AE3004186EB /* platform.c */; };
-		45DA252627B98AE3004186EB /* platform.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA251E27B98AE3004186EB /* platform.h */; };
-		45DA252827B98AE3004186EB /* posix_module.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252027B98AE3004186EB /* posix_module.c */; };
-		45DA252927B98AE3004186EB /* posix_thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252127B98AE3004186EB /* posix_thread.c */; };
-		45DA252D27B98AF4004186EB /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252C27B98AF4004186EB /* window.c */; };
-		45DA252F27B98B34004186EB /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252E27B98B34004186EB /* vulkan.c */; };
-		45DA253527B98BF6004186EB /* osmesa_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253427B98BF6004186EB /* osmesa_context.c */; };
-		45DA253727B98C37004186EB /* context.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253627B98C37004186EB /* context.c */; };
-		45DA253927B98C4D004186EB /* egl_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253827B98C4D004186EB /* egl_context.c */; };
-		45DA254427B98CAC004186EB /* imgui.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA253A27B98CAC004186EB /* imgui.h */; };
-		45DA254527B98CAC004186EB /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253B27B98CAC004186EB /* imgui_draw.cpp */; };
-		45DA254627B98CAC004186EB /* imstb_rectpack.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA253C27B98CAC004186EB /* imstb_rectpack.h */; };
-		45DA254727B98CAC004186EB /* imgui_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA253D27B98CAC004186EB /* imgui_internal.h */; };
-		45DA254827B98CAC004186EB /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253E27B98CAC004186EB /* imgui.cpp */; };
-		45DA254927B98CAC004186EB /* imstb_truetype.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA253F27B98CAC004186EB /* imstb_truetype.h */; };
-		45DA254A27B98CAC004186EB /* imstb_textedit.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA254027B98CAC004186EB /* imstb_textedit.h */; };
-		45DA254B27B98CAC004186EB /* imconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA254127B98CAC004186EB /* imconfig.h */; };
-		45DA254C27B98CAC004186EB /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254227B98CAC004186EB /* imgui_tables.cpp */; };
-		45DA254D27B98CAC004186EB /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254327B98CAC004186EB /* imgui_widgets.cpp */; };
-		45DA255427B98CBF004186EB /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254E27B98CBF004186EB /* imgui_impl_opengl3.cpp */; };
-		45DA255527B98CBF004186EB /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254F27B98CBF004186EB /* imgui_impl_glfw.cpp */; };
-		45DA255627B98CBF004186EB /* imgui_impl_osx.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA255027B98CBF004186EB /* imgui_impl_osx.h */; };
-		45DA255727B98CBF004186EB /* imgui_impl_osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DA255127B98CBF004186EB /* imgui_impl_osx.mm */; };
-		45DA255827B98CBF004186EB /* imgui_impl_opengl3.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA255227B98CBF004186EB /* imgui_impl_opengl3.h */; };
-		45DA255927B98CBF004186EB /* imgui_impl_glfw.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA255327B98CBF004186EB /* imgui_impl_glfw.h */; };
-		45DA256D27B98CF5004186EB /* plugin-invalidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA255A27B98CF4004186EB /* plugin-invalidation.h */; };
-		45DA256E27B98CF5004186EB /* entry.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA255B27B98CF4004186EB /* entry.h */; };
-		45DA256F27B98CF5004186EB /* fixedpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA255C27B98CF4004186EB /* fixedpoint.h */; };
-		45DA257027B98CF5004186EB /* id.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA255D27B98CF4004186EB /* id.h */; };
-		45DA257127B98CF5004186EB /* stream.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA255F27B98CF4004186EB /* stream.h */; };
-		45DA257227B98CF5004186EB /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256027B98CF4004186EB /* version.h */; };
-		45DA257327B98CF5004186EB /* plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256127B98CF5004186EB /* plugin.h */; };
-		45DA257427B98CF5004186EB /* plugin-factory.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256227B98CF5004186EB /* plugin-factory.h */; };
-		45DA257527B98CF5004186EB /* host.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256327B98CF5004186EB /* host.h */; };
-		45DA257627B98CF5004186EB /* hash.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256527B98CF5004186EB /* hash.h */; };
-		45DA257727B98CF5004186EB /* events.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256627B98CF5004186EB /* events.h */; };
-		45DA257827B98CF5004186EB /* clap.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256727B98CF5004186EB /* clap.h */; };
-		45DA257927B98CF5004186EB /* color.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256827B98CF5004186EB /* color.h */; };
-		45DA257A27B98CF5004186EB /* process.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256A27B98CF5004186EB /* process.h */; };
-		45DA257B27B98CF5004186EB /* string-sizes.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256B27B98CF5004186EB /* string-sizes.h */; };
-		45DA257C27B98CF5004186EB /* audio-buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 45DA256C27B98CF5004186EB /* audio-buffer.h */; };
-		45EADB7D27AC890200EAB375 /* imgui_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EADB7C27AC890200EAB375 /* imgui_base.cpp */; };
-		52683C3127B4A02F004EE6A8 /* plugin_impl_0.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52683C3027B4A02F004EE6A8 /* plugin_impl_0.cpp */; };
-		52683C3327B4A058004EE6A8 /* plugin_impl_1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52683C3227B4A058004EE6A8 /* plugin_impl_1.cpp */; };
-		52966017278342DC00AFD941 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52966016278342DC00AFD941 /* GameController.framework */; };
-		5296602027835FBC00AFD941 /* imgui_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5296601F27835FBC00AFD941 /* imgui_mac.mm */; };
-		529660222783786000AFD941 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 529660212783786000AFD941 /* gui.cpp */; };
-		52EABE8727832A1300E39241 /* main.h in Headers */ = {isa = PBXBuildFile; fileRef = 52EABE8227832A1300E39241 /* main.h */; };
-		52EABE8827832A1300E39241 /* plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52EABE8327832A1300E39241 /* plugin.cpp */; };
-		52EABE8927832A1300E39241 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52EABE8427832A1300E39241 /* main.cpp */; };
+		52FF35C227BA8E620001C221 /* plugin_impl_1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52683C3227B4A058004EE6A8 /* plugin_impl_1.cpp */; };
+		52FF35C327BA8E620001C221 /* plugin_impl_0.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52683C3027B4A02F004EE6A8 /* plugin_impl_0.cpp */; };
+		52FF35C427BA8E620001C221 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 529660212783786000AFD941 /* gui.cpp */; };
+		52FF35C527BA8E620001C221 /* imgui_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EADB7C27AC890200EAB375 /* imgui_base.cpp */; };
+		52FF35C627BA8E620001C221 /* imgui_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5296601F27835FBC00AFD941 /* imgui_mac.mm */; };
+		52FF35C727BA8E620001C221 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52EABE8427832A1300E39241 /* main.cpp */; };
+		52FF35C827BA8E620001C221 /* plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52EABE8327832A1300E39241 /* plugin.cpp */; };
+		52FF35C927BA8E7D0001C221 /* cocoa_init.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F627B98A99004186EB /* cocoa_init.m */; };
+		52FF35CA27BA8E7D0001C221 /* cocoa_joystick.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F427B98A99004186EB /* cocoa_joystick.m */; };
+		52FF35CB27BA8E7D0001C221 /* cocoa_monitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F727B98A99004186EB /* cocoa_monitor.m */; };
+		52FF35CC27BA8E7D0001C221 /* cocoa_time.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F827B98A99004186EB /* cocoa_time.c */; };
+		52FF35CD27BA8E7D0001C221 /* cocoa_window.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24F527B98A99004186EB /* cocoa_window.m */; };
+		52FF35CE27BA8E7D0001C221 /* context.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253627B98C37004186EB /* context.c */; };
+		52FF35CF27BA8E7D0001C221 /* egl_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253827B98C4D004186EB /* egl_context.c */; };
+		52FF35D027BA8E7D0001C221 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250227B98ABE004186EB /* init.c */; };
+		52FF35D127BA8E7D0001C221 /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250327B98ABE004186EB /* input.c */; };
+		52FF35D227BA8E7D0001C221 /* monitor.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250827B98ACE004186EB /* monitor.c */; };
+		52FF35D327BA8E7D0001C221 /* nsgl_context.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250A27B98ACE004186EB /* nsgl_context.m */; };
+		52FF35D427BA8E7D0001C221 /* null_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA250F27B98AD5004186EB /* null_init.c */; };
+		52FF35D527BA8E7D0001C221 /* null_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA251027B98AD5004186EB /* null_joystick.c */; };
+		52FF35D627BA8E7D0001C221 /* null_monitor.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA251227B98AD5004186EB /* null_monitor.c */; };
+		52FF35D727BA8E7D0001C221 /* null_window.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA251327B98AD5004186EB /* null_window.c */; };
+		52FF35D827BA8E7D0001C221 /* osmesa_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253427B98BF6004186EB /* osmesa_context.c */; };
+		52FF35D927BA8E7D0001C221 /* platform.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA251D27B98AE3004186EB /* platform.c */; };
+		52FF35DA27BA8E7D0001C221 /* posix_module.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252027B98AE3004186EB /* posix_module.c */; };
+		52FF35DB27BA8E7D0001C221 /* posix_thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252127B98AE3004186EB /* posix_thread.c */; };
+		52FF35DC27BA8E7D0001C221 /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252E27B98B34004186EB /* vulkan.c */; };
+		52FF35DD27BA8E7D0001C221 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252C27B98AF4004186EB /* window.c */; };
+		52FF35DE27BA8E7D0001C221 /* nsgl_context.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24EE27B98A72004186EB /* nsgl_context.m */; };
+		52FF35DF27BA8E890001C221 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253B27B98CAC004186EB /* imgui_draw.cpp */; };
+		52FF35E027BA8E890001C221 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254F27B98CBF004186EB /* imgui_impl_glfw.cpp */; };
+		52FF35E127BA8E890001C221 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254E27B98CBF004186EB /* imgui_impl_opengl3.cpp */; };
+		52FF35E227BA8E890001C221 /* imgui_impl_osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DA255127B98CBF004186EB /* imgui_impl_osx.mm */; };
+		52FF35E327BA8E890001C221 /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254227B98CAC004186EB /* imgui_tables.cpp */; };
+		52FF35E427BA8E8A0001C221 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254327B98CAC004186EB /* imgui_widgets.cpp */; };
+		52FF35E527BA8E8A0001C221 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253E27B98CAC004186EB /* imgui.cpp */; };
+		52FF35E627BA8E9E0001C221 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52966016278342DC00AFD941 /* GameController.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		529660182783460100AFD941 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		45DA24EA27B98A5B004186EB /* glfw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glfw3.h; path = ../../src/glfw/include/GLFW/glfw3.h; sourceTree = "<group>"; };
@@ -170,18 +121,19 @@
 		52966016278342DC00AFD941 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		5296601F27835FBC00AFD941 /* imgui_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = imgui_mac.mm; path = ../../src/imgui_mac.mm; sourceTree = "<group>"; };
 		529660212783786000AFD941 /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui.cpp; path = ../../src/gui.cpp; sourceTree = "<group>"; };
-		52E4F7C7278328FF00E33366 /* clap-example.clap */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "clap-example.clap"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52EABE8227832A1300E39241 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../../src/main.h; sourceTree = "<group>"; };
 		52EABE8327832A1300E39241 /* plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.cpp; path = ../../src/plugin.cpp; sourceTree = "<group>"; };
 		52EABE8427832A1300E39241 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
+		52FF359527BA8DFB0001C221 /* clap-example.clap */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "clap-example.clap"; sourceTree = BUILT_PRODUCTS_DIR; };
+		52FF359727BA8DFB0001C221 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		52E4F7C5278328FF00E33366 /* Frameworks */ = {
+		52FF359227BA8DFB0001C221 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52966017278342DC00AFD941 /* GameController.framework in Frameworks */,
+				52FF35E627BA8E9E0001C221 /* GameController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +170,7 @@
 				52EABE8A27832A2200E39241 /* glfw */,
 				52EABE7F278329FA00E39241 /* clap */,
 				52E4F7D32783291300E33366 /* imgui */,
+				52FF359627BA8DFB0001C221 /* clap-example */,
 				52E4F7C8278328FF00E33366 /* Products */,
 				52966015278342DC00AFD941 /* Frameworks */,
 			);
@@ -226,7 +179,7 @@
 		52E4F7C8278328FF00E33366 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				52E4F7C7278328FF00E33366 /* clap-example.clap */,
+				52FF359527BA8DFB0001C221 /* clap-example.clap */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -320,64 +273,24 @@
 			name = glfw;
 			sourceTree = "<group>";
 		};
+		52FF359627BA8DFB0001C221 /* clap-example */ = {
+			isa = PBXGroup;
+			children = (
+				52FF359727BA8DFB0001C221 /* Info.plist */,
+			);
+			path = "clap-example";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		52E4F7C3278328FF00E33366 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				45DA257527B98CF5004186EB /* host.h in Headers */,
-				45DA254727B98CAC004186EB /* imgui_internal.h in Headers */,
-				45DA257327B98CF5004186EB /* plugin.h in Headers */,
-				45DA252627B98AE3004186EB /* platform.h in Headers */,
-				45DA255927B98CBF004186EB /* imgui_impl_glfw.h in Headers */,
-				45DA257427B98CF5004186EB /* plugin-factory.h in Headers */,
-				45DA256D27B98CF5004186EB /* plugin-invalidation.h in Headers */,
-				45DA256F27B98CF5004186EB /* fixedpoint.h in Headers */,
-				45DA257A27B98CF5004186EB /* process.h in Headers */,
-				45DA251727B98AD5004186EB /* null_joystick.h in Headers */,
-				45DA257627B98CF5004186EB /* hash.h in Headers */,
-				45DA250727B98ABE004186EB /* internal.h in Headers */,
-				45DA24FB27B98A99004186EB /* cocoa_time.h in Headers */,
-				45DA257C27B98CF5004186EB /* audio-buffer.h in Headers */,
-				45DA255827B98CBF004186EB /* imgui_impl_opengl3.h in Headers */,
-				45DA252327B98AE3004186EB /* posix_thread.h in Headers */,
-				52EABE8727832A1300E39241 /* main.h in Headers */,
-				45DA254627B98CAC004186EB /* imstb_rectpack.h in Headers */,
-				45DA257927B98CF5004186EB /* color.h in Headers */,
-				45DA257027B98CF5004186EB /* id.h in Headers */,
-				45DA257227B98CF5004186EB /* version.h in Headers */,
-				45DA254427B98CAC004186EB /* imgui.h in Headers */,
-				45DA257727B98CF5004186EB /* events.h in Headers */,
-				45DA257B27B98CF5004186EB /* string-sizes.h in Headers */,
-				45DA257827B98CF5004186EB /* clap.h in Headers */,
-				45DA255627B98CBF004186EB /* imgui_impl_osx.h in Headers */,
-				45DA24ED27B98A5B004186EB /* glfw3native.h in Headers */,
-				45DA250127B98A99004186EB /* cocoa_joystick.h in Headers */,
-				45DA251427B98AD5004186EB /* null_platform.h in Headers */,
-				45DA254B27B98CAC004186EB /* imconfig.h in Headers */,
-				45DA250C27B98ACE004186EB /* mappings.h in Headers */,
-				45DA257127B98CF5004186EB /* stream.h in Headers */,
-				45DA256E27B98CF5004186EB /* entry.h in Headers */,
-				45DA24EC27B98A5B004186EB /* glfw3.h in Headers */,
-				45DA24FA27B98A99004186EB /* cocoa_platform.h in Headers */,
-				45DA254927B98CAC004186EB /* imstb_truetype.h in Headers */,
-				45DA254A27B98CAC004186EB /* imstb_textedit.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		52E4F7C6278328FF00E33366 /* clap-example */ = {
+		52FF359427BA8DFB0001C221 /* clap-example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 52E4F7D0278328FF00E33366 /* Build configuration list for PBXNativeTarget "clap-example" */;
+			buildConfigurationList = 52FF359827BA8DFB0001C221 /* Build configuration list for PBXNativeTarget "clap-example" */;
 			buildPhases = (
-				52E4F7C3278328FF00E33366 /* Headers */,
-				52E4F7C4278328FF00E33366 /* Sources */,
-				52E4F7C5278328FF00E33366 /* Frameworks */,
-				529660182783460100AFD941 /* CopyFiles */,
+				52FF359127BA8DFB0001C221 /* Sources */,
+				52FF359227BA8DFB0001C221 /* Frameworks */,
+				52FF359327BA8DFB0001C221 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -385,8 +298,8 @@
 			);
 			name = "clap-example";
 			productName = "clap-example";
-			productReference = 52E4F7C7278328FF00E33366 /* clap-example.clap */;
-			productType = "com.apple.product-type.library.dynamic";
+			productReference = 52FF359527BA8DFB0001C221 /* clap-example.clap */;
+			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -396,7 +309,7 @@
 			attributes = {
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
-					52E4F7C6278328FF00E33366 = {
+					52FF359427BA8DFB0001C221 = {
 						CreatedOnToolsVersion = 12.5;
 					};
 				};
@@ -414,52 +327,62 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				52E4F7C6278328FF00E33366 /* clap-example */,
+				52FF359427BA8DFB0001C221 /* clap-example */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		52FF359327BA8DFB0001C221 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		52E4F7C4278328FF00E33366 /* Sources */ = {
+		52FF359127BA8DFB0001C221 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45DA255427B98CBF004186EB /* imgui_impl_opengl3.cpp in Sources */,
-				45DA251927B98AD5004186EB /* null_window.c in Sources */,
-				45DA252D27B98AF4004186EB /* window.c in Sources */,
-				45DA24EF27B98A72004186EB /* nsgl_context.m in Sources */,
-				45DA254527B98CAC004186EB /* imgui_draw.cpp in Sources */,
-				52683C3127B4A02F004EE6A8 /* plugin_impl_0.cpp in Sources */,
-				45DA252927B98AE3004186EB /* posix_thread.c in Sources */,
-				52EABE8827832A1300E39241 /* plugin.cpp in Sources */,
-				45DA251827B98AD5004186EB /* null_monitor.c in Sources */,
-				52EABE8927832A1300E39241 /* main.cpp in Sources */,
-				45DA253727B98C37004186EB /* context.c in Sources */,
-				45EADB7D27AC890200EAB375 /* imgui_base.cpp in Sources */,
-				52683C3327B4A058004EE6A8 /* plugin_impl_1.cpp in Sources */,
-				45DA253927B98C4D004186EB /* egl_context.c in Sources */,
-				45DA250D27B98ACE004186EB /* nsgl_context.m in Sources */,
-				45DA252F27B98B34004186EB /* vulkan.c in Sources */,
-				45DA24FD27B98A99004186EB /* cocoa_window.m in Sources */,
-				45DA250527B98ABE004186EB /* init.c in Sources */,
-				45DA250027B98A99004186EB /* cocoa_time.c in Sources */,
-				5296602027835FBC00AFD941 /* imgui_mac.mm in Sources */,
-				45DA250627B98ABE004186EB /* input.c in Sources */,
-				45DA251527B98AD5004186EB /* null_init.c in Sources */,
-				45DA252827B98AE3004186EB /* posix_module.c in Sources */,
-				45DA254D27B98CAC004186EB /* imgui_widgets.cpp in Sources */,
-				45DA254C27B98CAC004186EB /* imgui_tables.cpp in Sources */,
-				45DA250B27B98ACE004186EB /* monitor.c in Sources */,
-				45DA253527B98BF6004186EB /* osmesa_context.c in Sources */,
-				529660222783786000AFD941 /* gui.cpp in Sources */,
-				45DA255527B98CBF004186EB /* imgui_impl_glfw.cpp in Sources */,
-				45DA251627B98AD5004186EB /* null_joystick.c in Sources */,
-				45DA252527B98AE3004186EB /* platform.c in Sources */,
-				45DA24FC27B98A99004186EB /* cocoa_joystick.m in Sources */,
-				45DA24FE27B98A99004186EB /* cocoa_init.m in Sources */,
-				45DA24FF27B98A99004186EB /* cocoa_monitor.m in Sources */,
-				45DA255727B98CBF004186EB /* imgui_impl_osx.mm in Sources */,
-				45DA254827B98CAC004186EB /* imgui.cpp in Sources */,
+				52FF35DF27BA8E890001C221 /* imgui_draw.cpp in Sources */,
+				52FF35E027BA8E890001C221 /* imgui_impl_glfw.cpp in Sources */,
+				52FF35E127BA8E890001C221 /* imgui_impl_opengl3.cpp in Sources */,
+				52FF35E227BA8E890001C221 /* imgui_impl_osx.mm in Sources */,
+				52FF35E327BA8E890001C221 /* imgui_tables.cpp in Sources */,
+				52FF35E427BA8E8A0001C221 /* imgui_widgets.cpp in Sources */,
+				52FF35E527BA8E8A0001C221 /* imgui.cpp in Sources */,
+				52FF35C927BA8E7D0001C221 /* cocoa_init.m in Sources */,
+				52FF35CA27BA8E7D0001C221 /* cocoa_joystick.m in Sources */,
+				52FF35CB27BA8E7D0001C221 /* cocoa_monitor.m in Sources */,
+				52FF35CC27BA8E7D0001C221 /* cocoa_time.c in Sources */,
+				52FF35CD27BA8E7D0001C221 /* cocoa_window.m in Sources */,
+				52FF35CE27BA8E7D0001C221 /* context.c in Sources */,
+				52FF35CF27BA8E7D0001C221 /* egl_context.c in Sources */,
+				52FF35D027BA8E7D0001C221 /* init.c in Sources */,
+				52FF35D127BA8E7D0001C221 /* input.c in Sources */,
+				52FF35D227BA8E7D0001C221 /* monitor.c in Sources */,
+				52FF35D327BA8E7D0001C221 /* nsgl_context.m in Sources */,
+				52FF35D427BA8E7D0001C221 /* null_init.c in Sources */,
+				52FF35D527BA8E7D0001C221 /* null_joystick.c in Sources */,
+				52FF35D627BA8E7D0001C221 /* null_monitor.c in Sources */,
+				52FF35D727BA8E7D0001C221 /* null_window.c in Sources */,
+				52FF35D827BA8E7D0001C221 /* osmesa_context.c in Sources */,
+				52FF35D927BA8E7D0001C221 /* platform.c in Sources */,
+				52FF35DA27BA8E7D0001C221 /* posix_module.c in Sources */,
+				52FF35DB27BA8E7D0001C221 /* posix_thread.c in Sources */,
+				52FF35DC27BA8E7D0001C221 /* vulkan.c in Sources */,
+				52FF35DD27BA8E7D0001C221 /* window.c in Sources */,
+				52FF35DE27BA8E7D0001C221 /* nsgl_context.m in Sources */,
+				52FF35C227BA8E620001C221 /* plugin_impl_1.cpp in Sources */,
+				52FF35C327BA8E620001C221 /* plugin_impl_0.cpp in Sources */,
+				52FF35C427BA8E620001C221 /* gui.cpp in Sources */,
+				52FF35C527BA8E620001C221 /* imgui_base.cpp in Sources */,
+				52FF35C627BA8E620001C221 /* imgui_mac.mm in Sources */,
+				52FF35C727BA8E620001C221 /* main.cpp in Sources */,
+				52FF35C827BA8E620001C221 /* plugin.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,7 +430,11 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					GLFW_EXPOSE_NATIVE_COCOA,
+					_GLFW_COCOA,
+					CLAPPLUGIN_EXPORTS,
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -563,7 +490,11 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					GLFW_EXPOSE_NATIVE_COCOA,
+					_GLFW_COCOA,
+					CLAPPLUGIN_EXPORTS,
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -579,51 +510,37 @@
 			};
 			name = Release;
 		};
-		52E4F7D1278328FF00E33366 /* Debug */ = {
+		52FF359927BA8DFB0001C221 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_STYLE = Automatic;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				EXCLUDED_SOURCE_FILE_NAMES = "";
-				EXECUTABLE_EXTENSION = clap;
-				EXECUTABLE_PREFIX = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					CLAPPLUGIN_EXPORTS,
-					_GLFW_COCOA,
-					GLFW_EXPOSE_NATIVE_COCOA,
+					"DEBUG=1",
+					"$(inherited)",
 				);
-				INSTALL_PATH = "~/Library/Audio/Plug-Ins/CLAP";
-				OTHER_LDFLAGS = (
-					"-framework",
-					GameController,
-				);
+				INFOPLIST_FILE = "clap-example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = "cockos.clap-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = clap;
 			};
 			name = Debug;
 		};
-		52E4F7D2278328FF00E33366 /* Release */ = {
+		52FF359A27BA8DFB0001C221 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_STYLE = Automatic;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				EXCLUDED_SOURCE_FILE_NAMES = "";
-				EXECUTABLE_EXTENSION = clap;
-				EXECUTABLE_PREFIX = "";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					CLAPPLUGIN_EXPORTS,
-					_GLFW_COCOA,
-					GLFW_EXPOSE_NATIVE_COCOA,
-				);
-				INSTALL_PATH = "~/Library/Audio/Plug-Ins/CLAP";
-				OTHER_LDFLAGS = (
-					"-framework",
-					GameController,
-				);
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "clap-example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = "cockos.clap-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = clap;
 			};
 			name = Release;
 		};
@@ -639,11 +556,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		52E4F7D0278328FF00E33366 /* Build configuration list for PBXNativeTarget "clap-example" */ = {
+		52FF359827BA8DFB0001C221 /* Build configuration list for PBXNativeTarget "clap-example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				52E4F7D1278328FF00E33366 /* Debug */,
-				52E4F7D2278328FF00E33366 /* Release */,
+				52FF359927BA8DFB0001C221 /* Debug */,
+				52FF359A27BA8DFB0001C221 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
