@@ -1,0 +1,21 @@
+name: lin-build
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mesa-common-dev libxrandr-dev libxcursor-dev libxi-dev libxinerama-dev
+    - name: make
+      run: |
+        cd build/lin
+        make
+    - uses: actions/upload-artifact@v2
+      with:
+        name: clap-example.clap
+        path: build/lin/
