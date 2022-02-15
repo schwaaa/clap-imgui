@@ -30,9 +30,9 @@ ImGui is helpful for this example because:
 ---
 ### Usage
 
-The repo includes a Windows VC13 project, a MacOS XCode11 project, and a linux Makefile. There's no CMAKE-like build system included. There are no external dependencies so hopefully building is straightforward.  *Note: linux is still under construction.*
+The repo includes a Windows VC13 project, a MacOS XCode11 project, and a linux Makefile. There's no CMAKE-like build system included. There are no external dependencies so hopefully building is straightforward. There are also binaries available; see **Builds** below. *Note: linux is still somewhat under construction, although it should generally work.*
 
-You should be able to prototype basic plugins by editing only [src/plugin_impl.cpp](https://github.com/schwaaa/clap-imgui/blob/main/src/plugin_impl.cpp), which contains the actual audio plugin and UI implementation. The plugin descriptor and parameter definitions are at the top of the file, and `plugin_impl__draw()` contains the plugin-specific UI code.
+The example code exports two very basic plugins, **Volume/Pan** and **Tone Generator**. You should be able to prototype basic plugins by editing (or adding) a [src/plugin_impl_#.cpp](https://github.com/schwaaa/clap-imgui/blob/main/src/plugin_impl_0.cpp) file, which contains the actual audio plugin and UI implementation. The plugin descriptor and parameter definitions are at the top of the file, and `plugin_impl__draw()` contains the plugin-specific UI code.
 
 If you want to extend your plugin to add support for other CLAP extensions, you will need to add scaffolding code to  [src/plugin.cpp](https://github.com/schwaaa/clap-imgui/blob/main/src/plugin.cpp), similar to how the gui and parameter extensions are handled.
 
