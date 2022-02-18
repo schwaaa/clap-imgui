@@ -4,6 +4,7 @@ Minimal example of prototyping CLAP audio plugins using Dear ImGui as the user i
 
 ![](https://github.com/schwaaa/clap-plugin/blob/main/clap_imgui_screencap.gif?raw=true)
 
+![](https://github.com/schwaaa/clap-plugin/blob/main/clap_imgui_screencap_2.gif?raw=true)
 ---
 ### CLAP
 
