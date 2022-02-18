@@ -11,6 +11,9 @@
 
 #define _PI 3.1415926535897932384626433832795
 
+// see imgui_knob.cpp
+bool ImGui_Knob(const char* label, float* p_value, float v_min, float v_max, const char *fmt);
+
 
 static const char *_features[] =
 {
@@ -65,8 +68,8 @@ struct Example_1 : public Plugin
   int m_srate;
   double m_param_values[NUM_PARAMS];
   double m_last_param_values[NUM_PARAMS];
-  double m_phase;
-  int m_last_oct, m_hold;
+  double m_phase, m_last_oct;
+  int m_hold;
 
   clap_plugin_audio_ports m_clap_plugin_audio_ports;
 
@@ -80,7 +83,7 @@ struct Example_1 : public Plugin
     }
 
     m_phase=0.0;
-    m_last_oct=4;
+    m_last_oct=4.0;
     m_hold=0;
 
     m_clap_plugin_audio_ports.count=ports::count;
@@ -203,8 +206,6 @@ struct Example_1 : public Plugin
     if (process && process->audio_inputs_count == 0 &&
       process->audio_outputs_count == 1 && process->audio_outputs[0].channel_count == 2)
     {
-
-
       // handling incoming parameter changes and slicing the process call
       // on the time axis would happen here.
 
@@ -248,13 +249,6 @@ struct Example_1 : public Plugin
     ImGui::Text("Tone Generator");
 
     int cur_pitch = (int)m_param_values[PARAM_PITCH];
-    if (cur_pitch >= 0) m_last_oct = cur_pitch/12;
-    ImGui::SliderInt("Octave", &m_last_oct, 1, 8);
-
-    float detune=(float)m_param_values[PARAM_DETUNE];
-    ImGui::SliderFloat("Detune", &detune, -100.0f, 100.0f, "%+.0f");
-    m_param_values[PARAM_DETUNE]=detune;
-
     int pitch_button=-1;
     for (int i=0; i < 12; ++i)
     {
@@ -281,11 +275,11 @@ struct Example_1 : public Plugin
 
     if (pitch_button >= 0)
     {
-      m_param_values[PARAM_PITCH] = (double)(pitch_button + m_last_oct*12);
+      m_param_values[PARAM_PITCH] = (double)(pitch_button + (int)(m_last_oct+0.5)*12);
     }
     else if (m_hold && cur_pitch >= 0)
     {
-      m_param_values[PARAM_PITCH] = (double)(cur_pitch%12 + m_last_oct*12);
+      m_param_values[PARAM_PITCH] = (double)(cur_pitch%12 + (int)(m_last_oct+0.5)*12);
     }
     else
     {
@@ -294,6 +288,18 @@ struct Example_1 : public Plugin
 
     ImGui::Spacing();
 
+    float oct = m_last_oct;
+    ImGui_Knob("Octave", &oct, 1.0f, 8.0f, "%.0f");
+    m_last_oct = oct;
+
+    ImGui::SameLine(0.0, 24.0);
+
+    float detune=(float)m_param_values[PARAM_DETUNE];
+    ImGui_Knob("Detune", &detune, -100.0f, 100.0f, "%+.0f%%");
+    m_param_values[PARAM_DETUNE]=detune;
+
+    ImGui::SameLine(0.0, 24.0);
+
     float voldb=-60.0;
     const char *lbl="-inf";
     if (m_param_values[PARAM_VOLUME] > 0.001)
@@ -301,7 +307,7 @@ struct Example_1 : public Plugin
       voldb=log(m_param_values[PARAM_VOLUME])*20.0/log(10.0);
       lbl="%+.1f dB";
     }
-    ImGui::SliderFloat("Volume", &voldb, -60.0, 0.0, lbl);
+    ImGui_Knob("Volume", &voldb, -60.0, 0.0, lbl);
     if (voldb > -60.0) m_param_values[PARAM_VOLUME]=pow(10.0, voldb/20.0);
     else m_param_values[PARAM_VOLUME]=0.0;
 

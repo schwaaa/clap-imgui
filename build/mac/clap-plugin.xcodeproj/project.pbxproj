@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45F7D39B27C00EED008DD5D8 /* imgui_knob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45F7D39A27C00EED008DD5D8 /* imgui_knob.cpp */; };
 		52FF35C227BA8E620001C221 /* plugin_impl_1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52683C3227B4A058004EE6A8 /* plugin_impl_1.cpp */; };
 		52FF35C327BA8E620001C221 /* plugin_impl_0.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52683C3027B4A02F004EE6A8 /* plugin_impl_0.cpp */; };
 		52FF35C427BA8E620001C221 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 529660212783786000AFD941 /* gui.cpp */; };
@@ -35,7 +36,6 @@
 		52FF35DB27BA8E7D0001C221 /* posix_thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252127B98AE3004186EB /* posix_thread.c */; };
 		52FF35DC27BA8E7D0001C221 /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252E27B98B34004186EB /* vulkan.c */; };
 		52FF35DD27BA8E7D0001C221 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 45DA252C27B98AF4004186EB /* window.c */; };
-		52FF35DE27BA8E7D0001C221 /* nsgl_context.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DA24EE27B98A72004186EB /* nsgl_context.m */; };
 		52FF35DF27BA8E890001C221 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA253B27B98CAC004186EB /* imgui_draw.cpp */; };
 		52FF35E027BA8E890001C221 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254F27B98CBF004186EB /* imgui_impl_glfw.cpp */; };
 		52FF35E127BA8E890001C221 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DA254E27B98CBF004186EB /* imgui_impl_opengl3.cpp */; };
@@ -49,7 +49,6 @@
 /* Begin PBXFileReference section */
 		45DA24EA27B98A5B004186EB /* glfw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glfw3.h; path = ../../src/glfw/include/GLFW/glfw3.h; sourceTree = "<group>"; };
 		45DA24EB27B98A5B004186EB /* glfw3native.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glfw3native.h; path = ../../src/glfw/include/GLFW/glfw3native.h; sourceTree = "<group>"; };
-		45DA24EE27B98A72004186EB /* nsgl_context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = nsgl_context.m; path = ../../src/glfw/src/nsgl_context.m; sourceTree = "<group>"; };
 		45DA24F227B98A99004186EB /* cocoa_platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cocoa_platform.h; path = ../../src/glfw/src/cocoa_platform.h; sourceTree = "<group>"; };
 		45DA24F327B98A99004186EB /* cocoa_time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cocoa_time.h; path = ../../src/glfw/src/cocoa_time.h; sourceTree = "<group>"; };
 		45DA24F427B98A99004186EB /* cocoa_joystick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = cocoa_joystick.m; path = ../../src/glfw/src/cocoa_joystick.m; sourceTree = "<group>"; };
@@ -116,6 +115,7 @@
 		45DA256B27B98CF5004186EB /* string-sizes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "string-sizes.h"; path = "../../src/clap/include/clap/string-sizes.h"; sourceTree = "<group>"; };
 		45DA256C27B98CF5004186EB /* audio-buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "audio-buffer.h"; path = "../../src/clap/include/clap/audio-buffer.h"; sourceTree = "<group>"; };
 		45EADB7C27AC890200EAB375 /* imgui_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_base.cpp; path = ../../src/imgui_base.cpp; sourceTree = "<group>"; };
+		45F7D39A27C00EED008DD5D8 /* imgui_knob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_knob.cpp; path = ../../src/imgui/imgui_knob.cpp; sourceTree = "<group>"; };
 		52683C3027B4A02F004EE6A8 /* plugin_impl_0.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin_impl_0.cpp; path = ../../src/plugin_impl_0.cpp; sourceTree = "<group>"; };
 		52683C3227B4A058004EE6A8 /* plugin_impl_1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin_impl_1.cpp; path = ../../src/plugin_impl_1.cpp; sourceTree = "<group>"; };
 		52966016278342DC00AFD941 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
@@ -196,6 +196,7 @@
 				45DA255027B98CBF004186EB /* imgui_impl_osx.h */,
 				45DA255127B98CBF004186EB /* imgui_impl_osx.mm */,
 				45DA253D27B98CAC004186EB /* imgui_internal.h */,
+				45F7D39A27C00EED008DD5D8 /* imgui_knob.cpp */,
 				45DA254227B98CAC004186EB /* imgui_tables.cpp */,
 				45DA254327B98CAC004186EB /* imgui_widgets.cpp */,
 				45DA253E27B98CAC004186EB /* imgui.cpp */,
@@ -268,7 +269,6 @@
 				45DA251B27B98AE3004186EB /* posix_thread.h */,
 				45DA252E27B98B34004186EB /* vulkan.c */,
 				45DA252C27B98AF4004186EB /* window.c */,
-				45DA24EE27B98A72004186EB /* nsgl_context.m */,
 			);
 			name = glfw;
 			sourceTree = "<group>";
@@ -368,6 +368,7 @@
 				52FF35D427BA8E7D0001C221 /* null_init.c in Sources */,
 				52FF35D527BA8E7D0001C221 /* null_joystick.c in Sources */,
 				52FF35D627BA8E7D0001C221 /* null_monitor.c in Sources */,
+				45F7D39B27C00EED008DD5D8 /* imgui_knob.cpp in Sources */,
 				52FF35D727BA8E7D0001C221 /* null_window.c in Sources */,
 				52FF35D827BA8E7D0001C221 /* osmesa_context.c in Sources */,
 				52FF35D927BA8E7D0001C221 /* platform.c in Sources */,
@@ -375,7 +376,6 @@
 				52FF35DB27BA8E7D0001C221 /* posix_thread.c in Sources */,
 				52FF35DC27BA8E7D0001C221 /* vulkan.c in Sources */,
 				52FF35DD27BA8E7D0001C221 /* window.c in Sources */,
-				52FF35DE27BA8E7D0001C221 /* nsgl_context.m in Sources */,
 				52FF35C227BA8E620001C221 /* plugin_impl_1.cpp in Sources */,
 				52FF35C327BA8E620001C221 /* plugin_impl_0.cpp in Sources */,
 				52FF35C427BA8E620001C221 /* gui.cpp in Sources */,

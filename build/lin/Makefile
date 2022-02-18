@@ -21,6 +21,7 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 IMGUI_SRC := $(BASE)/src/imgui
 IMGUI_SRCS := $(IMGUI_SRC)/imgui.cpp $(IMGUI_SRC)/imgui_draw.cpp \
 	$(IMGUI_SRC)/imgui_tables.cpp $(IMGUI_SRC)/imgui_widgets.cpp \
+        $(IMGUI_SRC)/imgui_knob.cpp \
 	$(IMGUI_SRC)/backends/imgui_impl_glfw.cpp \
 	$(IMGUI_SRC)/backends/imgui_impl_opengl3.cpp
 IMGUI_OBJ := obj/imgui

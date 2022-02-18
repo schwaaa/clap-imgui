@@ -181,6 +181,7 @@
     <ClCompile Include="..\..\src\glfw\src\win32_window.c" />
     <ClCompile Include="..\..\src\glfw\src\window.c" />
     <ClCompile Include="..\..\src\gui.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_knob.cpp" />
     <ClCompile Include="..\..\src\imgui_base.cpp" />
     <ClCompile Include="..\..\src\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\..\src\imgui\backends\imgui_impl_opengl3.cpp" />
