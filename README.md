@@ -15,9 +15,9 @@ CLAP does not specify or prefer any particular UI implementation. It's valid to 
 ---
 ### ImGui
 
-The UI for this example is presented via [ImGui](https://github.com/ocornut/imgui). ImGui is easy to misunderstand so please read [the ImGui README](https://github.com/ocornut/imgui#readme).
+The UI for this example is presented via [Dear ImGui](https://github.com/ocornut/imgui). The ImGui concept is easy to misunderstand so please read [the Dear ImGui README](https://github.com/ocornut/imgui#readme). The key concept is that the caller (this plugin) does not retain any state related to the UI. This allows developers to quickly prototype controls.
 
-ImGui allows developers to quickly prototype controls. For example, this is the code for the volume slider, which draws the control, handles mouse and keyboard input, and links the control to the voldb variable:
+100% of the plugin's UI code is in `plugin_impl__draw()`, a single small function. For example, this is the code for the volume slider, which draws the control, handles mouse and keyboard input, and links the control to the voldb variable:
 
 ```ImGui::SliderFloat("Volume", &voldb, -60.0f, 12.0f, "%+.1f dB", 1.0f);```
 
