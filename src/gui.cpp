@@ -7,9 +7,15 @@
 #include "main.h"
 
 
-bool Plugin::gui__create() { return true; }
+bool Plugin::gui__create(const char *api, bool is_floating)
+{
+  return gui__is_api_supported(api, is_floating);
+}
 
-bool Plugin::gui__set_scale(double scale) { return false; }
+bool Plugin::gui__set_scale(double scale)
+{
+  return false;
+}
 
 bool Plugin::gui__get_size(uint32_t *width, uint32_t *height)
 {
@@ -18,18 +24,39 @@ bool Plugin::gui__get_size(uint32_t *width, uint32_t *height)
   return true;
 }
 
+bool Plugin::gui__can_resize()
+{
+  return true;
+}
+
+bool Plugin::gui__adjust_size(uint32_t *width, uint32_t *height)
+{
+  return true;
+}
+
 bool Plugin::gui__set_size(uint32_t width, uint32_t height)
 {
-  // todo implement
+  // imgui should respond dynamically to the host window size changing
   m_w=width;
   m_h=height;
   return true;
 }
 
-bool Plugin::gui__can_resize() { return true; }
-void Plugin::gui__round_size(uint32_t *width, uint32_t *height) { }
+bool Plugin::gui__set_transient(const clap_window *window)
+{
+  return false;
+}
 
-void Plugin::gui__show() { }
-void Plugin::gui__hide() { }
+void Plugin::gui__suggest_title(const char *title)
+{
+}
 
+bool Plugin::gui__show()
+{
+  return true;
+}
 
+bool Plugin::gui__hide()
+{
+  return true;
+}

@@ -14,13 +14,16 @@
 
 bool imgui__attach(Plugin *plugin, void *native_display, void *native_window);
 
-bool gui__attach_win(const clap_plugin *plugin, void *parent)
+bool Plugin::gui__is_api_supported(const char *api, bool is_floating)
 {
-  return imgui__attach((Plugin*)plugin->plugin_data, NULL, parent);
+  return api && !strcmp(api, CLAP_WINDOW_API_WIN32) && !is_floating;
 }
 
-bool gui__attach_mac(const clap_plugin *plugin, void *parent) { return false; }
-bool gui__attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent) { return false; }
+bool Plugin::gui__set_parent(const clap_window *parentWindow)
+{
+  return parentWindow && parentWindow->win32 &&
+    imgui__attach(this, NULL, parentWindow->win32);
+}
 
 void get_native_window_position(void *native_display, void *native_window,
   int *x, int *y, int *w, int *h)

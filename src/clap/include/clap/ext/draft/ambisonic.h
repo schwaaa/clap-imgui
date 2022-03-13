@@ -12,8 +12,6 @@ static CLAP_CONSTEXPR const char CLAP_PORT_AMBISONIC[] = "ambisonic";
 extern "C" {
 #endif
 
-#pragma pack(push, CLAP_ALIGN)
-
 enum {
    // FuMa channel ordering
    CLAP_AMBISONIC_FUMA = 0,
@@ -31,8 +29,8 @@ enum {
 };
 
 typedef struct clap_ambisonic_info {
-   alignas(4) uint32_t ordering;
-   alignas(4) uint32_t normalization;
+   uint32_t ordering;
+   uint32_t normalization;
 } clap_ambisonic_info_t;
 
 typedef struct clap_plugin_ambisonic {
@@ -51,8 +49,6 @@ typedef struct clap_host_ambisonic {
    // [main-thread]
    void (*changed)(const clap_host_t *host);
 } clap_host_ambisonic_t;
-
-#pragma pack(pop)
 
 #ifdef __cplusplus
 }

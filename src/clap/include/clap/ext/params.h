@@ -21,9 +21,9 @@
 ///
 /// When the plugin changes a parameter value, it must inform the host.
 /// It will send @ref CLAP_EVENT_PARAM_VALUE event during process() or flush().
-/// - set the flag CLAP_EVENT_PARAM_BEGIN_ADJUST to mark the begining of automation recording
-/// - set the flag CLAP_EVENT_PARAM_END_ADJUST to mark the end of automation recording
-/// - set the flag CLAP_EVENT_PARAM_SHOULD_RECORD if the event should be recorded
+/// - set the flag CLAP_EVENT_BEGIN_ADJUST to mark the begining of automation recording
+/// - set the flag CLAP_EVENT_END_ADJUST to mark the end of automation recording
+/// - set the flag CLAP_EVENT_SHOULD_RECORD if the event should be recorded
 ///
 /// @note MIDI CCs are a tricky because you may not know when the parameter adjustment ends.
 /// Also if the hosts records incoming MIDI CC and parameter change automation at the same time,
@@ -55,7 +55,7 @@
 /// - if the plugin is not processing, call clap_host_params->request_flush() or
 ///   clap_host->request_process().
 /// - send an automation event and don't forget to set begin_adjust, end_adjust and should_record
-///   attributes
+///   flags
 /// - the plugin is responsible to send the parameter value to its audio processor
 ///
 /// IV. Turning a knob via automation
@@ -70,17 +70,15 @@
 /// - if the plugin is activated call clap_host->restart()
 /// - once the plugin isn't active:
 ///   - apply the new state
-///   - call clap_host_params->rescan(CLAP_PARAM_RESCAN_ALL)
-///   - if a parameter is created with an id that may have been used before,
+///   - if a parameter is gone or is created with an id that may have been used before,
 ///     call clap_host_params.clear(host, param_id, CLAP_PARAM_CLEAR_ALL)
+///   - call clap_host_params->rescan(CLAP_PARAM_RESCAN_ALL)
 
 static CLAP_CONSTEXPR const char CLAP_EXT_PARAMS[] = "clap.params";
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#pragma pack(push, CLAP_ALIGN)
 
 enum {
    // Is this param stepped? (integer values only)
@@ -107,7 +105,7 @@ enum {
    // It implies that the parameter is stepped.
    // min: 0 -> bypass off
    // max: 1 -> bypass on
-   CLAP_PARAM_IS_BYPASS = (1 << 6) | CLAP_PARAM_IS_STEPPED,
+   CLAP_PARAM_IS_BYPASS = 1 << 6,
 
    // The parameter can't be changed by the host.
    CLAP_PARAM_IS_READONLY = 1 << 7,
@@ -121,15 +119,26 @@ enum {
    // A simple example would be a DC Offset, changing it will change the output signal and must be
    // processed.
    CLAP_PARAM_REQUIRES_PROCESS = 1 << 9,
+
+   // When set:
+   // - automation can be recorded
+   // - automation can be played back
+   //
+   // The host can send live user changes for this parameter regardless of this flag.
+   //
+   // If this parameters affect the internal processing structure of the plugin, ie: max delay, fft
+   // size, ... and the plugins needs to re-allocate its working buffers, then it should call
+   // host->request_restart(), and perform the change once the plugin is re-activated.
+   CLAP_PARAM_IS_AUTOMATABLE = 1 << 10,
 };
 typedef uint32_t clap_param_info_flags;
 
 /* This describes a parameter */
 typedef struct clap_param_info {
    // stable parameter identifier, it must never change.
-   alignas(4) clap_id id;
+   clap_id id;
 
-   alignas(4) clap_param_info_flags flags;
+   clap_param_info_flags flags;
 
    // This value is optional and set by the plugin.
    // Its purpose is to provide a fast access to the plugin parameter:
@@ -144,14 +153,14 @@ typedef struct clap_param_info {
    // destroyed.
    void *cookie;
 
-   alignas(1) char name[CLAP_NAME_SIZE];     // the display name
-   alignas(1) char module[CLAP_MODULE_SIZE]; // the module containing the param, eg:
-                                             // "oscillators/wt1"; '/' will be used as a
-                                             // separator to show a tree like structure.
+   char name[CLAP_NAME_SIZE];     // the display name
+   char module[CLAP_MODULE_SIZE]; // the module containing the param, eg:
+                                  // "oscillators/wt1"; '/' will be used as a
+                                  // separator to show a tree like structure.
 
-   alignas(8) double min_value;     // minimum plain value
-   alignas(8) double max_value;     // maximum plain value
-   alignas(8) double default_value; // default plain value
+   double min_value;     // minimum plain value
+   double max_value;     // maximum plain value
+   double default_value; // default plain value
 } clap_param_info_t;
 
 typedef struct clap_plugin_params {
@@ -266,8 +275,6 @@ typedef struct clap_host_params {
    // [thread-safe]
    void (*request_flush)(const clap_host_t *host);
 } clap_host_params_t;
-
-#pragma pack(pop)
 
 #ifdef __cplusplus
 }

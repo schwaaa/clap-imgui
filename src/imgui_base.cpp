@@ -177,12 +177,12 @@ bool imgui__attach(Plugin *plugin, void *native_display, void *native_window)
   return true;
 }
 
-void gui__destroy(Plugin *plugin, bool is_plugin_destroy)
+bool Plugin::gui__destroy(bool is_plugin_destroy)
 {
-  if (plugin->m_ui_ctx)
+  if (m_ui_ctx)
   {
-    ui_ctx_rec *old_rec=(ui_ctx_rec*)plugin->m_ui_ctx;
-    plugin->m_ui_ctx=NULL;
+    ui_ctx_rec *old_rec=(ui_ctx_rec*)m_ui_ctx;
+    m_ui_ctx=NULL;
 
     ui_ctx_rec *prev_rec=NULL, *rec=rec_list;
     while (rec)
@@ -205,6 +205,8 @@ void gui__destroy(Plugin *plugin, bool is_plugin_destroy)
     if (is_plugin_destroy) imgui__teardown();
     else want_teardown = get_tick_count()+1000;
   }
+
+  return true;
 }
 
 void on_timer(const clap_plugin *plugin, unsigned int timer_id)

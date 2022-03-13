@@ -27,20 +27,18 @@ static CLAP_CONSTEXPR const char CLAP_EXT_AUDIO_PORTS_CONFIG[] = "clap.audio-por
 extern "C" {
 #endif
 
-#pragma pack(push, CLAP_ALIGN)
-
 // Minimalistic description of ports configuration
 typedef struct clap_audio_ports_config {
-   alignas(4) clap_id id;
-   alignas(1) char name[CLAP_NAME_SIZE];
+   clap_id id;
+   char    name[CLAP_NAME_SIZE];
 
    // main input info
-   alignas(4) uint32_t input_channel_count;
+   uint32_t    input_channel_count;
    const char *input_port_type;
 
    // main output info
-   alignas(4) uint32_t output_channel_count;
-   const char * output_port_type;
+   uint32_t    output_channel_count;
+   const char *output_port_type;
 } clap_audio_ports_config_t;
 
 // The audio ports config scan has to be done while the plugin is deactivated.
@@ -64,8 +62,6 @@ typedef struct clap_host_audio_ports_config {
    // [main-thread]
    void (*rescan)(const clap_host_t *host);
 } clap_host_audio_ports_config_t;
-
-#pragma pack(pop)
 
 #ifdef __cplusplus
 }

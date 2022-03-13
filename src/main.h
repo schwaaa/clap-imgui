@@ -14,9 +14,6 @@ struct Plugin
   int m_w, m_h;
 
   clap_plugin_gui m_clap_plugin_gui;
-  clap_plugin_gui_win32 m_clap_plugin_gui_win;
-  clap_plugin_gui_cocoa m_clap_plugin_gui_mac;
-  clap_plugin_gui_x11 m_clap_plugin_gui_lin;
   void *m_ui_ctx;
 
   Plugin(const clap_plugin_descriptor *descriptor, const clap_host *host);
@@ -33,14 +30,19 @@ struct Plugin
   virtual void plugin_impl__draw()=0;
   virtual bool plugin_impl__get_preferred_size(uint32_t *width, uint32_t *height)=0;
 
-  bool gui__create();
+  bool gui__is_api_supported(const char *api, bool is_floating);
+  bool gui__create(const char *api, bool is_floating);
+  bool gui__destroy(bool is_plugin_destroy);
   bool gui__set_scale(double scale);
   bool gui__get_size(uint32_t *width, uint32_t *height);
   bool gui__can_resize();
-  void gui__round_size(uint32_t *width, uint32_t *height);
+  bool gui__adjust_size(uint32_t *width, uint32_t *height);
   bool gui__set_size(uint32_t width, uint32_t height);
-  void gui__show();
-  void gui__hide();
+  bool gui__set_parent(const clap_window *window);
+  bool gui__set_transient(const clap_window *window);
+  void gui__suggest_title(const char *title);
+  bool gui__show();
+  bool gui__hide();
 
   virtual uint32_t params__count()=0;
   virtual bool params__get_info(uint32_t param_index, clap_param_info_t *param_info)=0;
@@ -55,10 +57,5 @@ Plugin *plugin_impl__create_0(const clap_host *host);
 
 clap_plugin_descriptor *plugin_impl__get_descriptor_1();
 Plugin *plugin_impl__create_1(const clap_host *host);
-
-bool gui__attach_win(const clap_plugin *plugin, void *parent);
-bool gui__attach_mac(const clap_plugin *plugin, void *parent);
-bool gui__attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent);
-void gui__destroy(Plugin *plugin, bool is_plugin_destroy);
 
 

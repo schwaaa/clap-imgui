@@ -1,27 +1,69 @@
 #pragma once
 
 #include "../../plugin.h"
+#include "../../events.h"
+#include "../../string-sizes.h"
 
-static CLAP_CONSTEXPR const char CLAP_EXT_TUNING[] = "clap.tuning.draft/0";
+static CLAP_CONSTEXPR const char CLAP_EXT_TUNING[] = "clap.tuning.draft/2";
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#pragma pack(push, CLAP_ALIGN)
+// Use clap_host_event_registry->query(host, CLAP_EXT_TUNING, &space_id) to know the event space.
+//
+// This event defines the tuning to be used on the given port/channel.
+typedef struct clap_event_tuning {
+   clap_event_header_t header;
+
+   int16_t port_index; // -1 global
+   int16_t channel;    // 0..15, -1 global
+   clap_id tunning_id;
+} clap_event_tuning_t;
+
+typedef struct clap_tuning_info {
+   clap_id tuning_id;
+   char    name[CLAP_NAME_SIZE];
+   bool    is_dynamic; // true if the values may vary with time
+} clap_tuning_info_t;
+
+typedef struct clap_client_tuning {
+   // Called when a tuning is added or removed from the pool.
+   // [main-thread]
+   void (*changed)(const clap_plugin_t *plugin);
+} clap_client_tuning_t;
 
 // This extension provides a dynamic tuning table to the plugin.
 typedef struct clap_host_tuning {
-   // The plugin can ask the host, the frequency of a given key,
-   // at a given time in case the tuning is automated.
-   // Returns the frequency in Hz.
-   // The plugin is not supposed to query it for each samples,
-   // but at a rate that makes sense for low frequency modulations.
-   // [audio-thread]
-   double (*get)(const clap_host_t *host, int32_t key, int32_t channel);
-} clap_host_tuning_t;
+   // Gets the relative tuning in semitone against equal temperament with A4=440Hz.
+   // The plugin may query the tuning at a rate that makes sense for *low* frequency modulations.
+   //
+   // If the tuning_id is not found or equals to CLAP_INVALID_ID,
+   // then the function shall gracefuly return a sensible value.
+   //
+   // sample_offset is the sample offset from the begining of the current process block.
+   //
+   // should_play(...) should be checked before calling this function.
+   //
+   // [audio-thread & in-process]
+   double (*get_relative)(const clap_host_t *host,
+                          clap_id            tuning_id,
+                          int32_t            channel,
+                          int32_t            key,
+                          uint32_t           sample_offset);
 
-#pragma pack(pop)
+   // Returns true if the note should be played.
+   // [audio-thread & in-process]
+   bool (*should_play)(const clap_host_t *host, clap_id tuning_id, int32_t channel, int32_t key);
+
+   // Returns the number of tunings in the pool.
+   // [main-thread]
+   uint32_t (*get_tuning_count)(const clap_host_t *host);
+
+   // Gets info about a tuning
+   // [main-thread]
+   bool (*get_info)(const clap_host_t *host, uint32_t tuning_index, clap_tuning_info_t *info);
+} clap_host_tuning_t;
 
 #ifdef __cplusplus
 }

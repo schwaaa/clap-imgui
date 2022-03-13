@@ -12,18 +12,17 @@
 
 bool imgui__attach(Plugin *plugin, void *native_display, void *native_window);
 
-bool gui__attach_lin(const clap_plugin *plugin, const char *display_name, unsigned long parent)
+bool Plugin::gui__is_api_supported(const char *api, bool is_floating)
 {
-  if (!display_name || !parent) return false;
-  Display *display = XOpenDisplay(display_name);
-  if (!display) return false;
-
-  return imgui__attach((Plugin*)plugin->plugin_data, display, (void*)parent);
+  return api && !strcmp(api, CLAP_WINDOW_API_X11) && !is_floating;
 }
 
-bool gui__attach_mac(const clap_plugin *plugin, void *parent) { return false; }
-bool gui__attach_win(const clap_plugin *plugin, void *parent) { return false; }
-  
+bool Plugin::gui__set_parent(const clap_window *parentWindow)
+{
+  return parentWindow && parentWindow->x11 &&
+    imgui__attach(this, XOpenDisplay(NULL), (void*)parentWindow->x11);
+}
+
 void get_native_window_position(void *native_display, void *native_window,
   int *x, int *y, int *w, int *h)
 {

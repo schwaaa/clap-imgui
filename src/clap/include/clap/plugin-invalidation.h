@@ -1,26 +1,25 @@
 #pragma once
 
+#include "private/std.h"
 #include "private/macros.h"
-#include "private/align.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#pragma pack(push)
-
 typedef struct clap_plugin_invalidation_source {
-   // Directory containing the file(s) to scan
+   // Directory containing the file(s) to scan, must be absolute
    const char *directory;
 
    // globing pattern, in the form *.dll
    const char *filename_glob;
 
    // should the directory be scanned recursively?
-   alignas(1) bool recursive_scan;
+   bool recursive_scan;
 } clap_plugin_invalidation_source_t;
 
-static const CLAP_CONSTEXPR char CLAP_PLUGIN_INVALIDATION_FACTORY_ID[] = "clap.plugin-invalidation-factory";
+static const CLAP_CONSTEXPR char CLAP_PLUGIN_INVALIDATION_FACTORY_ID[] =
+   "clap.plugin-invalidation-factory";
 
 // Used to figure out when a plugin needs to be scanned again.
 // Imagine a situation with a single entry point: my-plugin.clap which then scans itself
@@ -36,12 +35,10 @@ typedef struct clap_plugin_invalidation_factory {
       const struct clap_plugin_invalidation_factory *factory, uint32_t index);
 
    // In case the host detected a invalidation event, it can call refresh() to let the
-   // plugin_entry scan the set of plugins available.
+   // plugin_entry update the set of plugins available.
    // If the function returned false, then the plugin needs to be reloaded.
    bool (*refresh)(const struct clap_plugin_invalidation_factory *factory);
 } clap_plugin_invalidation_factory_t;
-
-#pragma pack(pop)
 
 #ifdef __cplusplus
 }

@@ -41,13 +41,7 @@ namespace plugin
   const void* get_extension(const clap_plugin *plugin, const char* id)
   {
     if (!strcmp(id, CLAP_EXT_GUI)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui;
-    if (!strcmp(id, CLAP_EXT_GUI_WIN32)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_win;
-    if (!strcmp(id, CLAP_EXT_GUI_COCOA)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_mac;
-    if (!strcmp(id, CLAP_EXT_GUI_X11)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_gui_lin;
-    if (!strcmp(id, CLAP_EXT_PARAMS)) return &((Plugin*)plugin->plugin_data)->m_clap_plugin_params;
-
     if (!strcmp(id, CLAP_EXT_TIMER_SUPPORT)) return &gui__timer_support;
-
     return ((Plugin*)plugin->plugin_data)->plugin_impl__get_extension(id);
   }
   void on_main_thread(const clap_plugin *plugin)
@@ -58,13 +52,17 @@ namespace plugin
 
 namespace gui
 {
-  bool create(const clap_plugin *plugin)
+  bool is_api_supported(const clap_plugin *plugin, const char *api, bool is_floating)
   {
-    return ((Plugin*)plugin->plugin_data)->gui__create();
+    return ((Plugin*)plugin->plugin_data)->gui__is_api_supported(api, is_floating);
+  }
+  bool create(const clap_plugin *plugin, const char *api, bool is_floating)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__create(api, is_floating);
   }
   void destroy(const clap_plugin *plugin)
   {
-    gui__destroy((Plugin*)plugin->plugin_data, false);
+    ((Plugin*)plugin->plugin_data)->gui__destroy(false);
   }
   bool set_scale(const clap_plugin *plugin, double scale)
   {
@@ -78,21 +76,33 @@ namespace gui
   {
     return ((Plugin*)plugin->plugin_data)->gui__can_resize();
   }
-  void round_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
+  bool adjust_size(const clap_plugin *plugin, uint32_t *width, uint32_t *height)
   {
-    ((Plugin*)plugin->plugin_data)->gui__round_size(width, height);
+    return ((Plugin*)plugin->plugin_data)->gui__adjust_size(width, height);
   }
   bool set_size(const clap_plugin *plugin, uint32_t width, uint32_t height)
   {
     return ((Plugin*)plugin->plugin_data)->gui__set_size(width, height);
   }
-  void show(const clap_plugin *plugin)
+  bool set_parent(const clap_plugin *plugin, const clap_window *window)
   {
-    ((Plugin*)plugin->plugin_data)->gui__show();
+    return ((Plugin*)plugin->plugin_data)->gui__set_parent(window);
   }
-  void hide(const clap_plugin *plugin)
+  bool set_transient(const clap_plugin *plugin, const clap_window *window)
   {
-    ((Plugin*)plugin->plugin_data)->gui__hide();
+    return false;
+  }
+  void suggest_title(const clap_plugin *plugin, const char *title)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__suggest_title(title);
+  }
+  bool show(const clap_plugin *plugin)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__show();
+  }
+  bool hide(const clap_plugin *plugin)
+  {
+    return ((Plugin*)plugin->plugin_data)->gui__hide();
   }
 };
 
@@ -144,19 +154,19 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
   m_clap_plugin.get_extension=plugin::get_extension;
   m_clap_plugin.on_main_thread=plugin::on_main_thread;
 
+  m_clap_plugin_gui.is_api_supported=gui::is_api_supported;
   m_clap_plugin_gui.create=gui::create;
   m_clap_plugin_gui.destroy=gui::destroy;
   m_clap_plugin_gui.set_scale=gui::set_scale;
   m_clap_plugin_gui.get_size=gui::get_size;
   m_clap_plugin_gui.can_resize=gui::can_resize;
-  m_clap_plugin_gui.round_size=gui::round_size;
+  m_clap_plugin_gui.adjust_size=gui::adjust_size;
   m_clap_plugin_gui.set_size=gui::set_size;
+  m_clap_plugin_gui.set_parent=gui::set_parent;
+  m_clap_plugin_gui.set_transient=gui::set_transient;
+  m_clap_plugin_gui.suggest_title=gui::suggest_title;
   m_clap_plugin_gui.show=gui::show;
   m_clap_plugin_gui.hide=gui::hide;
-
-  m_clap_plugin_gui_win.attach=gui__attach_win;
-  m_clap_plugin_gui_mac.attach=gui__attach_mac;
-  m_clap_plugin_gui_lin.attach=gui__attach_lin;
 
   m_clap_plugin_params.count=params::count;
   m_clap_plugin_params.get_info=params::get_info;
@@ -168,5 +178,5 @@ Plugin::Plugin(const clap_plugin_descriptor *descriptor, const clap_host* host)
 
 Plugin::~Plugin()
 {
-  gui__destroy(this, true);
+  gui__destroy(true);
 }
