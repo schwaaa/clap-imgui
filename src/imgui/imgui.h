@@ -42,6 +42,8 @@ Index of this file:
 
 #pragma once
 
+#define constexpr
+
 // Configuration file with compile-time options (edit imconfig.h or '#define IMGUI_USER_CONFIG "myfilename.h" from your build system')
 #ifdef IMGUI_USER_CONFIG
 #include IMGUI_USER_CONFIG
