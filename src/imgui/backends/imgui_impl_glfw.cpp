@@ -574,11 +574,11 @@ static void ImGui_ImplGlfw_UpdateMouseData()
         ImGuiViewport* viewport = platform_io.Viewports[n];
         GLFWwindow* window = (GLFWwindow*)viewport->PlatformHandle;
 
-#ifdef __EMSCRIPTEN__
+//#ifdef __EMSCRIPTEN__
         const bool is_window_focused = true;
-#else
-        const bool is_window_focused = glfwGetWindowAttrib(window, GLFW_FOCUSED) != 0;
-#endif
+//#else
+//        const bool is_window_focused = glfwGetWindowAttrib(window, GLFW_FOCUSED) != 0;
+//#endif
         if (is_window_focused)
         {
             // (Optional) Set OS mouse position from Dear ImGui if requested (rarely used, only when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
@@ -976,6 +976,18 @@ static void ImGui_ImplGlfw_SetWindowPos(ImGuiViewport* viewport, ImVec2 pos)
 {
     ImGui_ImplGlfw_ViewportData* vd = (ImGui_ImplGlfw_ViewportData*)viewport->PlatformUserData;
     vd->IgnoreWindowPosEventFrame = ImGui::GetFrameCount();
+
+#ifdef _WIN32
+    HWND hwnd = glfwGetWin32Window(vd->Window), par;
+    if (hwnd && (GetWindowLong(hwnd, GWL_STYLE) & WS_CHILDWINDOW) != 0 && (par = GetParent(hwnd)))
+    {
+        RECT par_rect;
+       GetWindowRect(par, &par_rect);
+       pos.x -= par_rect.left;
+       pos.y -= par_rect.top;
+    }
+#endif
+
     glfwSetWindowPos(vd->Window, (int)pos.x, (int)pos.y);
 }
 
