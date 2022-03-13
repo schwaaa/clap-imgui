@@ -12945,15 +12945,6 @@ ImGuiViewportP* ImGui::AddUpdateViewport(ImGuiWindow* window, ImGuiID id, const 
     return viewport;
 }
 
-void ImGui::RemoveDestroyViewport(ImGuiViewportP* viewport)
-{
-     // Should only be called if the viewport window is destroyed from outside imgui,
-     // for example when a non-imgui parent of an imgui child window is destroyed
-     ImGuiContext& g = *GImGui;
-     g.PlatformIO.Viewports.find_erase(viewport);
-     DestroyViewport(viewport);
-}
-
 static void ImGui::DestroyViewport(ImGuiViewportP* viewport)
 {
     // Clear references to this viewport in windows (window->ViewportId becomes the master data)

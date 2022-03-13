@@ -22,6 +22,7 @@ extern const clap_host *g_clap_host;
 #define TIMER_MS 30
 GLFWwindow *backend_wnd;
 unsigned int want_teardown;
+unsigned int wnd_counter;
 
 struct ui_ctx_rec
 {
@@ -165,7 +166,7 @@ bool imgui__attach(Plugin *plugin, void *native_display, void *native_window)
   new_rec->plugin = plugin;
   new_rec->native_display = native_display;
   new_rec->native_window = native_window;
-  sprintf(new_rec->name, "%p", new_rec);
+  sprintf(new_rec->name, "%d:%p", ++wnd_counter, new_rec);
   plugin->m_ui_ctx=new_rec;
 
   if (rec_list) new_rec->next=rec_list;
@@ -193,13 +194,8 @@ void gui__destroy(Plugin *plugin, bool is_plugin_destroy)
       prev_rec=rec;
       rec=rec->next;
     }
-
-    ImGuiWindow *w = ImGui::FindWindowByName(rec->name);
-    if (w && w->Viewport && w->Viewport->PlatformWindowCreated)
-    {
-      ImGui::RemoveDestroyViewport(w->Viewport);
-    }
     free(old_rec);
+    // imgui should manage destroying the platform window once it's not used in a render pass
   }
 
   if (!rec_list)
