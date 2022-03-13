@@ -31,7 +31,9 @@ ImGui is helpful for this example because:
 ---
 ### Usage
 
-The repo includes a Windows VC13 project, a MacOS XCode11 project, and a linux Makefile. There's no CMAKE-like build system included. There are no external dependencies so hopefully building is straightforward. There are also binaries available; see **Builds** below. *Note: linux is still somewhat under construction, although it should generally work.*
+The repo includes a Windows VC13 project, a MacOS XCode11 project, and a linux Makefile. There's no CMAKE-like build system included. There are no external dependencies so hopefully building is straightforward. There are also binaries available; see **Builds** below.
+
+*Note: linux does not compile on HEAD. The last commit that builds on linux is b5bc93c5.*
 
 The example code exports two very basic plugins, **Volume/Pan** and **Tone Generator**. You should be able to prototype basic plugins by editing (or adding) a [src/plugin_impl_#.cpp](https://github.com/schwaaa/clap-imgui/blob/main/src/plugin_impl_0.cpp) file, which contains the actual audio plugin and UI implementation. The plugin descriptor and parameter definitions are at the top of the file, and `plugin_impl__draw()` contains the plugin-specific UI code.
 
@@ -48,3 +50,5 @@ ImGui, like many UI implementations, uses a polling update mechanism. This examp
 ### Builds
 
 You can download a macOS, Windows, or linux binary by clicking [Actions](https://github.com/schwaaa/clap-imgui/actions) in the top bar, then clicking the latest (topmost) mac-build, win-build, or lin-build workflow run. The **clap-example.clap** binary will be under Artifacts at the bottom of the workflow run page.
+
+*Note: linux does not compile on HEAD. The last commit that builds on linux is b5bc93c5.*
