@@ -70,8 +70,10 @@ void imgui__do_render_pass()
   }
 
   ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   ImGui::UpdatePlatformWindows();
   ImGui::RenderPlatformWindowsDefault();
+  glfwSwapBuffers(backend_wnd);
 
   rec=rec_list;
   while (rec)
