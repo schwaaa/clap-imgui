@@ -28,6 +28,7 @@
 #include "entry.h"
 #include "plugin-factory.h"
 #include "plugin-invalidation.h"
+#include "plugin-features.h"
 
 #include "plugin.h"
 #include "host.h"
@@ -45,9 +46,9 @@
 #include "ext/posix-fd-support.h"
 #include "ext/note-name.h"
 #include "ext/note-ports.h"
-#include "ext/event-filter.h"
 #include "ext/thread-pool.h"
 #include "ext/event-registry.h"
+#include "ext/tail.h"
 
 #include "ext/draft/preset-load.h"
 #include "ext/draft/quick-controls.h"
@@ -58,7 +59,4 @@
 #include "ext/draft/surround.h"
 #include "ext/draft/cv.h"
 #include "ext/draft/ambisonic.h"
-
-#include "converters/vst2-converter.h"
-#include "converters/vst3-converter.h"
-#include "converters/clap-converter.h"
+#include "ext/draft/voice-info.h"

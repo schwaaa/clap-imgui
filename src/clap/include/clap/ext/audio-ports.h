@@ -7,8 +7,9 @@
 ///
 /// This extension provides a way for the plugin to describe its current audio ports.
 ///
-/// If the plugin does not implement this extension, it will have a default 32 bits stereo input and
-/// output. This makes 32 bit support a requirement for both plugin and host.
+/// If the plugin does not implement this extension, it won't have audio ports.
+///
+/// 32 bits support is required for both host and plugins. 64 bits audio is optional.
 ///
 /// The plugin is only allowed to change its ports configuration while it is deactivated.
 
@@ -26,12 +27,22 @@ enum {
    // Main port must be at index 0.
    CLAP_AUDIO_PORT_IS_MAIN = 1 << 0,
 
-   // The prefers 64 bits audio with this port.
-   CLAP_AUDIO_PORTS_PREFERS_64BITS = 1 << 1,
+   // This port can be used with 64 bits audio
+   CLAP_AUDIO_PORT_SUPPORTS_64BITS = 1 << 1,
+
+   // 64 bits audio is preferred with this port
+   CLAP_AUDIO_PORT_PREFERS_64BITS = 1 << 2,
+
+   // This port must be used with the same sample size as all the other ports which have this flag.
+   // In other words if all ports have this flag then the plugin may either be used entirely with
+   // 64 bits audio or 32 bits audio, but it can't be mixed.
+   CLAP_AUDIO_PORT_REQUIRES_COMMON_SAMPLE_SIZE = 1 << 3,
 };
 
 typedef struct clap_audio_port_info {
-   clap_id id;                   // stable identifier
+   // id identifies a port and must be stable.
+   // id may overlap between input and output ports.
+   clap_id id;
    char    name[CLAP_NAME_SIZE]; // displayable name
 
    uint32_t flags;

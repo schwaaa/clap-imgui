@@ -2,11 +2,11 @@
 
 #include "../../plugin.h"
 
-// This extension let the plugin submit transport requests to the host.
-// The host has no obligation to execute those request, so the interface maybe
+// This extension lets the plugin submit transport requests to the host.
+// The host has no obligation to execute these requests, so the interface may be
 // partially working.
 
-static CLAP_CONSTEXPR const char CLAP_EXT_CV[] = "clap.transport-control.draft/0";
+static CLAP_CONSTEXPR const char CLAP_EXT_TRANSPORT_CONTROL[] = "clap.transport-control.draft/0";
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,7 +29,7 @@ typedef struct clap_host_transport_control {
    // [main-thread]
    void (*request_pause)(const clap_host_t *host);
 
-   // Equivalent to what "space bar" does with most DAW
+   // Equivalent to what "space bar" does with most DAWs
    // [main-thread]
    void (*request_toggle_play)(const clap_host_t *host);
 

@@ -8,32 +8,31 @@
 ///
 /// Main idea:
 ///
-/// The host sees the plugin as an atomic entity; and acts as a controler on top of its parameters.
-/// The plugin is responsible to keep in sync its audio processor and its GUI.
+/// The host sees the plugin as an atomic entity; and acts as a controller on top of its parameters.
+/// The plugin is responsible for keeping its audio processor and its GUI in sync.
 ///
-/// The host can read at any time parameters value on the [main-thread] using
+/// The host can at any time read parameters' value on the [main-thread] using
 /// @ref clap_plugin_params.value().
 ///
-/// There is two options to communicate parameter value change, and they are not concurrent.
+/// There are two options to communicate parameter value changes, and they are not concurrent.
 /// - send automation points during clap_plugin.process()
-/// - send automation points during clap_plugin_params.flush(), this one is used when the plugin is
-///   not processing
+/// - send automation points during clap_plugin_params.flush(), for parameter changes
+///   without processing audio
 ///
 /// When the plugin changes a parameter value, it must inform the host.
 /// It will send @ref CLAP_EVENT_PARAM_VALUE event during process() or flush().
-/// - set the flag CLAP_EVENT_BEGIN_ADJUST to mark the begining of automation recording
-/// - set the flag CLAP_EVENT_END_ADJUST to mark the end of automation recording
-/// - set the flag CLAP_EVENT_SHOULD_RECORD if the event should be recorded
+/// If the user is adjusting the value, don't forget to mark the begining and end
+/// of the gesture by sending CLAP_EVENT_PARAM_GESTURE_BEGIN and CLAP_EVENT_PARAM_GESTURE_END events.
 ///
-/// @note MIDI CCs are a tricky because you may not know when the parameter adjustment ends.
-/// Also if the hosts records incoming MIDI CC and parameter change automation at the same time,
+/// @note MIDI CCs are tricky because you may not know when the parameter adjustment ends.
+/// Also if the host records incoming MIDI CC and parameter change automation at the same time,
 /// there will be a conflict at playback: MIDI CC vs Automation.
 /// The parameter automation will always target the same parameter because the param_id is stable.
 /// The MIDI CC may have a different mapping in the future and may result in a different playback.
 ///
-/// When a MIDI CC changes a parameter's value, set @ref clap_event_param.should_record to false.
-/// That way the host may record the MIDI CC automation, but not the parameter change and there
-/// won't be conflict at playback.
+/// When a MIDI CC changes a parameter's value, set the flag CLAP_EVENT_DONT_RECORD in
+/// clap_event_param.header.flags. That way the host may record the MIDI CC automation, but not the
+/// parameter change and there won't be conflict at playback.
 ///
 /// Scenarios:
 ///
@@ -42,25 +41,25 @@
 /// - call @ref clap_host_params.changed() if anything changed
 /// - call @ref clap_host_latency.changed() if latency changed
 /// - invalidate any other info that may be cached by the host
-/// - if the plugin is activated and the preset will introduce breaking change
+/// - if the plugin is activated and the preset will introduce breaking changes
 ///   (latency, audio ports, new parameters, ...) be sure to wait for the host
 ///   to deactivate the plugin to apply those changes.
 ///   If there are no breaking changes, the plugin can apply them them right away.
-///   The plugin is resonsible to update both its audio processor and its gui.
+///   The plugin is resonsible for updating both its audio processor and its gui.
 ///
 /// II. Turning a knob on the DAW interface
 /// - the host will send an automation event to the plugin via a process() or flush()
 ///
 /// III. Turning a knob on the Plugin interface
-/// - if the plugin is not processing, call clap_host_params->request_flush() or
-///   clap_host->request_process().
-/// - send an automation event and don't forget to set begin_adjust, end_adjust and should_record
-///   flags
-/// - the plugin is responsible to send the parameter value to its audio processor
+/// - the plugin is responsible for sending the parameter value to its audio processor
+/// - call clap_host_params->request_flush() or clap_host->request_process().
+/// - when the host calls either clap_plugin->process() or clap_plugin_params->flush(),
+///   send an automation event and don't forget to set begin_adjust,
+///   end_adjust and should_record flags
 ///
 /// IV. Turning a knob via automation
 /// - host sends an automation point during clap_plugin->process() or clap_plugin_params->flush().
-/// - the plugin is responsible to update its GUI
+/// - the plugin is responsible for updating its GUI
 ///
 /// V. Turning a knob via plugin's internal MIDI mapping
 /// - the plugin sends a CLAP_EVENT_PARAM_SET output event, set should_record to false
@@ -85,40 +84,21 @@ enum {
    // if so the double value is converted to integer using a cast (equivalent to trunc).
    CLAP_PARAM_IS_STEPPED = 1 << 0,
 
-   // Does this param supports per note automations?
-   CLAP_PARAM_IS_PER_NOTE = 1 << 1,
-
-   // Does this param supports per channel automations?
-   CLAP_PARAM_IS_PER_CHANNEL = 1 << 2,
-
-   // Does this param supports per port automations?
-   CLAP_PARAM_IS_PER_PORT = 1 << 3,
-
    // Useful for for periodic parameters like a phase
-   CLAP_PARAM_IS_PERIODIC = 1 << 4,
+   CLAP_PARAM_IS_PERIODIC = 1 << 1,
 
    // The parameter should not be shown to the user, because it is currently not used.
    // It is not necessary to process automation for this parameter.
-   CLAP_PARAM_IS_HIDDEN = 1 << 5,
+   CLAP_PARAM_IS_HIDDEN = 1 << 2,
+
+   // The parameter can't be changed by the host.
+   CLAP_PARAM_IS_READONLY = 1 << 3,
 
    // This parameter is used to merge the plugin and host bypass button.
    // It implies that the parameter is stepped.
    // min: 0 -> bypass off
    // max: 1 -> bypass on
-   CLAP_PARAM_IS_BYPASS = 1 << 6,
-
-   // The parameter can't be changed by the host.
-   CLAP_PARAM_IS_READONLY = 1 << 7,
-
-   // Does the parameter support the modulation signal?
-   CLAP_PARAM_IS_MODULATABLE = 1 << 8,
-
-   // Any change to this parameter will affect the plugin output and requires to be done via
-   // process() if the plugin is active.
-   //
-   // A simple example would be a DC Offset, changing it will change the output signal and must be
-   // processed.
-   CLAP_PARAM_REQUIRES_PROCESS = 1 << 9,
+   CLAP_PARAM_IS_BYPASS = 1 << 4,
 
    // When set:
    // - automation can be recorded
@@ -129,7 +109,41 @@ enum {
    // If this parameters affect the internal processing structure of the plugin, ie: max delay, fft
    // size, ... and the plugins needs to re-allocate its working buffers, then it should call
    // host->request_restart(), and perform the change once the plugin is re-activated.
-   CLAP_PARAM_IS_AUTOMATABLE = 1 << 10,
+   CLAP_PARAM_IS_AUTOMATABLE = 1 << 5,
+
+   // Does this parameter support per note automations?
+   CLAP_PARAM_IS_AUTOMATABLE_PER_NOTE_ID = 1 << 6,
+
+   // Does this parameter support per key automations?
+   CLAP_PARAM_IS_AUTOMATABLE_PER_KEY = 1 << 7,
+
+   // Does this parameter support per channel automations?
+   CLAP_PARAM_IS_AUTOMATABLE_PER_CHANNEL = 1 << 8,
+
+   // Does this parameter support per port automations?
+   CLAP_PARAM_IS_AUTOMATABLE_PER_PORT = 1 << 9,
+
+   // Does this parameter support the modulation signal?
+   CLAP_PARAM_IS_MODULATABLE = 1 << 10,
+
+   // Does this parameter support per note automations?
+   CLAP_PARAM_IS_MODULATABLE_PER_NOTE_ID = 1 << 11,
+
+   // Does this parameter support per key automations?
+   CLAP_PARAM_IS_MODULATABLE_PER_KEY = 1 << 12,
+
+   // Does this parameter support per channel automations?
+   CLAP_PARAM_IS_MODULATABLE_PER_CHANNEL = 1 << 13,
+
+   // Does this parameter support per port automations?
+   CLAP_PARAM_IS_MODULATABLE_PER_PORT = 1 << 14,
+
+   // Any change to this parameter will affect the plugin output and requires to be done via
+   // process() if the plugin is active.
+   //
+   // A simple example would be a DC Offset, changing it will change the output signal and must be
+   // processed.
+   CLAP_PARAM_REQUIRES_PROCESS = 1 << 15,
 };
 typedef uint32_t clap_param_info_flags;
 
@@ -153,10 +167,12 @@ typedef struct clap_param_info {
    // destroyed.
    void *cookie;
 
-   char name[CLAP_NAME_SIZE];     // the display name
-   char module[CLAP_MODULE_SIZE]; // the module containing the param, eg:
-                                  // "oscillators/wt1"; '/' will be used as a
-                                  // separator to show a tree like structure.
+   // the display name
+   char name[CLAP_NAME_SIZE];
+
+   // the module path containing the param, eg:"oscillators/wt1"
+   // '/' will be used as a separator to show a tree like structure.
+   char module[CLAP_PATH_SIZE];
 
    double min_value;     // minimum plain value
    double max_value;     // maximum plain value
@@ -194,10 +210,8 @@ typedef struct clap_plugin_params {
 
    // Flushes a set of parameter changes.
    // This method must not be called concurrently to clap_plugin->process().
-   // This method must not be used if the plugin is processing.
    //
-   // [active && !processing : audio-thread]
-   // [!active : main-thread]
+   // [active ? audio-thread : main-thread]
    void (*flush)(const clap_plugin_t        *plugin,
                  const clap_input_events_t  *in,
                  const clap_output_events_t *out);
@@ -259,20 +273,19 @@ typedef struct clap_host_params {
    // [main-thread]
    void (*rescan)(const clap_host_t *host, clap_param_rescan_flags flags);
 
-   // Clears references to a parameter
+   // Clears references to a parameter.
    // [main-thread]
    void (*clear)(const clap_host_t *host, clap_id param_id, clap_param_clear_flags flags);
 
-   // Request the host to call clap_plugin_params->fush().
-   // This is useful if the plugin has parameters value changes to report to the host but the plugin
-   // is not processing.
+
+   // Request a parameter flush.
    //
-   // eg. the plugin has a USB socket to some hardware controllers and receives a parameter change
-   // while it is not processing.
+   // The host will then schedule a call to either:
+   // - clap_plugin.process()
+   // - clap_plugin_params->flush()
    //
-   // This must not be called on the [audio-thread].
-   //
-   // [thread-safe]
+   // This function is always safe to use and must not be called on the [audio-thread].
+   // [thread-safe,!audio-thread]
    void (*request_flush)(const clap_host_t *host);
 } clap_host_params_t;
 

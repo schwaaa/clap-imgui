@@ -2,6 +2,8 @@
 
 #include "../plugin.h"
 
+// This extension let your plugin hook itself into the host select/poll/epoll/kqueue reactor.
+// This is useful to handle asynchronous I/O on the main thread.
 static CLAP_CONSTEXPR const char CLAP_EXT_POSIX_FD_SUPPORT[] = "clap.posix-fd-support";
 
 #ifdef __cplusplus
@@ -9,11 +11,14 @@ extern "C" {
 #endif
 
 enum {
-   // IO events flags
+   // IO events flags, they can be used to form a mask which describes:
+   // - which events you are interested in (register_fd/modify_fd)
+   // - which events happened (on_fd)
    CLAP_POSIX_FD_READ = 1 << 0,
    CLAP_POSIX_FD_WRITE = 1 << 1,
    CLAP_POSIX_FD_ERROR = 1 << 2,
 };
+typedef uint32_t clap_posix_fd_flags_t;
 
 typedef struct clap_plugin_posix_fd_support {
    // This callback is "level-triggered".
@@ -22,15 +27,15 @@ typedef struct clap_plugin_posix_fd_support {
    // done writting.
    //
    // [main-thread]
-   void (*on_fd)(const clap_plugin_t *plugin, int fd, int flags);
-} clap_plugin_fd_support_t;
+   void (*on_fd)(const clap_plugin_t *plugin, int fd, clap_posix_fd_flags_t flags);
+} clap_plugin_posix_fd_support_t;
 
 typedef struct clap_host_posix_fd_support {
    // [main-thread]
-   bool (*register_fd)(const clap_host_t *host, int fd, int flags);
+   bool (*register_fd)(const clap_host_t *host, int fd, clap_posix_fd_flags_t flags);
 
    // [main-thread]
-   bool (*modify_fd)(const clap_host_t *host, int fd, int flags);
+   bool (*modify_fd)(const clap_host_t *host, int fd, clap_posix_fd_flags_t flags);
 
    // [main-thread]
    bool (*unregister_fd)(const clap_host_t *host, int fd);
