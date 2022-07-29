@@ -20,12 +20,14 @@
 ///  4.    -> clap_plugin_gui->set_transient()
 ///  5.    -> clap_plugin_gui->suggest_title()
 ///  6. else
-///  7.    -> clap_plugin_gui->set_scale(), if the function pointer is provided by the plugin
-///  8.    -> clap_plugin_gui->get_size(), gets initial size
-///  9.    -> clap_plugin_gui->can_resize()
-/// 10. clap_plugin_gui->show()
-/// 11. clap_plugin_gui->hide()/show() ...
-/// 12. clap_plugin_gui->destroy() when done with the gui
+///  7.    -> clap_plugin_gui->set_scale()
+///  8.    -> clap_plugin_gui->can_resize()
+///  9.    -> if resizable and has known size from previous session, clap_plugin_gui->set_size()
+/// 10.    -> else clap_plugin_gui->get_size(), gets initial size
+/// 11.    -> clap_plugin_gui->set_parent()
+/// 12. clap_plugin_gui->show()
+/// 13. clap_plugin_gui->hide()/show() ...
+/// 14. clap_plugin_gui->destroy() when done with the gui
 ///
 /// Resizing the window (initiated by the plugin, if embedded):
 /// 1. Plugins calls clap_host_gui->request_resize()
@@ -48,7 +50,7 @@ static CLAP_CONSTEXPR const char CLAP_EXT_GUI[] = "clap.gui";
 // embed using https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setparent
 static const CLAP_CONSTEXPR char CLAP_WINDOW_API_WIN32[] = "win32";
 
-// uses logical size
+// uses logical size, don't call clap_plugin_gui->set_scale()
 static const CLAP_CONSTEXPR char CLAP_WINDOW_API_COCOA[] = "cocoa";
 
 // uses physical size
@@ -78,12 +80,28 @@ typedef struct clap_window {
    };
 } clap_window_t;
 
+// Information to improve window resizing when initiated by the host or window manager.
+typedef struct clap_gui_resize_hints {
+   bool can_resize_horizontally;
+   bool can_resize_vertically;
+
+   // only if can resize horizontally and vertically
+   bool     preserve_aspect_ratio;
+   uint32_t aspect_ratio_width;
+   uint32_t aspect_ratio_height;
+} clap_gui_resize_hints_t;
+
 // Size (width, height) is in pixels; the corresponding windowing system extension is
-// responsible to define if it is physical pixels or logical pixels.
+// responsible for defining if it is physical pixels or logical pixels.
 typedef struct clap_plugin_gui {
    // Returns true if the requested gui api is supported
    // [main-thread]
    bool (*is_api_supported)(const clap_plugin_t *plugin, const char *api, bool is_floating);
+
+   // Returns true if the plugin has a preferred api.
+   // The host has no obligation to honor the plugin preferrence, this is just a hint.
+   // [main-thread]
+   bool (*get_preferred_api)(const clap_plugin_t *plugin, const char **api, bool *is_floating);
 
    // Create and allocate all resources necessary for the gui.
    //
@@ -103,11 +121,14 @@ typedef struct clap_plugin_gui {
    void (*destroy)(const clap_plugin_t *plugin);
 
    // Set the absolute GUI scaling factor, and override any OS info.
-   // If the plugin does not provide this function, then it should work out the scaling factor
-   // itself by querying the OS directly.
+   // Should not be used if the windowing api relies upon logical pixels.
    //
-   // Return false if the plugin can't apply the scaling; true on success.
-   // [main-thread,optional]
+   // If the plugin prefers to work out the scaling factor itself by querying the OS directly,
+   // then ignore the call.
+   //
+   // Returns true if the scaling could be applied
+   // Returns false if the call was ignored, or the scaling could not be applied.
+   // [main-thread]
    bool (*set_scale)(const clap_plugin_t *plugin, double scale);
 
    // Get the current size of the plugin UI.
@@ -119,6 +140,10 @@ typedef struct clap_plugin_gui {
    // Only for embedded windows.
    // [main-thread]
    bool (*can_resize)(const clap_plugin_t *plugin);
+
+   // Returns true if the plugin can provide hints on how to resize the window.
+   // [main-thread]
+   bool (*get_resize_hints)(const clap_plugin_t *plugin, clap_gui_resize_hints_t *hints);
 
    // If the plugin gui is resizable, then the plugin will calculate the closest
    // usable size which fits in the given size.
@@ -148,34 +173,43 @@ typedef struct clap_plugin_gui {
    // [main-thread]
    bool (*show)(const clap_plugin_t *plugin);
 
-   // Hide the window, this method do not free the resources, it just hides
-   // the window content. Yet it maybe a good idea to stop painting timers.
+   // Hide the window, this method does not free the resources, it just hides
+   // the window content. Yet it may be a good idea to stop painting timers.
    // [main-thread]
    bool (*hide)(const clap_plugin_t *plugin);
 } clap_plugin_gui_t;
 
 typedef struct clap_host_gui {
+   // The host should call get_resize_hints() again.
+   // [thread-safe]
+   void (*resize_hints_changed)(const clap_host_t *host);
+
    /* Request the host to resize the client area to width, height.
     * Return true if the new size is accepted, false otherwise.
     * The host doesn't have to call set_size().
-    * [main-thread] */
+    *
+    * Note: if not called from the main thread, then a return value simply means that the host
+    * acknowledged the request and will process it asynchronously. If the request then can't be
+    * satisfied then the host will call set_size() to revert the operation.
+    *
+    * [thread-safe] */
    bool (*request_resize)(const clap_host_t *host, uint32_t width, uint32_t height);
 
    /* Request the host to show the plugin gui.
     * Return true on success, false otherwise.
-    * [main-thread] */
+    * [thread-safe] */
    bool (*request_show)(const clap_host_t *host);
 
    /* Request the host to hide the plugin gui.
     * Return true on success, false otherwise.
-    * [main-thread] */
+    * [thread-safe] */
    bool (*request_hide)(const clap_host_t *host);
 
    // The floating window has been closed, or the connection to the gui has been lost.
    //
    // If was_destroyed is true, then the host must call clap_plugin_gui->destroy() to acknowledge
    // the gui destruction.
-   // [main-thread]
+   // [thread-safe]
    void (*closed)(const clap_host_t *host, bool was_destroyed);
 } clap_host_gui_t;
 

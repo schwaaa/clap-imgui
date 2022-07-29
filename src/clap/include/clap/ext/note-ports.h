@@ -6,9 +6,7 @@
 /// @page Note Ports
 ///
 /// This extension provides a way for the plugin to describe its current note ports.
-///
-/// If the plugin does not implement this extension, it will have a single note input and output.
-///
+/// If the plugin does not implement this extension, it won't have note input or output.
 /// The plugin is only allowed to change its note ports configuration while it is deactivated.
 
 static CLAP_CONSTEXPR const char CLAP_EXT_NOTE_PORTS[] = "clap.note-ports";
@@ -19,13 +17,12 @@ extern "C" {
 
 enum clap_note_dialect {
    // Uses clap_event_note and clap_event_note_expression.
-   // Default if the port info are not provided or inspected.
    CLAP_NOTE_DIALECT_CLAP = 1 << 0,
 
    // Uses clap_event_midi, no polyphonic expression
    CLAP_NOTE_DIALECT_MIDI = 1 << 1,
 
-   // Uses clap_event_midi, with polyphonic expression
+   // Uses clap_event_midi, with polyphonic expression (MPE)
    CLAP_NOTE_DIALECT_MIDI_MPE = 1 << 2,
 
    // Uses clap_event_midi2
@@ -33,7 +30,9 @@ enum clap_note_dialect {
 };
 
 typedef struct clap_note_port_info {
-   clap_id  id;                   // stable identifier
+   // id identifies a port and must be stable.
+   // id may overlap between input and output ports.
+   clap_id  id;
    uint32_t supported_dialects;   // bitfield, see clap_note_dialect
    uint32_t preferred_dialect;    // one value of clap_note_dialect
    char     name[CLAP_NAME_SIZE]; // displayable name, i18n?
